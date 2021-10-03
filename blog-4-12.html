@@ -1,0 +1,286 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+</style>
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<body class ="content">
+<title>Yuwei Sun | blog</title>
+
+</head>
+  
+<div id="basic">
+<br>
+<h1>Self-Supervised Learning and Multimodal Learning</h1>
+<br>
+<br>
+
+<h3>Background</h3>
+<ul>
+    <li> Good performance usually requires a decent amount of labels, but collecting manual labels is expensive (i.e. ImageNet) and hard to be scaled up. Considering the amount of unlabelled data (e.g. free text, all the images on the Internet)
+    <li> Information in the real world usually comes as different modalities. When searching for visual or audio content on the web, we can train a model leveraging any available collection of web data and index that type of media based on learned multimodal embeddings.
+    <li> Degeneracy in neural structure means that any single function can be carried out by more than one configuration of neural signals and that different neural clusters also participate in a number of different functions. Degeneracy creates redundancy such that the system functions even with the loss of one component, where comparable spatial concepts can be developed through different clusters of modalities.
+</ul>
+
+<br><br><h3>Self-Supervised Learning (SSL)</h3>
+<p>
+Recent self-supervised methods that use instance discrimination rely on a combination of two elements: (1) a contrastive loss and (2) a set of image transformations.
+</p>
+<p>
+The contrastive loss explicitly compares pairs of image representations to push away representations from different images while pulling together those from transformations, or views, of the same image.
+</p>
+The goal is to learn models that extract effective representations from the input data, performing transfer learning to tackle different supervised tasks, usually, in both linear evaluation (fixed feature extractor) and fine-tuning settings.
+
+<br><br><h4>Contrastive Learning</h4> 
+<p>
+Contrastive Learning is one type of self-supervised learning (SSL) that encourages augmentations (views) of the same input to have more similar representations compared to augmentations of different inputs. The goal of contrastive representation learning is to learn such an embedding space in which similar sample pairs stay close to each other while dissimilar ones are far apart.
+</p>
+<p>
+$\mathcal{L}(x_i,x_j,\theta)=\mathbb{1}[y_i=y_j]||f_\theta(x_i)-f_\theta(x_j)||^2_2+\mathbb{1}[y_i\neq y_j]max(0,\epsilon-||f_\theta(x_i)-f_\theta(x_j)||_2^2)$,
+where $\epsilon$ is a hyperparameter defining the lower bound distance between samples of different classes.
+</p>
+
+<figure>
+  <img src="blog/4-12/SimCLR.png" alt="SSL in an single modality" class="center"  style="width: 50%;margin-left: auto; margin-right: auto;display: block;">
+  <figcaption>Fig.1 - SSL in an single modality.</figcaption>
+</figure>
+
+
+<br><br><h4>SimCLR</h4> 
+<p>
+SimCLR employs Contrastive Learning to learn embeddings which can be used for various downstream tasks (supervised-learning tasks using a pre-trained model or component), by the following steps: 
+</p>
+<p>
+1. Randomly sample a minibatch of $N$ samples and each sample $x$ is applied with two different data augmentation operations $t$ and $t'$, resulting in $2N$ augmented samples in total.
+$\tilde{\mathbf{x}}_i = t(\mathbf{x}),\quad\tilde{\mathbf{x}}_j = t'(\mathbf{x}),\quad t, t' \sim \mathcal{T}$
+where $t$ and $t'$ are sampled from the same family of augmentations $\mathcal{T}$, which includes random crop, resize with random flip, color distortions, and Gaussian blur.
+</p>
+<p>
+
+2.Given one positive pair$(\tilde{\mathbf{x}}_i, \tilde{\mathbf{x}}_j)$, other $2(N-1)$ data points are treated as negative samples. The representations of these augmented samples are produced by a base encoder $f(.)$, i.e.,
+ </p>
+ <p>
+$\mathbf{h}_i = f(\tilde{\mathbf{x}}_i),\quad \mathbf{h}_j = f(\tilde{\mathbf{x}}_j)$. Moreover, the representation $\mathbf{h}$ is used for downstream tasks.
+</p>
+<p>
+3. The contrastive learning loss is defined using cosine similarity $\mbox{sim}(.,.)$, which operates on an extra projection layer of the representation $g(.)$ rather than on the representation space $\mathbf{h}$ directly. The importance of using the representation before the nonlinear projection is due to loss of information (which is used for downstream tasks) induced by the contrastive loss. For each pair of $(\mathbf{h}_i, \mathbf{h}_j)$, the loss is defined by the following
+</p>
+
+\begin{equation}
+    \mathbf{z}_i = g(\mathbf{h}_i),\quad\\
+\mathbf{z}_j = g(\mathbf{h}_j) \\
+\end{equation}
+\begin{equation}
+   \mathcal{L}_\text{SimCLR}^{(i,j)} =
+- \log\exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_j) / \tau) + \log\sum_{k=1}^{2N} \mathbb{1}_{[k \neq i]} \exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_k) / \tau)\\
+\end{equation}
+\begin{equation*}
+=- \log\frac{\exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_j) / \tau)}{\sum_{k=1}^{2N} \mathbb{1}_{[k \neq i]} \exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_k) / \tau)} 
+\end{equation*}
+where $\tau$ is the temperature parameter, $\mbox{sim}(.,.)$ is the cosine similarity, and $\mathbb{1}_{[k \neq i]}$ is an indicator function: 1 if $k \neq i$ 0 otherwise.
+
+<br><br><h4>Barlow Twins</h4> 
+<p>
+Barlow Twins learns to make the cross-correlation matrix between these two groups of output features close to the identity. The goal is to keep the representation vectors of different distorted versions of one sample similar, while minimizing the redundancy between these vectors.
+</p>
+<p>
+Let $C$ be a cross-correlation matrix computed between outputs from two identical networks along the batch dimension. Each entry $C_{ij}$ in the matrix is the cosine similarity between $z^A_{b,i}$ and $z^B_{b,j}$.
+</p>
+<p>
+Then the loss of Barlow Twins is defined by the following
+</p>
+<p>
+$\mathcal{L}_{BT}=\sum_i(1-C_{ii})^2+\lambda \sum_i\sum_{j\neq i}C_{ij}^2$.
+</p>
+
+<br><br><h4>MoCo</h4>
+<p>
+Momentum Contrast (MoCo) trains a visual representation encoder by matching an encoded query $q$ to a dictionary of encoded keys $\{k_1,k_2,...\}$ using the InfoNCE contrastive loss. The query representation is $q = f_q(x_q)$ where $f_q$ is an encoder network and $x_q$ is a query sample (likewise, $k = f_k(x_k)$). 
+</p>
+<p>
+\textbf{Dictionary as a queue:} The samples in the dictionary are progressively replaced. The current mini-batch is enqueued to the dictionary, and the oldest mini-batch in the queue is removed. The advantage of MoCo compared to SimCLR is that MoCo decouples the batch size from the number of negatives, but SimCLR requires a large batch size in order to have enough negative samples and suffers performance drops when their batch size is reduced.
+</p>
+<p>
+\textbf{Momentum update:} Let $\theta_k$ be the parameters of $f_k$ and $\theta_q$ be those of $f_q$, then $\theta_k$ is updated by the following
+</p>
+<p>
+$\theta_k \leftarrow m\theta_k+(1-m)\theta_q$,
+
+where a relatively large momentum (e.g., m = 0.999, the default) works much better than a smaller value (e.g., m = 0.9).
+
+<figure>
+  <img src="blog/4-12/moco.png" class="center">
+  <figcaption>Fig.2 - Conceptual comparison of three contrastive loss mechanisms.</figcaption>
+</figure>
+
+
+<br><br><h4>SwAV</h4>
+Similarly to contrastive approaches, SwAV learns representations by comparing transformations of an image, but unlike contrastive methods, it does not require to compute feature pairwise comparisons. SwAV also does not require a large memory bank or a special momentum network.
+
+<ul>
+    <li> Use a “swapped” prediction mechanism to predict the code of a view from the representation of another view. In particular, given two image features $z_t$ and $z_s$ from two different augmentations of the same image, their codes $q_t$ and $q_s$ are computed by matching to a set of $K$ prototypes $\{c_1,\dots, c_K\}$. Then, the loss is defined by $\mathcal{L}(z_t,z_s) = \mathcal{l}(z_t,q_s)+\mathcal{l}(z_s,q_t)$. If these two features capture the same information, it should be possible to predict the code from the other feature.
+    <li> They propose multi-crop that uses smaller-sized images to increase the number of views (transformations per image) while not increasing the memory or computational requirements during training, where mapping small parts of a scene to more global views by the “swapped” prediction mechanism significantly boosts the performance.
+</ul>
+
+<figure>
+  <img src="blog/4-12/swav.png" class="center">
+  <figcaption>Fig.3 - SwAV solves a “swapped” prediction problem wherein the codes obtained from one data augmented view are predicted using the other view.</figcaption>
+</figure>
+
+<br><br><h3>SSL in multimodal learning</h3>
+<h4>CLIP</h4>
+Given a batch of $N$ (image, text) pairs, CLIP computes the dense cosine similarity matrix between all possible (image, text) candidates within this batch. The text and image encoders are jointly trained to maximize the similarity between $N$ correct pairs of (image, text) associations while minimizing the similarity for $N(N-1)$ incorrect pairs via a symmetric cross entropy loss over the dense matrix. It is trained on 400 million (text, image) pairs, collected from the Internet.
+
+
+<figure>
+  <img src="blog/4-12/CLIP.png" class="center">
+  <figcaption>Fig.4 - CLIP contrastive pre-training over text-image pairs.</figcaption>
+</figure>
+
+
+<br><h4>MMV</h4>
+
+<ul>
+    <li> MultiModal Versatile Networks (MMV) demonstrate how networks trained on large collections of unlabelled video data can be applied on video, video-text, image and audio downstream tasks.
+    <li> Multimodal contrastive loss. Concretely, positive training pairs across two modalities are constructed by sampling the two streams from the same location of a video. Conversely, negative training pairs are created by sampling streams from different videos. In particular, minibatch of $N$ video samples is formed, which induces $N$ positive and $N(N-1)$ negative pairs. Given these positive and negative training pairs, similarly, multimodal contrastive loss aims to make the positive pairs similar and negative pairs dissimilar in their corresponding joint embedding, by the following
+   
+<p>
+    $\mathcal{L}(x)=\lambda_{va}NCE(x_v,x_a)+\lambda_{vt}MIL-NCE(x_v,x_t),$
+     </p>
+    where $\lambda_{mm'}$ corresponds to the weight for the modality pair $m$ and $m'$, $x_v$ denotes the video input, $x_a$ is the audio input, and $x_t$ is the text input. NCE stands for Noise-Contrastive Estimation, which is a loss function similar to the contrastive learning loss in SimCLR. Moreover, the MIL-NCE variant is tailored to account for the misalignment between narrations and what is actually happening in the video.
+</ul>
+
+<figure>
+  <img src="blog/4-12/mmv_fig.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;">
+  <figcaption>Fig.5 - Multimodal learning topology.</figcaption>
+</figure>
+
+<figure>
+  <img src="blog/4-12/mmv.png" style="width: 65%;margin-left: auto; margin-right: auto;display: block;">
+  <figcaption>Fig.6 - MMV: MultiModal Versatile Networks. V=Vision, A=Audio, T=Text.</figcaption>
+</figure>
+
+
+<br><br><h4>AVLnet</h4>
+Several differences compared with MMV: 
+<ul>
+    <li> Only consider visual and audio embedding spaces, but the audio is from the same video. 
+    <li> Using a nonlinear activation layer for attaining feature embeddings. 
+</ul>
+
+<br><br><h3>Datasets</h3>
+<h4>HowTo100M</h4>
+HowTo100M is a large-scale dataset of narrated videos with an emphasis on instructional videos where content creators teach complex tasks with an explicit intention of explaining the visual content on screen.
+<ul>
+    <li> 136M video clips with captions sourced from 1.2M Youtube videos (15 years of video).
+    <li> 23k activities from domains such as cooking, hand crafting, personal care, gardening or fitness.
+    <li> Each video is associated with a narration available as subtitles automatically downloaded from Youtube.
+</ul>
+<h4>YouCook2</h4>
+It contains 2000 long untrimmed videos from 89 cooking recipes; on average, each distinct recipe has 22 videos. The procedure steps for each video are annotated with temporal boundaries and described by imperative English sentences. The videos were downloaded from YouTube and are all in the third-person viewpoint.
+
+<br><br><h4>Coin</h4>
+The COIN dataset consists of 11,827 videos related to 180 different tasks, which were all collected from YouTube. The average length of a video is 2.36 minutes. Each video is labelled with 3.91 step segments, where each segment lasts 14.91 seconds on average.
+
+<br><br><h4>AudioSet</h4>
+AudioSet consists of an expanding ontology of 632 audio event classes and a collection of 2,084,320 human-labeled 10-second sound clips drawn from YouTube videos. The ontology is specified as a hierarchical graph of event categories, covering a wide range of human and animal sounds, musical instruments and genres, and common everyday environmental sounds.
+</div>
+<br><br><br><br>
+</body>
+</html>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2022</p>
+</footer>
+<br>
+<br>
+<br>
+[1] Linda B. Smith and Michael Gasser. The development of embodied cogni-
+tion: Six lessons from babies. 2005.
+<br>
+[2] Sumit Chopra, Raia Hadsell, and Yann LeCun. Learning a similarity met-
+ric discriminatively, with application to face verification. 2005.<br>
+[3] Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey E. Hinton.
+A simple framework for contrastive learning of visual representations. 2020.<br>
+[4] Jure Zbontar, Li Jing, Ishan Misra, Yann LeCun, and St ́ephane Deny.
+Barlow twins: Self-supervised learning via redundancy reduction, 2021.<br>
+[5] Kaiming He, Haoqi Fan, Yuxin Wu, Saining Xie, and Ross B. Girshick.
+Momentum contrast for unsupervised visual representation learning. 2020.<br>
+[6] Aravind Srinivas, Michael Laskin, and Pieter Abbeel. Curl: Contrastive
+unsupervised representations for reinforcement learning, 2020.<br>
+[7] Jean-Bastien Grill, Florian Strub, Florent Altch ́e, and et al.. Bootstrap your own
+latent: A new approach to self-supervised learning, 2020.<br>
+[8] Mathilde Caron, Ishan Misra, Julien Mairal, Priya Goyal, Piotr Bo-
+janowski, and Armand Joulin. Unsupervised learning of visual features
+by contrasting cluster assignments. 2020.<br>
+[9] Alec Radford, Jong Wook Kim, Chris Hallacy, and et al.. Learning transferable
+visual models from natural language supervision. 2021.<br>
+[10] Jean-Baptiste Alayrac, Adri`a Recasens, Rosalia Schneider, Relja Arand-
+jelovic, Jason Ramapuram, Jeffrey De Fauw, Lucas Smaira, Sander Diele-
+man, and Andrew Zisserman. Self-supervised multimodal versatile net-
+works. 2020.<br>
+[11] Michael Gutmann and Aapo Hyv ̈arinen. Noise-contrastive estimation: A
+new estimation principle for unnormalized statistical models. 2010.<br>
+[12] Andrew Rouditchenko, Angie W. Boggust, David Harwath, and et al.. Avlnet: Learning audio-visual language rep-
+resentations from instructional videos. 2021.<br>
+[13] Antoine Miech, Dimitri Zhukov, Jean-Baptiste Alayrac, Makarand
+Tapaswi, Ivan Laptev, and Josef Sivic. Howto100m: Learning a text-video
+embedding by watching hundred million narrated video clips. 2019.<br>
+[14] Luowei Zhou, Nathan Louis, and Jason J. Corso. Weakly-supervised video
+object grounding from text by loss weighting and object interaction. 2018.<br>
+[15] Yansong Tang, Dajun Ding, Yongming Rao, Yu Zheng, Danyang Zhang,
+Lili Zhao, Jiwen Lu, and Jie Zhou. COIN: A large-scale dataset for com-
+prehensive instructional video analysis. 2019.<br>
+[16] Jort F. Gemmeke, Daniel P. W. Ellis, Dylan Freedman, Aren Jansen, Wade
+Lawrence, R. Channing Moore, Manoj Plakal, and Marvin Ritter. Audio
+set: An ontology and human-labeled dataset for audio events. 2017.<br><br><br>
+</html>
