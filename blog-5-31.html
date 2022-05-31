@@ -1,0 +1,197 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+</style>
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<body class ="content">
+<title>Domain Shift and Transfer Learning</title>
+
+</head>
+  
+<div id="basic">
+<br>
+
+<h1>Domain Shift and Transfer Learning</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br>
+<br>
+
+<h3>Transfer Learning</h3>
+<p>A domain $D$ is defined as a two-element tuple consisting of feature space of the input data $X$ and marginal probability $P(X)$, i.e., $D={X,P(X)}$. Given a source domain $D_S$, a corresponding source task $T_S$, as well as a target domain $D_T$ and a target task $T_T$, the objective of transfer learning is to learn the target conditional probability distribution $P(Y_T|X_T)$ in $D_T$ with the information gained from $D_S$ and $T_S$ where $D_S\neq D_T$. Notably, domain adaptation is one type of transfer learning, which aims to solve the target task $T_T$ when the marginal probability distributions of source and target domain are different. $P(X_S)\neq P(X_T)$. For instance, book reviews labeled as positive or negative would be different from a corpus of product-review sentiments like electronics.</p>    
+
+<p>To perform transfer learning, we usually utilize a pre-trained network without its last several layers as a feature extractor for a different task due to deep neural networks are layered architectures that learn different features at different layers. Generally learn highly transferable features in the lower layers while the transferability sharply decreases in higher layers of a deep neural network . It is better to use such a pre-trained model that was trained on a huge dataset as a staring point, then, we can further train the model on a relative small dataset for another task. This is known as model fine-tuning. There are mainly three fine-tuning techniques: 1) train the entire architecture; 2) train some layers while freezing others; 3) freeze the entire architecture. When a layer is frozen, its parameters will become untrainable during model training.</p>
+
+<p>For natural languages processing (NLP), large models includes BERT, GPT-3, and so on. On the other hand, for computer vision, models trained on ImageNet such as VGG-19 can be leveraged. </p>
+
+<h4>BERT</h4> 
+<p>BERT stands for Bidirectional Encoder Representations from Transformers. It is a pre-trained deep bidirectional representations for natural languages. Its architecture is based on the transformers and it can be used to solve different languages tasks by leveraging transfer learning. Moreover, it was trained on a large corpus of unlabelled text including the entire Wikipedia and Book Corpus.</p>
+
+<h4>Domain Adaptation in Federated Learning</h4>
+
+<p>Clients in Federated Learning (FL) have a high possibility of owning data from different domains. The quality of collected data at an edge are constrained to its surrounding environment such as writing style and topics (natural languages); light, angel, and distance (images). It is critical to properly transfer knowledge in FL, alleviating influence of negative transfers (obtained domain knowledge that would degrade the target domain's performance). Such learning algorithms could provide sufficient personalization ability for different usage cases at edges. </p>
+
+
+<h4>Disentanglement</h4> 
+<p>Disentanglement is the ability to understand high-dimensional data, and to distill that knowledge into useful representations in an unsupervised manner, remains a key challenge in deep learning. One approach to solving these challenges is through disentangled representations, models that capture the independent features of a given scene in such a way that if one feature changes, the others remain unaffected.</p> 
+<br>
+<h3>Dataset</h3>
+<h4>Digit-Five</h4>
+<p>Digit-Five is a collection of five most popular digit datasets, MNIST (mt), MNIST-M (mm), Synthetic Digits (syn), SVHN (sv), and USPS (up). </p>
+
+<h4>DomainNet</h4>
+<p>DomainNet consists of six domains of object images, clipart (clp), infograph (inf), painting (pnt), quickdraw (qdr), real (rel), and sktech (skt). This dataset includes 345 categories of objects in total.</p>
+
+<h4>Amazon Review Dataset</h4>
+<p>The task is to identify whether the sentiment of a review is positive or negative. Amazon Review dataset includes reviews from four popular merchandise categories: Books (B), DVDs (D), Electronics (E), and Kitchen & housewares (K). </p>
+<br>
+
+<h3>Related Work</h3>
+<ul>
+<li> Ganin et al. presented the Domain Adversarial Neural Network (DANN) that leverages two losses, the classification loss and the domain confusion loss. By minimizing the classification loss for the source samples and the domain confusion loss for all samples (while maximizing the domain confusion loss for the feature extraction), this makes sure that the samples are mutually indistinguishable for the classifier.
+
+<li> Peng et al. presented Federated Adversarial Domain Adaptation (FADA) which aims to tackle domain shift in a federated learning system through adversarial techniques of disentangling the domain-invariant features from domain-specific features. 
+
+<li> Yao et al. discussed an opposite scenario where they aimed to tackle the domain gaps between the unlabeled, distributed client data and a labeled, centralized dataset on the server. The server broadcasts the whole model to the clients, while the clients only need to upload the classifiers to the server.
+
+<li> He et al.  demonstrates the idea of group knowledge transfer called FedGKT, by separating the model into a feature extractor and a classifier. They compared this method with federated learning and split learning, FedGKT demanded 9 to 17 times less computational power on edge devices and requires 54 to 105 times fewer parameters in the edge. In addition, they applied the Kullback Leibler (KL) Divergence function to compute the loss of transferring knowledge from a network to another. However, though they considered non-iid variants of training datasets, it was limited to splitting a single training dataset into several unbalanced partitions. Domain adaptation problem is not well explored in the paper.
+<li> Gretton et al.  proposed the Deep Adaptation Networks (DAN) that applies multi-kernel MMD loss to align the source domain with the target domain in Reproducing Kernel Hilbert Space.
+</ul>
+<br>
+<h3>Domain Adversarial Neural Network (DANN) (2015 PMLR)</h3>
+<h4>Target Task</h4>
+<ul>
+<li> The goal is to adopt domain adaptation in deep architectures that can be trained on large amount of labeled data from the source domain and large amount of unlabeled data from the target domain (no labeled target domain data is necessary). 
+<li> We assume that the model works with input samples $x\in X$, where $X$ is some input space and certain labels $y$ from the label space $Y$. There exist two distributions $S(x,y)$ and $T(x,y)$ on $X \otimes Y$, which will be referred to as the source distribution and the target distribution. The ultimate goal is to be able to predict labels $y$ given the input $x$ for the target distribution. 
+<li> We denote with $d_i$ the binary variable (domain label) for the $i$-th example, which indicates whether $x_i$ come from the source distribution ($x_i\in S(x)\mbox{ if } d_i = 0$) or from the target distribution ($x_i\in T(x) \mbox{ if } d_i = 1$).
+<li> We define a deep feed-forward architecture that  for each input $x$ predicts its label $y \in Y$ and its domain label $d \in \{0,1\}$. We decompose such mapping into three parts. We assume that the input $x$ is first mapped by a mapping $G_f$ (a feature extractor) to a D-dimensional feature vector $f \in \mathbb{R}^D$. We want to make the distributions $S(f) =\{G_f(x;\theta_f|x \in S(x)\}$ and $S(f) =\{G_f(x;\theta_f|x\in T(x)\}$ to be similar.
+</ul>
+
+<h4>Approach</h4>
+
+<figure>
+  <img src="blog/5-31/fig1.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.1 - DANN includes a deep feature extractor (green) and a deep label predictor (blue), which together form a standard feed-forward architecture. Unsupervised domain adaptation is achieved by adding a domain classifier (red) connected to the feature extractor.</figcaption>
+</figure>
+<br>
+
+<p>At training time, in order to obtain domain-invariant features, we seek the parameters $\theta_f$ of the feature mapping that maximize the loss of the domain classifier (making the two feature distributions as similar as possible), while simultaneously seeking the parameters $\theta_d$ of the domain classifier that minimize the loss of the domain classifier.</p>
+
+
+$$E(\theta_f, \theta_y, \theta_d) = \sum_{i=1,..,N | d_i = 0} L_y^i(\theta_f, \theta_y) - \lambda \sum_{i=1,...,N} L_d^i(\theta_f,\theta_d))$$
+$$(\hat{\theta_f},\hat{\theta_y})=\underset{\theta_f,\theta_y}{\mbox{argmin}}E(\theta_f, \theta_y,\hat{\theta_d})$$
+$$\hat{\theta_d}=\underset{\theta_d}{\mbox{argmax}}E(\hat{\theta_f},\hat{\theta_y},\theta_d) $$
+where $L_y(\cdot,\cdot)$ is the loss for label prediction, $L_d(\cdot,\cdot)$ is the loss for the domain classification. 
+
+<p>In order to alleviate noisy signal from the domain classifier at the early stages of the training procedure instead of fixing the adaptation factor $\lambda$, we gradually change it from 0 to 1 using the following schedule:
+$$\lambda_p = \frac{2}{1+exp(-\gamma \cdot p)}-1,$$ where $\gamma$ was set to 10.</p>
+
+<h4>Maximum Mean Discrepancy (MMD)</h4>
+<p>How to measure the distribution difference or the similarity between domains effectively is an important issue.</p>
+
+<p>The measurement termed Maximum Mean Discrepancy (MMD) is widely used in the field of transfer learning. MMD quantifies the distribution difference by calculating the distance of the mean values of the instances in a Reproducing Kernel Hilbert Space (RKHS). Roughly speaking, if two functions $f$ and $g$ in the RKHS are close in norm, i.e.,  $\|f-g\|$ is small, then $f$ and $g$ are also pointwise close, i.e., $|f(x)-g(x)|$ is small for all $x$. MMD is formulated as follows:</p>
+
+$$
+\mbox{MMD}(X^S,X^T)=\Bigg\| \frac{1}{n^S}\sum_{i=1}^{n^S}\Phi(x_i^S)-\frac{1}{n^T}\sum_{j=1}^{n^T}\Phi(x_j^T)\Bigg\|_\mathcal{H},
+$$
+<p>where $\Phi$ is a feature map $X\rightarrow \mathcal{H}$ and $\mathcal{H}$ is called a reproducing kernel Hilbert space. </p>
+
+<p>Let $k(x,y)=\langle\Phi(x),\Phi(y)\rangle_\mathcal{H}$ be the Gaussian kernel. MMD using the Gaussian kernel can be formulated as follows:</p>
+
+\begin{equation}
+\mbox{MMD}^2(X^S,X^T)=\Bigg\| \frac{1}{n^S}\sum_{i=1}^{n^S}\Phi(x_i^S)-\frac{1}{n^T}\sum_{j=1}^{n^T}\Phi(x_j^T)\Bigg\|^2_\mathcal{H}
+\end{equation}
+\begin{equation}
+=\langle\frac{1}{n^S}\sum_{i=1}^{n^S}\Phi(x_i^S), \frac{1}{n^S}\sum_{i=1}^{n^S}\Phi(x_i^{S'})\rangle_\mathcal{H} + \langle\frac{1}{n^T}\sum_{j=1}^{n^T}\Phi(x_j^T), \frac{1}{n^T}\sum_{j=1}^{n^T}\Phi(x_j^{T'})\rangle_\mathcal{H}
+\end{equation}
+\begin{equation}
+=\frac{1}{n^S}\sum_{i=1}^{n^S}k(x_i^S,x_i^{S'})+\frac{1}{n^T}\sum_{j=1}^{n^T}k(x_j^T,x_j^{T'})-2\frac{1}{n^S}\frac{1}{n^T}\sum_{i=1}^{n^S}\sum_{j=1}^{n^T}k(x_i^S,x_j^T)
+\end{equation}
+</div>
+<br><br><br><br>
+</body>
+</html>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2022</p>
+</footer>
+<br>
+<br>
+<br>
+[1] J. Donahue, Y. Jia, O. Vinyals, J. Hoffman, N. Zhang, E. Tzeng, and
+T. Darrell, “Decaf: A deep convolutional activation feature for generic
+visual recognition,” in Proceedings of the 31th International Conference
+on Machine Learning, ICML 2014.<br>
+[2] Y. LeCun, C. Cortes, and C. Burges, “Mnist handwritten digit database,”
+ATT Labs [Online].2010.<br>
+[3] Y. Ganin and V. S. Lempitsky, “Unsupervised domain adaptation by
+backpropagation,” in ICML 2015. <br>
+[4] X. Peng, Q. Bai, X. Xia, Z. Huang, K. Saenko, and B. Wang, “Moment
+matching for multi-source domain adaptation,” in ICCV 2019.<br>
+[5] J. Blitzer, M. Dredze, and F. Pereira, “Biographies, bollywood, boom-
+boxes and blenders: Domain adaptation for sentiment classification,” in
+ACL 2007.<br>
+[6] Y. Ganin and V. S. Lempitsky, “Unsupervised domain adaptation by back-
+propagation,” in ICML 2015.<br>
+[7] X. Peng, Z. Huang, Y. Zhu, and K. Saenko, “Federated ad-
+versarial domain adaptation,” in ICLR 2020.<br>
+[8] C. Yao, B. Gong, Y. Cui, H. Qi, Y. Zhu, and M. Yang, “Federated
+multi-target domain adaptation,” CoRR, vol. abs/2108.07792, 2021.<br>
+[9] C. He, M. Annavaram, and S. Avestimehr, “Group knowledge transfer:
+Federated learning of large cnns at the edge,” in NeurIPS 2020.<br>
+[10] A. Gretton, K. M. Borgwardt, M. J. Rasch, B. Sch ̈olkopf, and A. J. Smola,
+“A kernel method for the two-sample-problem,” in NeurIPS 2019.<br>
+[11] K. M. Borgwardt, A. Gretton, M. J. Rasch, H. Kriegel, B. Sch ̈olkopf,
+and A. J. Smola, “Integrating structured biological data by kernel
+maximum mean discrepancy,” in Proceedings 14th International Con-
+ference on Intelligent Systems for Molecular Biology 2006.<br><br><br>
+</html>
