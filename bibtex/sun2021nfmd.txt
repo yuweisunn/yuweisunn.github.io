@@ -1,8 +1,8 @@
 @article{sun2021nfmd
   author    = {Yuwei Sun and
-  			   Ng S.T. Chong and		
+  	       Ng S.T. Chong and		
                Hideya Ochiai},
   title     = {Network Flows-Based Malware Detection Using a Combined Approach of Crawling and Deep Learning},
-  journal   = {IEEE International Conference on Communications (ICC): Next-Generation Networking and Internet Symposium},
+  journal   = {IEEE International Conference on Communications (ICC)},
   year      = {2021}
 }

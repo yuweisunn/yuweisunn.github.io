@@ -1,9 +1,9 @@
 @article{sun2019lancnn
   author    = {Yuwei Sun and
-  			   Nagul Cooharojananone and
+  	       Nagul Cooharojananone and
                Hideya Ochiai 
                },
   title     = {Aircraft Detection Based on Saliency Map and Convolution Neural Networks},
-  journal   = {23rd IEEE International Conference on International Computer Science and Engineering Conference (ICSEC)},
+  journal   = {IEEE International Conference on International Computer Science and Engineering Conference (ICSEC)},
   year      = {2019}
 }

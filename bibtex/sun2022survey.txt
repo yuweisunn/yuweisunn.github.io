@@ -2,12 +2,8 @@
   author    = {Yuwei Sun and
                Hideya Ochiai and
                Hiroshi Esaki},
-  title     = {Decentralized Deep Learning for Mobile Edge Computing: {A} Survey
+  title     = {Decentralized Deep Learning for Mobile Edge Computing: A Survey
                on Communication Efficiency and Trustworthiness},
-  journal   = {CoRR},
-  volume    = {abs/2108.03980},
-  year      = {2021},
-  url       = {https://arxiv.org/abs/2108.03980},
-  eprinttype = {arXiv},
-  eprint    = {2108.03980}
+  journal   = {IEEE Transactions on Artificial Intelligence},
+  year      = {2022}
 }
