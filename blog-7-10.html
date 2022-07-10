@@ -1,0 +1,176 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+</style>
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<body class ="content">
+<title>Visual Question Answering</title>
+
+</head>
+  
+<div id="basic">
+<br>
+
+<h1>Visual Question Answering</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br>
+<br>
+
+
+
+<h3>VQA2 Dataset</h3>
+<p>Visual Question Answering (VQA) v2.0 is a dataset containing open-ended questions about images. VQA2 includes more than 204k images from the MSCOCO dataset, with at least 3 questions per image, 10 ground truth answers per question. The question types covers "yes/no questions", "number counting questions", "other questions about contents of an image".</p>
+
+
+
+<figure>
+  <img src="blog/7-10/fig1.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.1 - VQA is a dataset containing open-ended questions about images.</figcaption>
+</figure>
+
+
+<h3>Language Priors in VQA</h3>
+<p>The problem of language-prior, that a VQA model predicts question-relevant answers independent of image contents. VQA models tend to answer questions based on the high-frequency answers to a certain type of question ignoring image contents. [Zhu et al. IJCAI'20] proposed a self-supervised auxiliary task to assist the VQA model to overcome language priors. This method measures the question-image correlation by training on both relevant and irrelevant question-image pairs based on self-supervised learning.</p>
+
+<h3>Attention and Stacked Attention Networks</h3>
+<h4>Attention</h4>
+<p>The self-attention module in the Transformer employs the multi-head attention mechanism in which each head maps a query and a set of key-values pairs to an output. The output in a single head is computed as a weighted sum of values according to the attention score computed by a function of the query with the corresponding key. These single-head outputs are then concatenated and again projected, resulting in the final values:</p>
+
+$$\mbox{Multi-head}(Q,K,V)=\mbox{Concat}(\mbox{head}^1,\dots,\mbox{head}^H)W^O,$$
+
+
+$$\mbox{head}^i=\mbox{Attention}(QW^{Q_i},KW^{K_i},VW^{V_i}),$$
+
+$$\mbox{Attention}(\tilde{Q},\tilde{K},\tilde{V})=\mbox{softmax}(\frac{\tilde{Q}\tilde{K}^T}{\sqrt{d_k}})\tilde{V},$$ 
+
+<p>where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, values and outputs. $\tilde{Q}= QW^{Q_i}$, $\tilde{K} = KW^{K_i}$, and $\tilde{V} = VW^{V_i}$. $d_k$ denotes the dimension of queries and keys in a single head. In self-attention modules, $Q = K = V$.</p>
+
+<figure>
+  <img src="blog/7-10/fig2.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.2 - Stacked Attention Networks.</figcaption>
+</figure>
+
+<h4>Stacked Attention Networks</h4>
+<p>Let The VQA model be represented by the function $h$ which takes an Image ($I$) and a Question ($Q$) as input and generates an answer $A$. We want to estimate the most likely answer $\hat{A}$ from a fixed set of answers. </p>
+
+$\hat{A}=\mbox{argmax}_AP(A|I,Q)$, where the answers $A\in \{A_1, A_2,\dots,A_M\}$ are chosen to be the most frequent $M$ answers from the training set.
+
+<ul>
+    <li>Image Channel: This channel provides an embedding for the image by adopting the (normalized) activations $\phi$ from the last hidden layer of a pretrained model such as VGGNet. In particular, VGGNet parameters are frozen to those learned for ImageNet classification and not fine-tuned in the image channel. $\phi = \mbox{CNN}(I)$,$ \phi \in \mathbb{R}^{512\times14\times14}$. $14\times14$ is the number of regions in the image and $512$ is the dimension of the feature vector for each region. Then, $f_i, i \in [0, 195]$ denotes each feature vector corresponding to a $32\times32$ region of the input images. Moreover, a single layer perceptron is applied to transform each feature vector to the same dimension as the question vector.
+    
+    $$v_I=\mbox{tanh}(W_If_I+b_I)$$
+    
+    <li> Question Channel: Given the question $q = [q_1,q_2,\dots,q_T]$, where $q_t$ is the one hot vector representation of word at position $t$, we first embed the words to a vector space through an embedding matrix $x_t = W_eq_t$. We feed the embedding vector of words in the question to LSTM.
+    $h_T =\mbox{LSTM}(x_T)$. Then the final hidden layer is taken as the representation vector for the question, i.e., $v_Q = h_T$.
+    
+    <li> Stacked attention networks(SAN): Given the image feature matrix $v_I$ and the question feature vector $v_Q$, SAN predicts the answer via multi-step reasoning. In particular, we first feed them through a single layer neural network and then a Softmax function to generate the attention distribution over the regions of the image by the following:
+    
+    $$h_A =\mbox{tanh}(W_{I,A}v_I \oplus(W_{Q,A}v_Q + b_A)),$$
+    
+    $$p_I =\mbox{Softmax}(W_Ph_A + b_P),$$ 
+    
+    where $v_I \in R^{d\times m}, d$ is the image representation dimension and $m$ is the number of image regions, $v_Q \in R^d$ is a $d$ dimensional vector. Suppose $W_{I,A},W_{Q,A} \in R^{k\times d}$ and $W_P \in R^{1\times k}$, then $p_I \in R^m$ is an $m$ dimensional vector. $p_I$ corresponds to the attention probability of each $32\times32$ pixel image region given $v_Q$.
+    
+    <li>The weights are put on the visual regions that are more relevant to the question.
+    
+    $$\tilde{v_I}=\sum_i p_iv_i,$$
+    
+    $$u=\tilde{v_I}+v_Q,$$
+    
+    In every layer of SAN, we use the combined question and image vector $u^{k-1}$ as the query for the image. Then, update by $u^k = \tilde{v}_I^k+u^{k-1}$. We repeat this $K$ times (1 or 2 times report the best performance in the paper) and then use the final $u^K$ to infer the answer. 
+
+    <li> Multi-Layer Perceptron (MLP): The output of the SAN is used as the input of MLP.
+    
+    $$p_ans =\mbox{Softmax}(W_uu^K + b_u)$$ 
+</ul>
+</div>
+<br><br><br><br>
+</body>
+</html>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2022</p>
+</footer>
+<br>
+<br>
+
+<h4>Further reading: Feature Distribution Matching for Federated Domain Generalization [Sun et al. arXiv:2203.11635 2022]</h4>
+<br>
+<br>
+[1] Aishwarya Agrawal, Jiasen Lu, Stanislaw Antol, and et al. VQA: visual
+question answering - www.visualqa.org. Int. J. Comput. Vis., 123(1):4–31,
+2017.<br>
+[2] Aishwarya Agrawal, Dhruv Batra, Devi Parikh, and Aniruddha Kembhavi.
+Don’t just assume; look and answer: Overcoming priors for visual question
+answering. In CVPR, 2018.<br>
+
+[3] Yash Goyal, Tejas Khot, Aishwarya Agrawal, and et al. Making the V in
+VQA matter: Elevating the role of image understanding in visual question
+answering. Int. J. Comput. Vis., 127(4):398–414, 2019.<br>
+
+[4] Allan Jabri, Armand Joulin, and Laurens van der Maaten. Revisiting visual
+question answering baselines. In ECCV, 2016.<br>
+
+[5] Alexey Kurakin, Ian J. Goodfellow, and Samy Bengio. Adversarial machine
+learning at scale. In ICLR, 2017.<br>
+
+[6] Zichao Yang, Xiaodong He, Jianfeng Gao, and et al. Stacked attention
+networks for image question answering. In CVPR, 2016.<br>
+
+[7] Ashish Vaswani, Noam Shazeer, Niki Parmar, and et al. Attention is all you
+need. In NeurIPS, 2017.<br>
+
+[8] Xi Zhu, Zhendong Mao, Chunxiao Liu and et al. Overcoming Language Priors 
+with Self-supervised Learning for Visual Question Answering. In IJCAI, 2020.<br>
+<br><br>
+</html>
