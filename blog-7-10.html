@@ -74,13 +74,17 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 
 
 <figure>
-  <img src="blog/7-10/fig1.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/7-10/fig1.png" style="width: 60%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.1 - VQA is a dataset containing open-ended questions about images.</figcaption>
 </figure>
 
+<br>
+<br>
 
 <h3>Language Priors in VQA</h3>
 <p>The problem of language-prior, that a VQA model predicts question-relevant answers independent of image contents. VQA models tend to answer questions based on the high-frequency answers to a certain type of question ignoring image contents. [Zhu et al. IJCAI'20] proposed a self-supervised auxiliary task to assist the VQA model to overcome language priors. This method measures the question-image correlation by training on both relevant and irrelevant question-image pairs based on self-supervised learning.</p>
+<br>
+<br>
 
 <h3>Attention and Stacked Attention Networks</h3>
 <h4>Attention</h4>
@@ -99,6 +103,7 @@ $$\mbox{Attention}(\tilde{Q},\tilde{K},\tilde{V})=\mbox{softmax}(\frac{\tilde{Q}
   <img src="blog/7-10/fig2.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.2 - Stacked Attention Networks.</figcaption>
 </figure>
+<br>
 
 <h4>Stacked Attention Networks</h4>
 <p>Let The VQA model be represented by the function $h$ which takes an Image ($I$) and a Question ($Q$) as input and generates an answer $A$. We want to estimate the most likely answer $\hat{A}$ from a fixed set of answers. </p>
@@ -144,7 +149,7 @@ $\hat{A}=\mbox{argmax}_AP(A|I,Q)$, where the answers $A\in \{A_1, A_2,\dots,A_M\
 <br>
 <br>
 
-<h4>Further reading: Feature Distribution Matching for Federated Domain Generalization [Sun et al. arXiv:2203.11635 2022]</h4>
+
 <br>
 <br>
 [1] Aishwarya Agrawal, Jiasen Lu, Stanislaw Antol, and et al. VQA: visual

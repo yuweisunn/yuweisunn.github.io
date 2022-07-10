@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 
+
 <style>
 .content {
   max-width: 50%;
@@ -25,6 +26,9 @@ footer{position: fixed;
 </head>
   
 <body class="content">   
+
+  <?php  $file='counter.txt';  $read=file_get_contents($file);  $open=fopen($file,'w');  $read++;  $write=fwrite($open, $read);  fclose($open);  echo 'Number of visitors: '.$read;?>
+  
   <br>
 <h1>Decentralized Artificial Intelligence Blog</h1>
 Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
@@ -33,10 +37,10 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
   <div class="leftcolumn">
 
     <div class="card">
-      <a href="blog-4-12.html">
-      <h2 style="font-size:24px;"><b>Self-Supervised Learning and Multimodal Learning</b></h2></a>
-      Apr 12, 2022
-      <p>Information in the real world usually comes as different modalities. When searching for visual or audio content on the web, we can train a model leveraging any available collection of web data and index that type of media based on learned multimodal embeddings.</p>
+      <a href="blog-7-10.html">
+      <h2 style="font-size:24px;"><b>Visual Question Answering</b></h2></a>
+      July 10, 2022
+      <p>Visual Question Answering (VQA) is a common problem in multimodal machine learning. Given an image and a question about the contents of the image, the VQA model is trained to answer the question correctly. These questions require an understanding of vision, language, and commonsense knowledge to answer. Several approaches such as Attention have been employed in VQA.</p>
     </div>
 
     <br>
@@ -49,11 +53,13 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
     </div>
 
 
+    <br>
+
     <div class="card">
-      <a href="blog-7-10.html">
-      <h2 style="font-size:24px;"><b>Visual Question Answering</b></h2></a>
-      July 10, 2022
-      <p>Visual Question Answering (VQA) is a common problem in multimodal machine learning. Given an image and a question about the contents of the image, the VQA model is trained to answer the question correctly. These questions require an understanding of vision, language, and commonsense knowledge to answer. Several approaches such as Attention have been employed in VQA.</p>
+      <a href="blog-4-12.html">
+      <h2 style="font-size:24px;"><b>Self-Supervised Learning and Multimodal Learning</b></h2></a>
+      Apr 12, 2022
+      <p>Information in the real world usually comes as different modalities. When searching for visual or audio content on the web, we can train a model leveraging any available collection of web data and index that type of media based on learned multimodal embeddings.</p>
     </div>
 
 
