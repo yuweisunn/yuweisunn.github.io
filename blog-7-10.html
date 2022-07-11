@@ -86,7 +86,7 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 <br>
 <br>
 
-<h3>Attention and Stacked Attention Networks</h3>
+<h3>State-Of-The-Art Approaches</h3>
 <h4>Attention</h4>
 <p>The self-attention module in the Transformer employs the multi-head attention mechanism in which each head maps a query and a set of key-values pairs to an output. The output in a single head is computed as a weighted sum of values according to the attention score computed by a function of the query with the corresponding key. These single-head outputs are then concatenated and again projected, resulting in the final values:</p>
 
@@ -99,13 +99,16 @@ $$\mbox{Attention}(\tilde{Q},\tilde{K},\tilde{V})=\mbox{softmax}(\frac{\tilde{Q}
 
 <p>where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, values and outputs. $\tilde{Q}= QW^{Q_i}$, $\tilde{K} = KW^{K_i}$, and $\tilde{V} = VW^{V_i}$. $d_k$ denotes the dimension of queries and keys in a single head. In self-attention modules, $Q = K = V$.</p>
 
+<br>
+
+<h4>Stacked Attention Networks</h4>
+
 <figure>
   <img src="blog/7-10/fig2.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.2 - Stacked Attention Networks.</figcaption>
 </figure>
 <br>
 
-<h4>Stacked Attention Networks</h4>
 <p>Let The VQA model be represented by the function $h$ which takes an Image ($I$) and a Question ($Q$) as input and generates an answer $A$. We want to estimate the most likely answer $\hat{A}$ from a fixed set of answers. </p>
 
 $\hat{A}=\mbox{argmax}_AP(A|I,Q)$, where the answers $A\in \{A_1, A_2,\dots,A_M\}$ are chosen to be the most frequent $M$ answers from the training set.
@@ -138,6 +141,69 @@ $\hat{A}=\mbox{argmax}_AP(A|I,Q)$, where the answers $A\in \{A_1, A_2,\dots,A_M\
     
     $$p_ans =\mbox{Softmax}(W_uu^K + b_u)$$ 
 </ul>
+
+<br>
+
+<h4>Multi-modal Factorized High-order pooling approach</h4>
+<p>For multi-modal feature fusion, Multi-modal Factorized High-order pooling approach (MFH) is developed to achieve more effective fusion of multi-modal features by exploiting their correlations sufficiently. Moreover, for answer prediction, the KL (Kullback-Leibler) divergence is used as the loss function to achieve precise characterization of the complex correlations between multiple diverse answers with same or similar meaning.</p>
+
+
+<figure>
+  <img src="blog/7-10/fig3.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.3 - Multi-modal Factorized High-order pooling approach.</figcaption>
+</figure>
+
+<br>
+
+<h4>Bottom-up and Topdown Attention mechanism</h4>
+<p>Bottom-up and Topdown Attention mechanism (BUTD) enables attention to be calculated at the level of objects and other salient image regions.
+The bottom-up mechanism based on Faster R-CNN proposes image regions, each with an associated feature vector, while the top-down mechanism determines feature weightings.</p>
+
+
+<figure>
+  <img src="blog/7-10/fig4.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.4 - Bottom-up and Topdown Attention mechanism.</figcaption>
+</figure>
+
+<br>
+
+<h4>Bilinear Attention Networks</h4>
+<p>Bilinear Attention Networks (BAN) finds bilinear attention distributions to utilize given vision-language information seamlessly. BAN considers bilinear interactions among two groups of input channels, while low-rank bilinear pooling extracts the joint representations for each pair of channels.</p>
+
+
+<figure>
+  <img src="blog/7-10/fig5.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.5 - BAN: Two multi-channel inputs, detection features and GRU hidden vectors, are used to get bilinear attention maps and joint representations to be used by a classifier.</figcaption>
+</figure>
+
+<br>
+
+<h4>MultiModal neural architecture search</h4>
+<p>Given multimodal input, multimodal neural architecture search (MMnas) first define a set of primitive operations, and then construct a deep encoder-decoder based unified backbone, where each encoder or decoder block corresponds to an operation searched from a predefined operation pool. On top of the unified backbone, we attach task-specific heads to tackle different multimodal learning tasks. By using a gradient-based NAS algorithm, the optimal architectures for different tasks are learned efficiently.</p>
+
+
+<figure>
+  <img src="blog/7-10/fig6.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.6 - MMnas: The flowchart of the MMnas framework, which consists of (a) unified encoder-decoder backbone and (b) task-specific heads on top the backbone for visual question answer (VQA), image-text matching (ITM), and visual grounding (VG).</figcaption>
+</figure>
+
+<br>
+
+<h4>Modular Co-Attention Network</h4>
+<p>Modular Co-Attention Network (MCAN) consists of Modular Co-Attention (MCA) layers cascaded in depth. Each MCA layer models the self-attention of questions and images, as well as the guided-attention of images jointly using a modular composition of two basic attention units.</p>
+
+
+<figure>
+  <img src="blog/7-10/fig7.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.7 - Modular Co-Attention Network.</figcaption>
+</figure>
+
+<figure>
+  <img src="blog/7-10/fig8.png" style="width: 60%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.8 - Two deep co-attention models based on a cascade of MCA layers.</figcaption>
+</figure>
+
+
 </div>
 <br><br><br><br>
 </body>
@@ -177,5 +243,20 @@ need. In NeurIPS, 2017.<br>
 
 [8] Xi Zhu, Zhendong Mao, Chunxiao Liu and et al. Overcoming Language Priors 
 with Self-supervised Learning for Visual Question Answering. In IJCAI, 2020.<br>
+
+[9] Zhou Yu, Jun Yu, Chenchao Xiang, and et al. Beyond bilinear: Generalized
+multimodal factorized high-order pooling for visual question answering.
+IEEE Trans. Neural Networks Learn. Syst., 29(12):5947–5959, 2018.<br>
+
+[10] Peter Anderson, Xiaodong He, Chris Buehler, and et al. Bottom-up and
+top-down attention for image captioning and visual question answering. In
+CVPR, 2018.<br>
+
+[11] Jin-Hwa Kim, Jaehyun Jun, and Byoung-Tak Zhang. Bilinear attention
+networks. In NeurIPS, 2018.<br>
+
+[12] Zhou Yu, Yuhao Cui, Jun Yu, and et al. Deep multimodal neural architecture search. In ACM Multimedia, 2020.<br>
+
+[13] Zhou Yu, Jun Yu, Yuhao Cui, and et al. Deep modular co-attention networks for visual question answering. In CVPR, 2019.<br>
 <br><br>
 </html>
