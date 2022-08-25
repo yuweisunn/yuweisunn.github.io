@@ -1,0 +1,7 @@
+@article{sun2022unicon,
+  author    = {Yuwei Sun and
+               Hideya Ochiai},
+  title     = {UniCon: Unidirectional Split Learning with Contrastive Loss for Visual Question Answering},
+  journal   = {arXiv preprint},
+  year      = {2022}
+}
