@@ -1,0 +1,143 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+</style>
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class ="content">
+<title>Global Workspace Theory and System 2 AI</title>
+
+
+  
+<div id="basic">
+<br>
+
+<h1>Global Workspace Theory and System 2 AI</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br>
+<br>
+
+<h2>Global Workspace Theory</h2>
+<p>The global workspace theory <a href="#footnote-1" style="text-decoration: none;">[1]</a> demonstrated that in the human brain, multiple neural network models cooperate and compete in solving problems via a shared feature space for common knowledge sharing, which is called the global workspace (GW).</p> 
+
+<figure>
+  <img src="blog/9-01/fig1.png" style="width: 50%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.1 - A schematic diagram of GW theory.</figcaption>
+</figure>
+
+
+<p>GW is closly connected to System 1 and System 2 AI <a href="#footnote-2" style="text-decoration: none;">[2]</a>. System 2 cognition is thought to reject, alter, or overcome impressions, intuitions, feelings, and reactive tendencies that are issued by System 1. System 2 can also fully endorse and select from the bottom-up inputs provided by System 1. System 1 cognition translates to all automatic, over-learned processes that may engage relatively local specialized networks. In contrast, System 2 cognition would engage effortful cognitive processes that rely on more distributed processing of collective networks and flexible interactions between these specialized neural systems. Conscious attention selects which module and conscious content is gated through this bottleneck and remains available shortly in working memory <a href="#footnote-3" style="text-decoration: none;">[3]</a>.</p>
+<br>
+
+<h2>System 2 AI with Meta Learning</h2>
+Meta-learning usually refers to a learning algorithm that learns from other learning algorithms. The problem of uncertainty in the predictions of neural networks shows that the world is only partially predictable and a learned neural network cannot generalize to its ever-changing surrounding environments. Therefore, the question is how a predictive model can represent multiple predictions simultaneously. This blog provides a fundamental understanding of learning to learn in the contents of Decentralized Neural Networks (Decentralized NNs) and it is one of the most important questions and prerequisites to building an autonomous intelligence machine.
+<br>
+<br>
+<h3>Common Sense is a Collection of Models of the World</h3>
+<p> Within the global workspace theory, using different kinds of metadata about individual neural networks such as measured performance and learned representations, shows the potential to learn, select, or combine different learning algorithms to efficiently solve a new task. The learned knowledge or representations from different neural network areas are leveraged for reasoning and planning. This research area studies how a meta agent can solve novel tasks by observing and leveraging the world models built by these individual neural networks. Common sense is not just facts but a collection of models of the world.
+</p>
+<br>
+<h3>Learning from Many Replica Neural Networks</h3>
+<p>The proliferation of AI applications is reshaping the contours of the future knowledge graph of neural networks. Decentralized NNs is the study of knowledge transfer from different individual neural networks trained on separate local tasks to a global model. In a learning system comprising many replica neural networks with similar architecture and functions, the goal is to learn a global model that can generalize to unseen tasks without large-scale training <a href="#footnote-4" style="text-decoration: none;">[4]</a>. Sometimes, we call the different replica models the local models. In particular, two piratical problems in Decentralized NNs are being intensively studied, i.e., learning with non-independent and identically distributed (non-iid) data and multi-domain data.</p>
+
+<p>Notably, non-iid refers to data samples across local models are not from the same distribution, which hinders the knowledge transfer between local models. To tackle the non-iid problem, we proposed the Segmented-Federated Learning (Segmented-FL) <a href="#footnote-5" style="text-decoration: none;">[5]</a> that employs periodic local model performance evaluation and learning group segmentation that brings neural networks training over similar data distributions together. Then, for each group, Segmented-FL trains a different global model by transferring knowledge from the local models in the group. The global model can only passively observe the local model performance without access to the local data. Segmented-FL can achieve better performance in tackling non-iid data compared to the traditional federated learning <a href="#footnote-6" style="text-decoration: none;">[6]</a>.</p>
+
+<p>On the other hand, multi-domain refers to data samples across local models are from different domains with domain-specific features. For example, an autonomous vehicle learns to drive in a new city might leverage the driving data of other cities learned by different vehicles. Since different cities have different street views and weather conditions, it would be difficult to directly learn a new model based on the knowledge of the models trained on multi-domain data. This problem is closely related to multi-source domain adaptation, which studies the distribution shift in features inherent to specific domains that brings in negative transfer degrading a model's generality to unseen tasks. A detailed blog on <a href="https://yuweisunn.github.io/blog-5-31.html">Domain Shift and Transfer Learning</a>. </p> 
+<br>
+
+<h3>Building the Hierarchy of Neural Networks</h3>
+
+<figure>
+  <img src="blog/9-01/fig2.png" style="width: 50%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.2 - Concious and unconcious states.</figcaption>
+</figure>
+
+<p>Hierarchical neural networks consist of multiple neural networks concreted in a form of an acyclic graph. An early theory of the global workspace theory (GWT) <a href="#footnote-1" style="text-decoration: none;">[1]</a> refers to multiple neural network models cooperating and competing in solving problems via a shared feature space for common knowledge sharing. Built upon the GWT, the conscious prior theory <a href="#footnote-7" style="text-decoration: none;">[7]</a> demonstrated the sparse factor graphs in space of high-level semantic variables and simple mapping between high-level semantic variables. The hierarchy of neural networks usually comprises two learning frameworks, i.e, fast learning and slow learning <a href="#footnote-2" style="text-decoration: none;">[2]</a>. The fast learning framework comprises different individual modules while the slow learning framework is more like an attention mechanism for long-term planning. 
+
+<figure>
+  <img src="blog/9-01/fig3.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.3 - Homogeneous learning.</figcaption>
+</figure>
+
+In particular, Homogeneous learning <a href="#footnote-8" style="text-decoration: none;">[8]</a> introduced a self-attention mechanism where a local model is selected as the meta for each training round and leverages reinforcement learning to recursively update a globally shared learning policy. The meta observes the states of local models and its surrounding environment, computing the expected rewards for taking different actions based on the observation. As mentioned in <a href="#footnote-9" style="text-decoration: none;">[9]</a>, with a model of external reality and an agent's possible actions, it can try out various alternatives and conclude which is the best action using the knowledge of past events. The goal is to learn an optimized learning policy such that the Decentralized NNs systems can quickly solve a problem by planning and leveraging different local models' knowledge more efficiently. The results showed that the learning of a learning policy greatly reduced the total training time for a given classification task by 50.8%. </p>
+
+<br>
+<h3>Leveraging Different Modality Experts</h3>
+<p>Information in the real world usually comes in different modalities. The degeneracy<a href="#footnote-10" style="text-decoration: none;">[10]</a> in neural structure refers to any single function can be carried out by more than one configuration of neural signals and different neural clusters participate in several different functions. Intelligence systems build models of the world with different modalities where spatial concepts are generated via different modality models. The cross-modal learning in multimodal models such as the Visual Question Answering (VQA) problem can be tackled with approaches such as self-supervised learning <a href="#footnote-11" style="text-decoration: none;">[11]</a>. For instance, UniCon <a href="#footnote-12" style="text-decoration: none;">[12]</a> leverages the contrastive learning of different model components to align the modality representations encouraging the similarity of the relevant component outputs while discouraging the irrelevant outputs. Such that the learning framework learns better-refined cross-modal representations for unseen VQA tasks based on the knowledge learned from different VQA tasks of local models. A detailed blog on <a href="https://yuweisunn.github.io/blog-4-12.html">Self-Supervised Learning and Multimodal Learning</a>.</p>
+
+</div>
+<br><br><br><br>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2022</p>
+</footer>
+<br>
+<br>
+
+
+<br>
+<br>
+<p id="footnote-1">[1] Baars, B. J. 1988. A Cognitive Theory of Consciousness. Cambridge University Press.</p>
+<p id="footnote-2">[2] Kahneman, D. 2011. Thinking, Fast and Slow. In New York: Farrar, Straus and Giroux.</p>
+<p id="footnote-3">[3] 2021. How does hemispheric specialization contribute to human-defining cognition? Neuron, 109(13): 2075–2090.</p>
+<p id="footnote-4">[4] Sun, Y.; Ochiai, H.; and Esaki, H. 2021. Decentralized Deep Learning for Multi-Access Edge Computing: A Survey on Communication Efficiency and Trustworthiness. In IEEE Transactions on Artificial Intelligence.</p>
+<p id="footnote-5">[5] Sun, Y.; Ochiai, H.; and Esaki, H. 2020. Intrusion Detection with Segmented Federated Learning for Large-Scale Multiple LANs. In IJCNN.</p>
+<p id="footnote-6">[6] McMahan, B.; Moore, E.; Ramage, D.; and et al. 2017. Communication-Efficient Learning of Deep Networks from Decentralized Data. In AISTATS.</p>
+<p id="footnote-7">[7] Bengio, Y. 2017. The Consciousness Prior. In arXiv. Craik, K. 1967. The Nature of Explanation. In CUP Archive.</p>
+<p id="footnote-8">[8] Sun, Y.; and Ochiai, H. 2022. Homogeneous Learning: Self-Attention Decentralized Deep Learning. In IEEE Access, volume 10, 7695–7703.</p>
+<p id="footnote-9">[9] Craik, K. 1967. The Nature of Explanation. In CUP Archive.</p>
+<p id="footnote-10">[10] Linda B. Smith and Michael Gasser. The development of embodied cognition: Six lessons from babies. 2005.</p>
+<p id="footnote-11">[11] Alec Radford, Jong Wook Kim, Chris Hallacy, and et al.. Learning transferable visual models from natural language supervision. 2021.</p>
+<p id="footnote-12">[12] Sun, Y.; and Ochiai, H. 2022. UniCon: Unidirectional Split Learning with Contrastive Loss for Visual Question Answering. In arXiv preprint.</p>
+<br><br>
+</html>

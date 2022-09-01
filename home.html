@@ -6,26 +6,53 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 
-
 <style>
 .content {
   max-width: 50%;
   margin: auto;
   text-align: justify;
 }
-h2{color:#990000}
-a:link {
-  text-decoration: none;
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
-footer{position: fixed;
-  bottom: 50;}
-</style>
-<title>Yuwei Sun | blog</title>
+h2{color:#990000}
 
+h3{color:#990000}
+
+h4{color:#990000}
+
+</style>
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-  
-<body class="content">   
+
+<body class ="content">
 <br>
 <h1>Decentralized Artificial Intelligence Blog</h1>
 Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
@@ -34,26 +61,33 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
   <div class="leftcolumn">
 
     <div class="card">
-      <a href="blog-7-10.html">
+      <a href="blog-9-01.html" target="_blank" style="text-decoration: none;">
+      <h2 style="font-size:24px;"><b>Global Workspace Theory and System 2 AI</b></h2></a>
+      September 01, 2022
+      <p>The global workspace theory demonstrates that in the human brain, multiple neural network models cooperate and compete in solving problems via a shared feature space for common knowledge sharing, which is called the global workspace (GW). Conscious attention selects which module and conscious content is gated through and remains available shortly in working memory.</p>
+    </div>
+    <br>
+
+    <div class="card">
+      <a href="blog-7-10.html" target="_blank" style="text-decoration: none;">
       <h2 style="font-size:24px;"><b>Visual Question Answering</b></h2></a>
       July 10, 2022
       <p>Visual Question Answering (VQA) is a common problem in multimodal machine learning. Given an image and a question about the contents of the image, the VQA model is trained to answer the question correctly. These questions require an understanding of vision, language, and commonsense knowledge to answer. Several approaches such as Attention have been employed in VQA.</p>
     </div>
-
+    <br>
     
     <div class="card">
-      <a href="blog-5-31.html">
+      <a href="blog-5-31.html" target="_blank" style="text-decoration: none;">
       <h2 style="font-size:24px;"><b>Domain Shift and Transfer Learning</b></h2></a>
       May 31, 2022
       <p>One of the most challenging problems in decentralized AI is to improve the generality of the global model based on client data from different data domains. They are usually used for the same classification task but with particular sample features due to different data collection conditions of clients.</p>
     </div>
-
-
+    <br>
 
     <div class="card">
-      <a href="blog-4-12.html">
+      <a href="blog-4-12.html" target="_blank" style="text-decoration: none;">
       <h2 style="font-size:24px;"><b>Self-Supervised Learning and Multimodal Learning</b></h2></a>
-      Apr 12, 2022
+      April 12, 2022
       <p>Information in the real world usually comes as different modalities. When searching for visual or audio content on the web, we can train a model leveraging any available collection of web data and index that type of media based on learned multimodal embeddings.</p>
     </div>
 
@@ -61,6 +95,9 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 </div>
 </body>
 
+
+<br>
+<br>
 <footer>
     <p>Created by Yuwei Sun. © 2022</p>
 </footer>
