@@ -69,7 +69,7 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 
 
 <h3>VQA2 Dataset</h3>
-<p>Visual Question Answering (VQA) v2.0 is a dataset containing open-ended questions about images. VQA2 includes more than 204k images from the MSCOCO dataset, with at least 3 questions per image, 10 ground truth answers per question. The question types covers "yes/no questions", "number counting questions", "other questions about contents of an image".</p>
+<p>Visual Question Answering (VQA) v2.0 <a href="#footnote-1" style="text-decoration: none;">[1]</a> is a dataset containing open-ended questions about images. VQA2 includes more than 204k images from the MSCOCO dataset, with at least 3 questions per image, 10 ground truth answers per question. The question types covers "yes/no questions", "number counting questions", "other questions about contents of an image".</p>
 
 
 
@@ -82,13 +82,13 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 <br>
 
 <h3>Language Priors in VQA</h3>
-<p>The problem of language-prior, that a VQA model predicts question-relevant answers independent of image contents. VQA models tend to answer questions based on the high-frequency answers to a certain type of question ignoring image contents. [Zhu et al. IJCAI'20] proposed a self-supervised auxiliary task to assist the VQA model to overcome language priors. This method measures the question-image correlation by training on both relevant and irrelevant question-image pairs based on self-supervised learning.</p>
+<p>The problem of language-prior <a href="#footnote-2" style="text-decoration: none;">[2][3][4][5]</a>, that a VQA model predicts question-relevant answers independent of image contents. VQA models tend to answer questions based on the high-frequency answers to a certain type of question ignoring image contents. A solution <a href="#footnote-3" style="text-decoration: none;">[6]</a> to this problem is to measure the question-image correlation by training on both relevant and irrelevant question-image pairs based on self-supervised learning.</p>
 <br>
 <br>
 
 <h3>State-Of-The-Art Approaches</h3>
 <h4>Attention</h4>
-<p>The self-attention module in the Transformer employs the multi-head attention mechanism in which each head maps a query and a set of key-values pairs to an output. The output in a single head is computed as a weighted sum of values according to the attention score computed by a function of the query with the corresponding key. These single-head outputs are then concatenated and again projected, resulting in the final values:</p>
+<p>The self-attention <a href="#footnote-4" style="text-decoration: none;">[7]</a> module in the Transformer employs the multi-head attention mechanism in which each head maps a query and a set of key-values pairs to an output. The output in a single head is computed as a weighted sum of values according to the attention score computed by a function of the query with the corresponding key. These single-head outputs are then concatenated and again projected, resulting in the final values:</p>
 
 $$\mbox{Multi-head}(Q,K,V)=\mbox{Concat}(\mbox{head}^1,\dots,\mbox{head}^H)W^O,$$
 
@@ -101,7 +101,7 @@ $$\mbox{Attention}(\tilde{Q},\tilde{K},\tilde{V})=\mbox{softmax}(\frac{\tilde{Q}
 
 <br>
 
-<h4>Stacked Attention Networks</h4>
+<h4>Stacked Attention Networks <a href="#footnote-5" style="text-decoration: none;">[8]</a></h4>
 
 <figure>
   <img src="blog/7-10/fig2.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
@@ -144,7 +144,7 @@ $\hat{A}=\mbox{argmax}_AP(A|I,Q)$, where the answers $A\in \{A_1, A_2,\dots,A_M\
 
 <br>
 
-<h4>Multi-modal Factorized High-order pooling approach</h4>
+<h4>Multi-modal Factorized High-order pooling approach <a href="#footnote-6" style="text-decoration: none;">[9]</a></h4>
 <p>For multi-modal feature fusion, Multi-modal Factorized High-order pooling approach (MFH) is developed to achieve more effective fusion of multi-modal features by exploiting their correlations sufficiently. Moreover, for answer prediction, the KL (Kullback-Leibler) divergence is used as the loss function to achieve precise characterization of the complex correlations between multiple diverse answers with same or similar meaning.</p>
 
 
@@ -155,7 +155,7 @@ $\hat{A}=\mbox{argmax}_AP(A|I,Q)$, where the answers $A\in \{A_1, A_2,\dots,A_M\
 
 <br>
 
-<h4>Bottom-up and Topdown Attention mechanism</h4>
+<h4>Bottom-up and Topdown Attention mechanism <a href="#footnote-7" style="text-decoration: none;">[10]</a></h4>
 <p>Bottom-up and Topdown Attention mechanism (BUTD) enables attention to be calculated at the level of objects and other salient image regions.
 The bottom-up mechanism based on Faster R-CNN proposes image regions, each with an associated feature vector, while the top-down mechanism determines feature weightings.</p>
 
@@ -167,7 +167,7 @@ The bottom-up mechanism based on Faster R-CNN proposes image regions, each with 
 
 <br>
 
-<h4>Bilinear Attention Networks</h4>
+<h4>Bilinear Attention Networks <a href="#footnote-8" style="text-decoration: none;">[11]</a></h4>
 <p>Bilinear Attention Networks (BAN) finds bilinear attention distributions to utilize given vision-language information seamlessly. BAN considers bilinear interactions among two groups of input channels, while low-rank bilinear pooling extracts the joint representations for each pair of channels.</p>
 
 
@@ -178,7 +178,7 @@ The bottom-up mechanism based on Faster R-CNN proposes image regions, each with 
 
 <br>
 
-<h4>MultiModal neural architecture search</h4>
+<h4>MultiModal neural architecture search <a href="#footnote-9" style="text-decoration: none;">[12]</a></h4>
 <p>Given multimodal input, multimodal neural architecture search (MMnas) first define a set of primitive operations, and then construct a deep encoder-decoder based unified backbone, where each encoder or decoder block corresponds to an operation searched from a predefined operation pool. On top of the unified backbone, we attach task-specific heads to tackle different multimodal learning tasks. By using a gradient-based NAS algorithm, the optimal architectures for different tasks are learned efficiently.</p>
 
 
@@ -189,7 +189,7 @@ The bottom-up mechanism based on Faster R-CNN proposes image regions, each with 
 
 <br>
 
-<h4>Modular Co-Attention Network</h4>
+<h4>Modular Co-Attention Network <a href="#footnote-10" style="text-decoration: none;">[13]</a></h4>
 <p>Modular Co-Attention Network (MCAN) consists of Modular Co-Attention (MCA) layers cascaded in depth. Each MCA layer models the self-attention of questions and images, as well as the guided-attention of images jointly using a modular composition of two basic attention units.</p>
 
 
@@ -218,45 +218,18 @@ The bottom-up mechanism based on Faster R-CNN proposes image regions, each with 
 
 <br>
 <br>
-[1] Aishwarya Agrawal, Jiasen Lu, Stanislaw Antol, and et al. VQA: visual
-question answering - www.visualqa.org. Int. J. Comput. Vis., 123(1):4–31,
-2017.<br>
-[2] Aishwarya Agrawal, Dhruv Batra, Devi Parikh, and Aniruddha Kembhavi.
-Don’t just assume; look and answer: Overcoming priors for visual question
-answering. In CVPR, 2018.<br>
-
-[3] Yash Goyal, Tejas Khot, Aishwarya Agrawal, and et al. Making the V in
-VQA matter: Elevating the role of image understanding in visual question
-answering. Int. J. Comput. Vis., 127(4):398–414, 2019.<br>
-
-[4] Allan Jabri, Armand Joulin, and Laurens van der Maaten. Revisiting visual
-question answering baselines. In ECCV, 2016.<br>
-
-[5] Alexey Kurakin, Ian J. Goodfellow, and Samy Bengio. Adversarial machine
-learning at scale. In ICLR, 2017.<br>
-
-[6] Zichao Yang, Xiaodong He, Jianfeng Gao, and et al. Stacked attention
-networks for image question answering. In CVPR, 2016.<br>
-
-[7] Ashish Vaswani, Noam Shazeer, Niki Parmar, and et al. Attention is all you
-need. In NeurIPS, 2017.<br>
-
-[8] Xi Zhu, Zhendong Mao, Chunxiao Liu and et al. Overcoming Language Priors 
-with Self-supervised Learning for Visual Question Answering. In IJCAI, 2020.<br>
-
-[9] Zhou Yu, Jun Yu, Chenchao Xiang, and et al. Beyond bilinear: Generalized
-multimodal factorized high-order pooling for visual question answering.
-IEEE Trans. Neural Networks Learn. Syst., 29(12):5947–5959, 2018.<br>
-
-[10] Peter Anderson, Xiaodong He, Chris Buehler, and et al. Bottom-up and
-top-down attention for image captioning and visual question answering. In
-CVPR, 2018.<br>
-
-[11] Jin-Hwa Kim, Jaehyun Jun, and Byoung-Tak Zhang. Bilinear attention
-networks. In NeurIPS, 2018.<br>
-
-[12] Zhou Yu, Yuhao Cui, Jun Yu, and et al. Deep multimodal neural architecture search. In ACM Multimedia, 2020.<br>
-
-[13] Zhou Yu, Jun Yu, Yuhao Cui, and et al. Deep modular co-attention networks for visual question answering. In CVPR, 2019.<br>
+<p id="footnote-1">[1] Aishwarya Agrawal, Jiasen Lu, Stanislaw Antol, and et al. VQA: visual question answering - www.visualqa.org. Int. J. Comput. Vis., 123(1):4–31, 2017.</p>
+<p id="footnote-2">[2] Aishwarya Agrawal, Dhruv Batra, Devi Parikh, and Aniruddha Kembhavi. Don’t just assume; look and answer: Overcoming priors for visual question answering. In CVPR, 2018.</p>
+<p id="footnote-3">[3] Yash Goyal, Tejas Khot, Aishwarya Agrawal, and et al. Making the V in VQA matter: Elevating the role of image understanding in visual question answering. Int. J. Comput. Vis., 127(4):398–414, 2019.</p>
+<p id="footnote-4">[4] Allan Jabri, Armand Joulin, and Laurens van der Maaten. Revisiting visual question answering baselines. In ECCV, 2016.</p>
+<p id="footnote-5">[5] Alexey Kurakin, Ian J. Goodfellow, and Samy Bengio. Adversarial machine learning at scale. In ICLR, 2017.</p>
+<p id="footnote-6">[6] Xi Zhu, Zhendong Mao, Chunxiao Liu and et al. Overcoming Language Priors with Self-supervised Learning for Visual Question Answering. In IJCAI, 2020.</p>
+<p id="footnote-7">[7] Zichao Yang, Xiaodong He, Jianfeng Gao, and et al. Stacked attention networks for image question answering. In CVPR, 2016.</p>
+<p id="footnote-8">[8] Ashish Vaswani, Noam Shazeer, Niki Parmar, and et al. Attention is all you need. In NeurIPS, 2017.</p>
+<p id="footnote-9">[9] Zhou Yu, Jun Yu, Chenchao Xiang, and et al. Beyond bilinear: Generalized multimodal factorized high-order pooling for visual question answering. IEEE Trans. Neural Networks Learn. Syst., 29(12):5947–5959, 2018.</p>
+<p id="footnote-10">[10] Peter Anderson, Xiaodong He, Chris Buehler, and et al. Bottom-up and top-down attention for image captioning and visual question answering. In CVPR, 2018.</p>
+<p id="footnote-11">[11] Jin-Hwa Kim, Jaehyun Jun, and Byoung-Tak Zhang. Bilinear attention networks. In NeurIPS, 2018.</p>
+<p id="footnote-12">[12] Zhou Yu, Yuhao Cui, Jun Yu, and et al. Deep multimodal neural architecture search. In ACM Multimedia, 2020.</p>
+<p id="footnote-13">[13] Zhou Yu, Jun Yu, Yuhao Cui, and et al. Deep modular co-attention networks for visual question answering. In CVPR, 2019.</p>
 <br><br>
 </html>
