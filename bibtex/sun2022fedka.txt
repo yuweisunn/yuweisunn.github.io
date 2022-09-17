@@ -1,6 +1,6 @@
 @article{sun2022fedka,  
   author = {Sun, Yuwei and Chong, Ng and Hideya, Ochiai},
-  title = {Multi-Source Domain Adaptation Based on Federated Knowledge Alignment},
-  journal = {arXiv preprint arXiv:2203.11635},
+  title = {Feature Distribution Matching for Federated Domain Generalization},
+  journal = {ACML},
   year = {2022}
 }
