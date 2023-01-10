@@ -1,0 +1,229 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+</style>
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class ="content">
+<title>Continual Learning, Compositionality, and Modularity - Part &#8545</title>
+
+
+  
+<div id="basic">
+<br>
+<h1>Continual Learning, Compositionality, and Modularity - Part &#8545</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br><a href="https://yuweisunn.github.io/home.html", target="_blank", style="text-decoration: none; color: gray"><b>All blogs</b></a>
+
+<br>
+<br>
+<br>
+
+
+<h2> Modular Neural Networks and Transfomers </h2>
+<p>Modular Neural Networks (MNNs) introduce sparsity in neuron connections between neural network layers. MNNs are divided into smaller, more manageable parts, they can be trained more efficiently and with fewer resources than a traditional, monolithic neural network.Usually, a larger model and more training samples contribute to the improvement of task performance, nevertheless, the computational cost also increases greatly with the increasing model parameters. MNNs permits the training of a large, sparse model without increasing the computational cost.</p>
+
+<p>Previous work showed that MNNs could retain competitive/better performance compared with SOTA monolithic models, with better generalization to unseen data, notably, when pretrained with a large dataset and finetuned on the target dataset. MNNs learn independent experts to tackle different input samples/sample patches <a href="#footnote-1" style="text-decoration: none;">[1]</a>, increasing its interpretability. If a problem arises in a modular neural network, it is easier to identify the specific module that is causing the issue, especially in areas that necessitate explainability like healthcare.</p>
+
+<br>
+<h3>Definition of Modular Neural Networks</h3>
+<p>Let $x\in\mathbb{R}^P$ be a sample and $y \in \{1,2,...,C\} = Y$ be a label, where $C$ is the total number of categories. $D$ consists of a collection of $N$ samples as $D=\{(x_i, y_i)\}_{i=1}^N$. In a modular neural network layer, each sample $x$ is processed sparsely by $K$ out of $E$ available experts $\{\mbox{MLP}_e\}_{e=1}^E$. These experts usually share the same architecture (e.g. a multilayer perceptron) but different model parameters. To choose which $K$, a router $g(\cdot)$ (a neural network) predicts the gating weights $W_g$ per sample $x$. $g(x)=\mbox{softmax}(W_g)\in\mathbb{R}^E$ with learned $(W_gx)\in\mathbb{R}^{P\times E}$. The outputs of the $K$ activated experts are linearly combined according to the gating weights. $\mbox{MoE}(x) = \sum_{e=1}^K g(x)_e\cdot \mbox{MLP}_e(x)$.</p>
+
+<p>One way to understand many routing algorithms is to analyze the matrix of routing scores (weights) as shown in Figure 1.</p>
+
+
+<figure>
+  <img src="blog/1-10/moe25.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.1 - Three common classes of routing algorithms <a href="#footnote-2" style="text-decoration: none;">[2]</a>. Left: “Choose Top-k” along the Experts axis includes the standard top-k routing algorithm <a href="#footnote-3" style="text-decoration: none;">[3]</a>. Center: “Choose Top-k” along the Tokens axis includes routing algorithms such as <a href="#footnote-4" style="text-decoration: none;">[4]</a><a href="#footnote-5" style="text-decoration: none;">[5]</a>. Right: “Globally Decide Expert Assignment” includes routing algorithms such as BASE layer <a href="#footnote-6" style="text-decoration: none;">[6]</a>.</figcaption>
+</figure>
+
+<p>To introduce sparsity into a monolithic model like Vision Transformer (ViT) <a href="#footnote-7" style="text-decoration: none;">[7]</a>, we replace several fully-connected (FC) layers of ViT with the modular layer comprised of experts. For each modular layer, a different routing function is applied.</p>
+
+
+<br>
+<h2>Related Work</h2> 
+
+<p>In Computer Vision, almost all performant networks are “dense”, that is, every
+input is processed by every parameter. Conditional computation <a href="#footnote-8" style="text-decoration: none;">[8]</a> aims to
+increase model capacity while keeping the training and inference cost roughly
+constant by applying only a subset of parameters to each example. Mixture-of-
+experts (MoEs) model is a specific instantiation</p>
+
+<br>
+<h3>Scaling Vision with Sparse Mixture of Experts <a href="#footnote-9" style="text-decoration: none;">[9]</a></h3>
+
+
+<p>This work presented a Vision Mixture of Experts (V-MoE) (Figure 2), a sparse version of the Vision Transformer (ViT)<a href="#footnote-7" style="text-decoration: none;">[7]</a>, that is scalable and competitive with the largest dense network ViT, reducing half of the compute at inference time. </p>
+
+
+<figure>
+  <img src="blog/1-10/moe21.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.2- Overview of the architecture. V-MoE is composed of $L$ ViT blocks. In some, we replace the MLP with a sparsely activated mixture of MLPs. Each MLP (the expert) is stored on a separate device, and processes a fixed number of tokens.</figcaption>
+</figure>
+
+
+<p>The main contributions of the V-MoE are as follows: 1. The V-MoE replaces a subset of the dense feedforward layers in ViT with sparse MoE layers, where each image patch is “routed” to a subset of “experts” (MLPs). 2. Batch Prioritized Routing, a routing algorithm that repurposes model sparsity to skip the computation of some patches, reducing compute on uninformative image regions.</p>
+
+
+<h4>Model Architecture of MoEs</h4>
+<p>The model of an expert $e_i$ comprises two layers and a GeLU non-linearity$\sigma_{gelu}(\cdot)$. $e_i(x) = W_2\sigma_{gelu}(W_1x)$. The experts have the same architecture but with different weights $\theta_i = (W_1^i,W_2^i)$.</p>
+
+
+<h4>Routing</h4>
+<p>For each MoE layer, a rounting function $g(x)=\mbox{TOP}_k(\mbox{softmax}(Wx+\epsilon))$ is employed, where $\mbox{TOP}_k$ is an operation that sets all elements of the vector to zero except the elements with the largest $k$ values, and $\epsilon$ denotes the noise sampled independently $\epsilon \sim \mathcal{N}(0,\frac{1}{E^2})$ where $E$ is the expert number. The noise typically alters routing decisions ~15\% of the time in earlier layers, and ∼2–3\% in deeper layers.</p>
+
+
+<h4>Allocation Load Balancer</h4>
+<p>During training, sparse models may favor only a small set of experts. Setting the expert's buffer capacity permits that if the router assigns more than $B_e$ tokens to a given expert, only $B_e$ of them are processed. The remaining tokens are preserved by residual connections to the next layer. In contrast, if an expert is assigned fewer than $B_e$ tokens, the rest of its buffer is zero-padded. The authors used by default $\mbox{TOP}_2$ and a total number of experts $E = 32$ for each modular layer. Figure 3 shows the routing decisions correlated with image classes. In earlier MoE layers we do not observe expert sparsity. That's because experts may instead focus on aspects common to all classes (background, basic shapes, colors).</p>
+
+
+<figure>
+  <img src="blog/1-10/moe26.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.3 - Four MoE layers of a V-MoE-H/14 model. The x-axis corresponds to the 32 experts in a layer. The y-axis are the 1,000 ImageNet classes. For each pair (expert $e$, class $c$), we show the average routing weight for the tokens corresponding to all images with class $c$.</figcaption>
+</figure>
+
+
+<h4>Batch Prioritized Routing</h4>
+
+<p>In Vanilla routing, for $i < j$, every TOP-$i$ assignment has priority (be first processed) over any TOP-$j$ assignment. The router first tries to dispatch all $i$th expert choices before assigning any $j$th choice. As a result, priority is given to tokens depending on the rank of their corresponding row. While images in a batch are randomly ordered, tokens within an image follow a pre-defined fixed order. To favour the “most important” tokens, a priority score $s(x)$ on each token $x$ is computed and sorted before proceeding with the allocation. This is based on their maximum routing weight, $s(x)_t = \mbox{max}_i g(x)_{t,i}$ or the sum of TOP-$k$ weights, $s(x)_t = \sum_i g(x)_{t,i}$ (Figure 4).</p>
+
+
+<figure>
+  <img src="blog/1-10/moe22.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.4 - White patches are discarded tokens in the first layer of experts, for different capacities, using Batch Prioritized Routing.</figcaption>
+</figure>
+
+
+
+<br>
+<h3>Sparse MoEs meet Efficient Ensembles <a href="#footnote-1" style="text-decoration: none;">[1]</a></h3>
+
+
+<p>They proposed the efficient ensemble of experts ($E^3$). Building upon V-MoE <a href="#footnote-9" style="text-decoration: none;">[9]</a>, this work studies the interplay of two popular classes of such models: ensembles of neural networks and sparse mixture of experts (sparse MoEs). Ensemble methods combine several different models to improve generalization and uncertainty estimation. We assume a set of $M$ model parameters $\Theta=\{\theta_m\}_{m=1}^M$. Prediction proceeds by computing $\frac{1}{M}\sum_{\theta\in\Theta}f(x;\theta)$, i.e., the average probability vector over the $M$ models.</p>
+
+
+<figure>
+  <img src="blog/1-10/moe23.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.4 - $E^3$ with $E = 6$ experts, partitioned into $M = 2$ groups, with sparsity of $K = 2$, and a “last-2” configuration as in V-MoE. As in ViT, images are split into patches whose embeddings are processed by each block. The classifier averages predictions from the final tiled representations.</figcaption>
+</figure>
+
+
+<h4>Disjoint subsets of experts</h4>
+<p>$E^3$ partitions the set of $E$ experts into $M$ subsets of $E/M$ experts. The ensemble members have separate parameters for independent predictions, while efficiently sharing parameters among all non-expert layers. Instead of having a single routing function, $E^3$ applies separate routing functions $\mbox{gate}_K(W_m\cdot)$ to each subset $\mathcal{E}_m$. </p>
+
+
+<h4>Tiled representation</h4>
+<p>To jointly handle the predictions of the $M$ ensemble members, we tile the inputs by a factor $M$. A given image patch has $M$ different representations that, when entering an MoE layer, are each routed to their respective expert subsets $\mathcal{E}_m$ (Figure 5). Consider some tiled inputs $H \in \mathbb{R}^{B\times M\times D}$ where $B$ refers to total image patches number and $h_{i,m} \in \mathbb{R}^D$ is the representation of the $i$-th input for the $m$-th member. The routing is as follows</p>
+
+$$\mbox{p-MoE}(h_{i,m})=\sum_{e\in\mathcal{E}_m}g_e(h_{i,m})\cdot \mbox{MLP}_e(h_{i,m}),$$
+
+<p>where $\{g_e(h_{i,m})\}_{e\in\mathcal{E}_m}=\mbox{gate}_K(W_m h_{i,m})$ and $W_m\in\mathbb{R}^{(E/M)\times D}$.</p>
+
+
+<br>
+<h3>Taming Sparsely Activated Transformer with Stochastic Experts <a href="#footnote-10" style="text-decoration: none;">[10]</a></h3>
+
+<p>Sparsely activated models (SAMs), such as Mixture-of-Experts (MoE), are reported to be parameter inefficient where larger models do not always lead to better performance. This work showed that the commonly-used routing methods based on gating mechanisms do not work better than randomly routing inputs to experts. They proposed a new expert-based model, THOR (Transformer witH StOchastic ExpeRts), where experts are randomly activated (with no need of any gating mechanism) for each input during training and inference. THOR models are trained by minimizing both the cross-entropy loss and a consistency regularization term, such that experts can learn not only from training data but also from other experts as teachers.</p>
+
+<p>The stochastic expert routing tackles the problem of load imbalance (Figure 6). Existing works adopt various ad-hoc heuristics to mitigate this issue, e.g., adding Gaussian noise (noisy gating <a href="#footnote-11" style="text-decoration: none;">[11]</a>), limiting the maximum number of inputs that can be routed to an expert (expert capacity <a href="#footnote-4" style="text-decoration: none;">[4]</a>), imposing a load balancing loss <a href="#footnote-4" style="text-decoration: none;">[4]</a><a href="#footnote-12" style="text-decoration: none;">[12]</a>, and using linear assignment <a href="#footnote-7" style="text-decoration: none;">[7]</a>.</p>
+
+
+<figure>
+  <img src="blog/1-10/moe24.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.6 - A training iteration with stochastic experts.</figcaption>
+</figure>
+
+
+<p>In an iteration, a pair of experts are activated in THOR. Two prediction probabilities produced by the two selections are $p_1 = f(x; \{E_i^l\}_{l=1}^L)$ and $p_2 = f(x; \{E_j^l\}_{l=1}^L)$. Then, the training objective of THOR with respect to training samples $(x,y)$ in the dataset $D$ is</p>
+
+$$\mbox{min}\sum_{(x,y)\in D}\ell(x,y)=\mbox{CE}(p_1;y)+\mbox{CE}(p_2;y)+\alpha\mbox{CR}(p_1;p_2),$$
+
+<p>where $\mbox{CR}(p_1;p_2)=\frac{1}{2}(\mbox{KL}(p_1||p_2)+\mbox{KL}(p_2||p_1))$. CE is the cross-entropy loss, CR is the consistency regularizer, and $\alpha$ controls the strength of the regularization.</p>
+
+
+</div>
+<br><br>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2023</p>
+</footer>
+<br>
+<br>
+
+
+<p id="footnote-1">[1] James Urquhart Allingham, Florian Wenzel, Zelda E. Mariet, et al. Sparse moes meet efficient ensembles. 2021.</p>
+<p id="footnote-3">[2] William Fedus, Jeff Dean, and Barret Zoph. A review of sparse expert
+models in deep learning. 2022.</p>
+<p id="footnote-4">[3] Dmitry Lepikhin, HyoukJoong Lee, Yuanzhong Xu, et al.
+Gshard: Scaling giant models with conditional computation and automatic
+sharding. 2021.</p>
+<p id="footnote-5">[4] Yanqi Zhou, Tao Lei, Hanxiao Liu, et al.Mixture-of-experts with expert choice routing.
+2022.</p>
+<p id="footnote-6">[5] Aidan Clark, Diego de Las Casas, Aurelia Guy, and et al. Unified scaling
+laws for routed language models. 2022.</p>
+<p id="footnote-7">[6] Mike Lewis, Shruti Bhosale, Tim Dettmers, et al. BASE layers: Simplifying training of large, sparse models. 2021.</p>
+<p id="footnote-8">[7] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, et al. An image is worth 16x16 words: Transformers for image recognition at
+scale. 2021.</p>
+<p id="footnote-2">[8] Yoshua Bengio. Deep learning of representations: Looking forward. 2013.</p>
+<p id="footnote-9">[9] Carlos Riquelme, Joan Puigcerver, Basil Mustafa, et al. Scaling vision with sparse mixture of experts. 2021.</p>
+<p id="footnote-11">[10] Simiao Zuo, Xiaodong Liu, Jian Jiao and et al. Taming Sparsely Activated Transformer with Stochastic Experts. 2022.</p>
+<p id="footnote-11">[11]Noam Shazeer, Azalia Mirhoseini, Krzysztof Maziarz and et al. Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer. 2017.</p>
+<p id="footnote-11">[12]William Fedus, Barret Zoph, Noam Shazeer}. Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity. 2021.</p>
+<br><br>
+</html>
