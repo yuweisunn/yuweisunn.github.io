@@ -1,0 +1,6 @@
+@article{sun2023aaai,
+  author    = {Yuwei Sun},
+  title     = {Meta Learning in Decentralized Neural Networks: Towards More General AI},
+  journal   = {AAAI Workshop},
+  year      = {2023}
+}
