@@ -1,0 +1,335 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="icon" href="css/icon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #990000; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 10px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#myBtn:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}
+
+</style>
+
+<script>
+  // Math
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+  // Get the button
+  let mybutton = document.getElementById("myBtn");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class ="content">
+<title>Neural Network Approaches to the Binding Problem</title>
+
+
+  
+<div id="basic">
+<br>
+<h1>Neural Network Approaches to the Binding Problem</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br><a href="https://yuweisunn.github.io/home.html", target="_blank", style="text-decoration: none; color: gray"><b>All blogs</b></a>
+
+<br>
+<br>
+<br>
+
+
+<h2>Inspirations from Neuroscience</h2>
+<p>Neurons in all animals form a net in which every neuron has a single axon that branches and contacts the dendrites of other neurons at synapses, where the simultaneous firing pattern of large populations of cells carries the information <a href="#footnote-1" style="text-decoration: none;">[1]</a>. There is no rigid layer structure in the cortex and neural nets often work better when there are layer-skipping links. This suggests that a new kind of transformer is needed for this, something with queries and values in the original net and keys in the new higher layers. Neural nets need to have something like memory at higher levels and feedback at lower levels, to be more modular and to have structures specific for both feedforward and feedback data exchange. Memory traces (old events) are merged as much as possible with the new sensory input and new situation.</p>
+
+
+<br>
+<h3>Binding Problem <a href="#footnote-2" style="text-decoration: none;">[2]</a></h3>
+
+<figure>
+  <img src="blog/3-14/fig1.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.1 - Binding Problem.</figcaption>
+</figure>
+
+<p>Contemporary neural networks still fall short of human-level generalization, showing an inability to dynamically and flexibly bind information that is distributed throughout the network. Connectionism takes a brain-inspired, approach that stands in contrast to symbolic AI and its focus on the conscious mind. Evidence indicates that neural networks learn mostly about surface statistics in place of the underlying concepts. </p>
+
+<p>Attractor dynamics is an approach for addressing representational dynamics in binding. Early work includes Hopfield networks, Boltzmann machines, and associative memory. Attractor states were also found to occur in RNNs. A dynamical segregation process has multiple stable equilibria that each correspond to a particular decomposition of a given scene. The concept of Emergence refers to the sudden transition process from the perception as an unstructured collection of patches on a background to a meaningful scene (Figure 1), where the perception of the whole arises at once, and not through the hierarchically assembling of parts.</p>
+
+
+<br>
+<h3>Memory</h3>
+<p>Neurons that fire together wire together <a href="#footnote-3" style="text-decoration: none;">[3]</a>. Associative memory, also called content-addressable memory, organizes information according to its “meaning” or its relationship to other stored information. The overlap of content among distributed representations forms the associate network of stored information. In neuroscience, such memory is stored in the hippocampus, where high-level features of information from the cortex are encoded. Working memory in neurophysiology means a capacity for short-term storage of information and its rule-based manipulation <a href="#footnote-4" style="text-decoration: none;">[4]</a>. In machine learning, recurrent neural networks (RNNs) have larger working memory and computational capacity because their state evolves based on both input and current state. Other types of external memory for neural networks have been proposed, including continuous stacks, grid and tape storage, memory networks, and attention-based neural networks. These models have been successfully applied to various tasks such as machine translation, speech recognition, and image caption generation.</p>
+
+
+<br>
+<h3>Experience Richness and Ineffability in Working Memory <a href="#footnote-5" style="text-decoration: none;">[5]</a></h3>
+
+<figure>
+  <img src="blog/3-14/fig2.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.2 - Experience Richness and Ineffability in Working Memory.</figcaption>
+</figure>
+
+<p>The richness of conscious experience corresponds to the amount of information in a conscious state and ineffability corresponds to the amount of information lost at different stages of processing (Figure 2). To quantitatively measure the richness of conscious experience (a trajectory $X$ of states), its entropy $H(X)$ is measured using the Information Theory. Given a function that processes the input states $X$ and produces an output variable $Y$, the ineffability incurred by the output is measurable by conditional entropy $H(X|Y) = H(X)−I(X;Y)$, where $I(X;Y)$ is the mutual information between $X$ and $Y$.</p>
+
+
+<br>
+<h3>Discretization</h3>
+<p>Composing elements and their relations together into more complex elements, and vice versa, to decompose complex elements into simpler elements, is regarded as crucial to human intelligence <a href="#footnote-6" style="text-decoration: none;">[6]</a>. Language and other symbolic representations are, by nature, compositional. The syntactical structure of natural language allows for the replacement of words in sentences so that they acquire another meaning. One potential underlying reason for discretization is the more excellent information-theoretic signaling reliability and efficiency in communicating symbols versus continuous signals <a href="#footnote-7" style="text-decoration: none;">[7]</a>. Historically, many neural networks also featured discrete-valued nodes, like (restricted) Boltzmann machines or Hopfield networks <a href="#footnote-8" style="text-decoration: none;">[8]</a>. Nevertheless, the problem is making discrete, non-differentiable processing amenable to gradient-based learning. Combining continuous representations of neural networks and discrete representations of symbols and elements will be essential to build systems that exhibit a general form of intelligence <a href="#footnote-9" style="text-decoration: none;">[9]</a>. For example, using continuous representations as attributes in discretely structured graph representations gives a form of hybrid representation and adds structure to neural network processing.</p>
+
+
+<br>
+<h3>Inductive Biases in Knowledge Representation <a href="#footnote-10" style="text-decoration: none;">[10]</a></h3>
+<p>There are two types of knowledge representation, that is implicit knowledge and explicit knowledge. Implicit knowledge (system 1) is intuitive and difficult to verbalize; explicit knowledge (system 2) 
+allows humans to share part of their thinking process through natural language. To represent explicit knowledge, declarative knowledge such as Monte-Carlo Markov chains (facts, hypotheses, and causal dependencies) and inference machinery to reason with these pieces of knowledge. In addition, when a new rule is introduced, move back some of system 1 processing to system 2 to avoid inconsistencies. The no-free-lunch theorem for machine learning says that some set of inductive biases is necessary to obtain generalization, and that there is no completely general-purpose learning algorithm. Inductive biases encourage the learning algorithm to prioritize solutions with certain properties.</p>
+
+
+<br>
+<h2>Related Work</h2>
+<h3>Classical Hopfield Network <a href="#footnote-11" style="text-decoration: none;">[11]</a></h3>
+<p>Classical Hopfield network consists of neurons connected by symmetric weights. Then based on stored patterns, the model updates its weights to arrive at a stable state in its dynamic systems. These patterns settle down at various attractors of the dynamic systems, each of which has a basin of attraction. When an incoming state is inside an attractor’s attraction region, the Hopfield network will evolve the dynamics of the system to the closest stored pattern for the given initial state, by using a Lyapunov function in the form of free energy. Then for each step of evolving, the object of the model is to decrease the overall energy of the system since a state with lower energy is more stable. Therefore, an intact pattern can be recalled using parts of the pattern when the initial state defined by the part is located in the attractor’s region of attraction. The process of a pattern moving towards a stored attractor pattern is similar to the process of discretization. And this process allows a Hopfield network to quickly recall patterns (attractors) with a few samples. </p>
+
+<p>In classical Hopfield Networks, the simplest associative memory is realized by a sum of outer products of the $N$ patterns $\{x_i\}^N_{i=1},\,x_i∈\{−1,1\}^d$ that we want to store based on the Hebbian learning rule, where $d$ is the length of the patterns. $W = \sum_{i=1}^{N}x_i x_i^T$, where $W$ is the weight matrix and  $x_i$ is an initial state pattern. Furthermore, for the recall of a stored pattern, a total of two steps’ updates with an asynchronous method are conducted, where the update of each node’s state is conducted in succession with a random start node. And the dynamic systems of the Hopfield network continue moving to the state of lower energy during the updates, until it converges to a stable state with the minimum potential energy. By this approach, an input test pattern with partially shared features with one of the stored patterns can be reconstructed to the intact stored pattern. Nevertheless, the main issue of the traditional Hopfield network is that it is non-differentiable and not applicable to gradient-based learning. We now look into a modern version of the Hopfield network.</p>
+
+
+
+<br>
+<h3>Modern Hopfield network</h3>
+<p>The discrete modern Hopfield Networks were proposed by Krotov and Hopfield <a href="#footnote-12" style="text-decoration: none;">[12]</a>, and subsequently further developed by Demircigil et al. <a href="#footnote-13" style="text-decoration: none;">[13]</a> to increase the storage capacity of the network. Ramsauer et al. <a href="#footnote-14" style="text-decoration: none;">[14]</a> proposed a new energy function as follows for continuous-valued patterns and states for processing continued-value patterns. </p>
+
+$$E = -\mbox{lse}(\beta, x_i^T \xi) +\frac{1}{2} \xi^T \xi + \beta^{-1} \ln N + \frac{1}{2}M^2,$$
+
+<p>which is constructed from $N$ continuous stored patterns by the matrix $X=(x_1,\dots,x_N)$, where $M$ is the largest norm of all stored patterns. They are continuous and differentiable with respect to their parameters. Moreover, they typically retrieve patterns with one update, which is conform to deep learning layers that are activated only once. For these two reasons, modern Hopfield networks can serve as specialized layers in deep networks to equip them with memories, called the layer Hopfield <a href="#footnote-14" style="text-decoration: none;">[14]</a>. The update rule for a state pattern $\xi$ is given by:</p>
+
+
+    $$\xi_{new} = X\,\mbox{softmax}(\beta X^T \xi)$$
+
+<p>The layer Hopfield propagates sets of vectors via state (query) patterns $R$ and stored (key) patterns $Y$. Several major design decisions that affect the cost and quality of the discretization process includes:</p>
+
+<h4>Update steps</h4>
+<p>Multiple updates control how precise fixed points are found without additional parameters needed. 
+We use by default three updates in one Hopfield head with total eight parallel association heads.
+The update can be iteratively applied to the initial state of every Hopfield layer head. After the last update, the new states are projected to the result patterns. Therefore, the Hopfield layer allows multiple update steps in the forward pass without changing the number of parameters. The number of update steps can be given for every Hopfield head individually.</p>
+
+<h4>Inverse temperature $\beta$</h4>
+<p>The Hopfield network's iterative process converges to a fixed point that is close to one of the stored patterns. However, if some of the stored patterns are similar to each other, a metastable state, which is near these similar patterns, can appear. The iterates that start close to this metastable state or at one of the similar patterns will converge to this metastable state. Such learning dynamics of the network can be controlled by adjusting the value of the inverse temperature, $\beta$ ($\beta = 0.25$ by default). A high value of $\beta$ makes it less likely for metastable states to appear, while a low value of $\beta$ increases the likelihood of the formation of metastable states.</p>
+
+<h4>Dimension of the associative space $d_k$</h4>
+<p>The storage capacity of the modern Hopfield network grows exponentially with the dimension of the associative space. However higher dimension of the associative space also means less averaging and smaller metastable states. The dimension of the associative space trades off storage capacity against the size of metastable states, e.g. over how many pattern is averaged. $d_k$ should be chosen with respect to the number $N$ of patterns one wants to store and the desired size of metastable states, which is the number of patterns one wants to average over. For example, if the input consists of many low dimensional input patterns, it makes sense to project the patterns into a higher dimensional space to allow a proper fixed point dynamics. We use $d_k = 8$ by default.</p>
+
+<h4>Comparison to Transformers</h4>
+<p>The Hopfield layer enables multiple updates (iterating the attention) with adjustable $\beta$ in place of Transformers' $1/\mbox{sqrt}(d_k)$ scaling factor and flexible integration in arbitrary deep network architectures. Transformers perform the attention in a single step, though iterating the Hopfield attention doesn't seem to be beneficial.</p>
+
+
+
+<br>
+<h3>Neural Turing Machines <a href="#footnote-15" style="text-decoration: none;">[15]</a></h3>
+
+<figure>
+  <img src="blog/3-14/fig3.png" style="width: 60%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.3 - Neural Turing Machines.</figcaption>
+</figure>
+
+
+<p>Neural Turing Machines (NTM) extend the capabilities of neural networks by coupling them to external memory resources, which they can interact with by attentional processes. NTM contains two basic components: a neural network controller (either a feed-forward network or an LSTM network) and a memory bank (Figure 3). Every component of the architecture is differentiable, making it straightforward to train with gradient descent.</p>
+
+<h4>Memory Bank</h4>
+<p>The memory bank is realized using specialised outputs emitted by the two heads, i.e., the read and write head. These outputs define a normalised weighting over the rows in the memory matrix, representing the degree to which the head reads or writes at each location.</p>
+
+<h4>Read head</h4>
+<p>Let $M_t$ be the contents of the $N \times M$ memory matrix at time $t$, where $N$ is the number of memory locations, and $M$ is the vector size at each location. Let $w_t$ be a vector of weightings over the $N$ locations emitted by a read head at time $t$. </p>
+
+$$ \sum_i w_t(i) = 1,\,0 \leq w_t(i) \leq 1, \forall i.$$
+
+<p>The read vector $r_t$ with a length $M$ returned by the head is defined by:</p>
+
+$$r_t = \sum_i w_t(i)M_t(i).$$
+
+<h4>Write head</h4>
+<p>Each write head consists of an erase followed by an add. Given a weighting $w_t$ of the write head, an erase vector $e_t$ whose $M$ elements all lie in the range (0,1), updates the memory vectors as follows:</p>
+
+$$\tilde{M}_t(i) = M_{t−1}(i)[1 − w_t(i)e_t].$$
+
+<p>The elements of a memory location are reset to zero only if both the weighting at the location and the erase element are one; if either the weighting or the erase is zero, the memory is left unchanged. </p>
+
+<p>Each write head has an $add\,vector\,a_t$, which is added to the memory after the erase step:</p>
+
+$$M_t(i) = \tilde{M}_t(i)+ w_t(i)a_t.$$
+
+<h4>Addressing</h4>
+<p>Content-based addressing: focuses attention on locations based on the similarity between their current values and values emitted by the controller. This is related to the content-addressing of Hopfield networks. </p>
+
+<p>Each head produces a length $M key vector k_t$ that is compared to each vector $M_t(i)$ by a similarity measure. Then, a normalised weighting $w_t^c$ based on the similarity and a positive key strength $\beta_t$ is computed:</p>
+
+$$w_t^c(i) = \frac{\mbox{exp}(\beta_t K[k_t, M_t(i)])}{\sum_j \mbox{exp}(\beta_t K[k_t, M_t(j)])},$$
+
+$$K[u,v] = \frac{u\cdot v}{||u||\cdot ||v||},$$
+
+<p>where $K[u,v]$ is the cosine similarity.</p>
+
+<p>Location-based addressing: is designed to facilitate both simple iteration across the locations of the memory and random-access jumps  by implementing a rotational shift of a weighting.</p>
+
+$$w_t^g = g_t w_t^c + (1 − g_t)w_{t−1},$$
+
+<p>where $g_t$ is a coefficient. </p>
+
+<p>$s_t$ defines a normalised distribution over the allowed integer shifts. For example, if shifts between -1 and 1 are allowed, $s_t$ has three elements corresponding to the degree to which shifts of -1, 0 and 1 are performed. The rotation applied to $w_t^g$ by $s_t$ can be expressed in the following:</p>
+
+$$\tilde{W}_t(i) = \sum_{j=0}^{N-1}w_t^g(j)s_t(i-j).$$
+
+<p>Furthermore, a scalar $\gamma_t \geq 1$ is used to sharpen the final weighting as follows:</p>
+
+$$w_t(i)=\frac{\tilde{W}_t(i)^{\gamma_t}}{\sum_j \tilde{W}_t(j)^{\gamma_t}}.$$
+
+
+<br>
+<h3>Dynamic Neural Turing Machine <a href="#footnote-16" style="text-decoration: none;">[16]</a></h3>
+<p>Dynamic neural Turing machine (D-NTM) extends NTM by introducing a learnable addressing scheme which allows the NTM to be capable of performing highly nonlinear location-based addressing. Similar to NTM, D-NTM consists of a controller (either a gated recurrent unit (GRU) network or a feed-forward network) and a memory bank. </p>
+
+<p>Different from NTM, for each cell in the memory bank $M \in \mathbb{R}^{N\times(d_c +d_a)}$, it has two parts, i.e., a learnable address matrix $A$ (read, write and erase) and a content matrix $C$ s.t. $C_0 = 0$. The address part $a_i$ is considered a model parameter that is updated during training. During inference, the address part remains constant. On the other hand, the content part $c_i$ is modified by the controller both during training and inference. The learnable address allows the model to learn sophisticated location-based addressing strategies.</p>
+
+<p>For writing and erasing, the memory matrix $C$ is updated by:</p>
+
+$$C^t[j]=(1-e^tu_j^t)\odot C^{t-1}[j]+u_j^t \bar{c}^t,$$
+
+<p>where $e^t,u_j^t,\bar{c}^t$ are the erase, write, and candidate memory content vectors, respectively. The candidate memory content vector is computed based on the current hidden state and the scaled input of the controller (GRU).</p>
+
+<h4>No Operation memory cell</h4>
+<p>In addition, an additional No Operation (NOP) action is designated to a memory cell, where reading or writing from this memory cell is ignored. That's because it might be beneficial for the controller not to access the memory once in a while.</p>
+
+<h4>Discrete addressing</h4>
+<p>An address vector (either read, write or erase) at time $t$ is converted to a one-hot vector for discretization. By further using a curriculum learning strategy, at the beginning of the training, the model learns to use the memory mainly with the continuous attention. As learning progresses, the model will rely more on the discrete attention.</p>
+
+
+<br>
+<h3>Discrete-Valued Neural Communication (DVNC) <a href="#footnote-17" style="text-decoration: none;">[17]</a></h3>
+<p>Discrete-Valued Neural Communication (DVNC) learns a common codebook that is shared by all components for representation discretization and inter-component communication. DVNC achieves a much lower noise-sensitivity bound while allowing high expressiveness through the use of multiple discretization heads. For more detail on DVNC, please refer to a previous blog <a href="blog-9-01.html" style="text-decoration: none;"><b>Global Workspace Theory and System 2 AI</b></a>.</p>
+
+
+<br>
+<h3>Dense Associative Memory for Pattern Recognition <a href="#footnote-18" style="text-decoration: none;">[18]</a></h3>
+<p>Dense associative memory is a recurrent network in which every neuron can be updated multiple times. In the case of associative memory the network stores a set of memory vectors. In a typical query the network is presented with an incomplete pattern resembling, but not identical to, one of the stored memories and the task is to recover the full memory, by properly designing the energy function (or Hamiltonian) for these models with higher order interactions. To mimic biology, the output should be small or zero if the input is below the threshold, but it is much less clear what the behavior of the activation function should be for inputs exceeding the threshold.The capacity of this model, which is the maximal number of memories that the network can store and reliably retrieve, is 0.14$N$. $N$ is the number of binary neurons in the associtive memory systems. The reason why the model (1) gets confused when many memories are stored is that several memories produce contributions to the energy which are of the same order. In other words the energy decreases too slowly as the pattern approaches a memory in the configuration space. To tackle this problem, a new energy function was introduced:</p>
+
+$$E = -\sum^K_\mu F(\xi^{\mu}_i\sigma_i) $$
+
+<p>When $n = 2$ the network reduces to the standard model of associative memory. If $n > 2$, each term becomes sharper, thus more memories can be packed into the same configuration space. The system updates a unit, given the states of the rest of the network, in such a way that the energy of the entire configuration decreases. One step update of the classification neurons is sufficient to bring this initial state to the nearest local minimum, thus completing the memory recovery, if the stored patterns are stable and have basins of attraction around them of at least the size of one neuron flip. The upper limit on the number of patterns that the network can store is as follows:</p>
+
+$$K^{\mbox{max}}=\alpha_n N^{n-1},$$
+
+<p>where $\alpha_n$ is a numerical constant. The case $n = 2$ corresponds to the standard model of associative memory and gives $K = 0.14N$.</p>
+
+<p>The visible neurons, one for each pixel, are combined together with 10 classification neurons in one vector that defines the state of the network. The visible part of this vector is treated as an “incomplete” pattern and the associative memory is allowed to calculate a completion of that pattern, which is the label of the image. For higher powers $n$, the speed-up of convergence is larger, especially for a large dataset. An input is decomposed into a set of features, which are compared with those stored in the memory. The subset of the stored features activated by the presented input is then interpreted as an object. One object has many features; features can also appear in more than one object. The prototype theory provides an alternative approach, in which objects are recognized as a whole. The prototypes do not necessarily match the object exactly, but rather are blurred abstract representations which include all the features that an object has. The model of associative memory with one step update is equivalent to a conventional feedforward neural network with one hidden layer provided that the activation function from the visible layer to the hidden layer is equal to the derivative of the energy function.</p>
+
+$$f(x) = F'(x).$$
+
+
+</div>
+<br><br>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2023</p>
+</footer>
+<br>
+<br>
+
+
+
+<p id="footnote-1">[1]David Mumford. The convergence of AI code and cortical functioning - a
+commentary. CoRR, abs/2010.09101, 2020.</p>
+<p id="footnote-1">[2]Klaus Greff, Sjoerd van Steenkiste, and J ̈urgen Schmidhuber. On the binding problem in artificial neural networks. CoRR, abs/2012.05208, 2020.</p>
+<p id="footnote-1">[3]D. O. Hebb. The organization of behavior; a neuropsychological theory.
+Wiley, 1949.</p>
+<p id="footnote-1">[4]Baddeley, Eysenck A., and M. Anderson. Memory. Psychology Press, 2009.</p>
+<p id="footnote-1">[5]Xu Ji, Eric Elmoznino, George Deane, and et al. Sources of richness
+and ineffability for phenomenally conscious states. CoRR, abs/2302.06403, 2023.</p>
+<p id="footnote-1">[6]Peter W. Battaglia, Jessica B. Hamrick, Victor Bapst, Alvaro Sanchez Gonzalez, and et al. Relational inductive biases, deep learning, and graph networks. CoRR, abs/1806.01261, 2018.</p>
+<p id="footnote-1">[7]Claude E. Shannon. A mathematical theory of communication. Bell Syst. Tech. J., 27(3):379–423, 1948.</p>
+<p id="footnote-1">[8]John J. Hopfield. Hopfield network. Scholarpedia, 2(5):1977, 2007.</p>
+<p id="footnote-1">[9]Ruben Cartuyvels, Graham Spinks, and Marie-Francine Moens. Discrete and continuous representations and processing in deep learning: Looking forward. AI Open, 2:143–159, 2021.</p>
+<p id="footnote-1">[10]Anirudh Goyal and Yoshua Bengio. Inductive biases for deep learning of higher-level cognition. CoRR, abs/2011.15091, 2020.</p>
+<p id="footnote-1">[11]J. J. Hopfield. Neural networks and physical systems with emergent collective computational abilities. Proceedings of the National Academy of Sciences, 79(8):2554–2558, 1982.</p>
+<p id="footnote-1">[12]D Krotov and JJ Hopfield. Dense associative memory for pattern recognition. In Advances in Neural Information Processing Systems, pages 1172–1180. Curran Associates, Inc., 2016.</p>
+<p id="footnote-1">[13]M Demircigil, J Heusel, M L”owe, S Upgang, and F Vermet. On a model of associative memory with huge storage capacity. Journal of Statistical Physics, 168(2):288–299, 2017.</p>
+<p id="footnote-1">[14]Hubert Ramsauer, Bernhard Sch ̈afl, Johannes Lehner, and et al. Hopfield networks is all you need. ICLR, 2021.</p>
+<p id="footnote-1">[15]Alex Graves, Greg Wayne, and Ivo Danihelka. Neural turing machines. CoRR, abs/1410.5401, 2014.</p>
+<p id="footnote-1">[16]C ̧ aglar G ̈ul ̧cehre, Sarath Chandar, Kyunghyun Cho, and Yoshua Bengio.
+Dynamic neural turing machine with continuous and discrete addressing schemes. Neural Comput., 30(4), 2018.</p>
+<p id="footnote-1">[17]Dianbo Liu, Alex Lamb, Kenji Kawaguchi, and et al. Discrete-valued neural communication. NeurIPS, 2021.</p>
+<p id="footnote-1">[18]Dmitry Krotov and John J. Hopfield. Dense associative memory for pattern recognition. NeurIPS, 2016.</p>
+<br><br>
+</html>
