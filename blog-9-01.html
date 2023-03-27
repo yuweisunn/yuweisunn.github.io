@@ -227,13 +227,13 @@ Subsymbolic architectures, like neural networks, utilize continuous representati
 
 This work introduced a discrete latent space vector $e\in \mathbb{R}^{L\times(m/G)}$ where $L$ is the size of the discrete latent space (i.e., an $L$-way categorical variable), and $m$ is the dimension of each latent embedding vector $e_j$. Here, $L$ and $m$ are both hyperparameters. In addition, by dividing each target vector into $G$ segments or discretization heads, they separately quantize each head and concatenate the results. 
 
-In particular, a vector $h$ is divided into $G$ segments $s_1, s_2, . . . , s_G$ with $h = CONCAT(s_1, s_2, . . . , s_G)$, where each segment $s_i \in \mathbb{R}^{m/G}$ with $\frac{m}{G}\in \mathbb{N}+$. Second, each segment $s_i$ is discretized separately:
+In particular, a vector $h$ is divided into $G$ segments $s_1, s_2, . . . , s_G$ with $h = \mbox{CONCAT}(s_1, s_2, . . . , s_G)$, where each segment $s_i \in \mathbb{R}^{m/G}$ with $\frac{m}{G}\in \mathbb{N}+$. Second, each segment $s_i$ is discretized separately:
 
 $$e_{o_i} = DIS(s_i),$$ 
 
-where $o_i = \underset{j \in {1,...,L}}{\mbox{arg\,min}}||s_i - e_j||$.
+where $o_i = \underset{j \in {1,...,L}}{\mbox{arg min}}||s_i - e_j||$.
 
-Finally, concatenate the discretized results to obtain the final discretized vector $Z$ as $Z = CONCAT(DIS(s_1), DIS(s_2), ..., DIS(s_G))$.
+Finally, concatenate the discretized results to obtain the final discretized vector $Z$ as $Z = \mbox{CONCAT}(DIS(s_1), DIS(s_2), ..., DIS(s_G))$.
 
 $e$ is shared across all communication vectors and heads, and is trained together with other parts of the model.
 
@@ -243,7 +243,7 @@ $$\mathcal{L} = \mathcal{L}_{task}+\frac{1}{G}(\sum_i^G||sg(s_i)-e_{o_i}||_2^2+\
 
 where $sg$ refers to a stop-gradient operation that blocks gradients from flowing into its argument. 
 
-In recurrent independent mechanisms (RIMs)\cite{rim}, outputs from different modules are communicated to each other via soft attention mechanism. In the original RIMs method, $\tilde{z}_i^{t+1}=RNN(z_i^t,x^t)$ for active modules, and $\tilde{z}_{i'}^{t+1}=z_{i'}^t$ for inactive modules where $t$ is the time step, $i$ is index of the module, and $x^t$ is the input at time step $t$. Then, the dot product query-key soft attention is used to communication output from all modules $i \in \{1, . . . , M\}$ such that $h_i^{t+1} = SOFTATTENTION(\tilde{z}_1^{t+1},\tilde{z}_2^{t+1},\dots,\tilde{z}_M^{t+1})$. 
+In recurrent independent mechanisms (RIMs), outputs from different modules are communicated to each other via soft attention mechanism. In the original RIMs method, $\tilde{z}_i^{t+1}=RNN(z_i^t,x^t)$ for active modules, and $\tilde{z}_{i'}^{t+1}=z_{i'}^t$ for inactive modules where $t$ is the time step, $i$ is index of the module, and $x^t$ is the input at time step $t$. Then, the dot product query-key soft attention is used to communication output from all modules $i \in \{1, . . . , M\}$ such that $h_i^{t+1} = \mbox{SOFTATTENTION}(\tilde{z}_1^{t+1},\tilde{z}_2^{t+1},\dots,\tilde{z}_M^{t+1})$. 
 Then, $z_i^{t+1}=\tilde{z}_i^{t+1}+h_i^{t+1}$.
 
 The discretization process of discrete valued neural communication (DVNC) is applied to the output of the soft attention:
