@@ -7,6 +7,66 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 
+  <script src="https://cdn.jsdelivr.net/npm/@openai/chat-api@1.0.0-beta.9/dist/chat.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .messages {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .message {
+      margin-bottom: 10px;
+    }
+    .message-bot {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+    .message-user {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+      max-width: 70%;
+      word-wrap: break-word;
+      text-align: right;
+    }
+    .form {
+      display: flex;
+      margin-top: 20px;
+    }
+    .form input[type="text"] {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px 0 0 10px;
+    }
+    .form input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 0 10px 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+
 
 <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 
@@ -102,6 +162,57 @@ h4{color:#990000}
 <h1>The Modular Mind Blog</h1>
 Created by <a href="https://yuweisunn.github.io/", style="text-decoration: none;"><b>Yuwei Sun</b></a>
 <br><br>
+
+
+<div class="container">
+    <h3>Blog Assitant</h3>
+    <ul class="messages">
+    </ul>
+    <form class="form">
+      <input type="text" id="input" placeholder="Type your message here">
+      <input type="submit" value="Send">
+    </form>
+  </div>
+
+  <script>
+    const messages = document.querySelector('.messages');
+    const form = document.querySelector('.form');
+    const input = document.querySelector('#input');
+
+    const chat = new OpenAIChat.default({
+      // Replace with your OpenAI API key
+      apiKey: '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',
+      // Replace with the model you want to use
+      model: 'text-davinci-002',
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const message = input.value.trim();
+
+      if (message !== '') {
+        messages.innerHTML += `
+          <li class="message message-user">
+            ${message}
+          </li>
+        `;
+
+        chat.sendMessage(message).then((response) => {
+          messages.innerHTML += `
+            <li class="message message-bot">
+              ${response}
+            </li>
+          `;
+          messages.scrollTop = messages.scrollHeight;
+        });
+
+        input.value = '';
+      }
+    });
+  </script>
+
+
 <div class="row">
   <div class="leftcolumn">
 
