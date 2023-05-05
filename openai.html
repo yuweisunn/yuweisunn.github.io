@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Blog Reading Assistant Bot</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style>
+		body {
+			background-color: #f8f9fa;
+			position: relative;
+			min-height: 100vh;
+			margin: 0;
+			padding-bottom: 50px;
+		}
+
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+			margin-bottom: 30px;
+			font-weight: bold;
+			color: #007bff;
+		}
+
+		.container {
+			background-color: #fff;
+			padding: 30px;
+			border-radius: 10px;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			max-width: 400px;
+			overflow: hidden;
+			height: 0;
+			transition: height 0.3s ease-out;
+		}
+
+		.container.active {
+			height: auto;
+			overflow: auto;
+		}
+
+		.messages {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			overflow: auto;
+			padding-bottom: 50px;
+		}
+
+		.message {
+			margin-bottom: 10px;
+		}
+
+		.user-message {
+			background-color: #007bff;
+			color: #fff;
+			padding: 10px;
+			border-radius: 10px;
+			float: right;
+			max-width: 70%;
+			clear: both;
+		}
+
+		.bot-message {
+			background-color: #e9ecef;
+			color: #333;
+			padding: 10px;
+			border-radius: 10px;
+			float: left;
+			max-width: 70%;
+			clear: both;
+		}
+
+		.icon-container {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			cursor: pointer;
+			z-index: 9999;
+			background-color: #007bff;
+			color: #fff;
+			padding: 10px;
+			border-radius: 50%;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.icon-container i {
+			font-size: 24px;
+		}
+	</style>
+</head>
+<body>
+	<div class="icon-container">
+		<i class="fas fa-comment"></i>
+	</div>
+	<div class="container">
+		<h1>Blog Reading Assistant Bot</h1>
+		<ul class="messages"></ul>
+		<form class="form">
+			<div class="form-group">
+				<label for="message">Type your message:</label>
+				<input type="text" class="form-control" id="message">
+			</div>
+			<button type="submit" class="btn btn-primary">Send</button>
+		</form>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js
+		<script src="https://kit.fontawesome.com/8b95e0e654.js" crossorigin="anonymous"></script>
+		<script>
+			$(function() {
+				var chatbotIcon = $('.icon-container');
+				var chatbotContainer = $('.container');
+				var messagesList = $('.messages');
+				var form = $('.form');
+				var messageInput = $('#message');
+				var API_KEY = 'YOUR_OPENAI_API_KEY';
+				var history = [];
+
+				function addMessage(text, sender) {
+					var li = $('<li></li>').addClass('message').addClass(sender);
+					li.text(text);
+					messagesList.append(li);
+				}
+
+				function scrollMessages() {
+					messagesList.animate({scrollTop: messagesList.prop('scrollHeight')}, 500);
+				}
+
+				function sendRequest(message) {
+					$.ajax({
+						url: 'https://api.openai.com/v1/engines/davinci-codex/completions',
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': 'Bearer ' + API_KEY
+						},
+						data: JSON.stringify({
+							'prompt': 'Read the blog on "YOUR BLOG NAME" and summarize it in one sentence.\n\n' + history.join('\n'),
+							'max_tokens': 50,
+							'n': 1,
+							'stop': '\n\n'
+						}),
+						success: function(data) {
+							var message = data.choices[0].text.trim();
+							addMessage(message, 'bot-message');
+							history.push(message);
+							scrollMessages();
+						}
+					});
+				}
+
+				form.on('submit', function(e) {
+					e.preventDefault();
+					var message = messageInput.val().trim();
+					if (message !== '') {
+						addMessage(message, 'user-message');
+						messageInput.val('');
+						scrollMessages();
+						sendRequest(message);
+					}
+				});
+
+				chatbotIcon.on('click', function() {
+					chatbotIcon.hide();
+					chatbotContainer.addClass('active');
+					scrollMessages();
+				});
+
+				chatbotContainer.on('submit', function() {
+					chatbotIcon.show();
+					chatbotContainer.removeClass('active');
+				});
+			});
+		</script>
+	</body>
+</html>
