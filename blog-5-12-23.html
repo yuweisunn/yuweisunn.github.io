@@ -221,9 +221,9 @@ $$\mbox{loss}(\hat{r}) = -\underset{(\sigma^1, \sigma^2, \mu) \in D}{\sum} \mu(1
 
 
 <br>
-<h3>Transformers in Vision</h3>
+<h2>Transformers in Vision</h2>
 
-<h4>ViT (Vision Transformers) <a href="#footnote-8" style="text-decoration: none;">[8]</a></h4>
+<h3>ViT (Vision Transformers) <a href="#footnote-8" style="text-decoration: none;">[8]</a></h3>
 <br>
 
 <figure>
@@ -238,7 +238,7 @@ $$\mbox{loss}(\hat{r}) = -\underset{(\sigma^1, \sigma^2, \mu) \in D}{\sum} \mu(1
 <p>Nevertheless, since ViT lacks the inductive biases inherent to CNNs like translation equivariance and locality, it yields modest accuracies a few percentage points below ResNets of comparable size when trained on mid-sized datasets such as ImageNet without strong regularization.</p>
 
 <br>
-<h4>Swin (Shifted Windows) Transformer <a href="#footnote-9" style="text-decoration: none;">[9]</a></h4>
+<h3>Swin (Shifted Windows) Transformer <a href="#footnote-9" style="text-decoration: none;">[9]</a></h3>
 
 
 <figure>
@@ -259,7 +259,6 @@ $$\mbox{loss}(\hat{r}) = -\underset{(\sigma^1, \sigma^2, \mu) \in D}{\sum} \mu(1
 <p>To learn cross-window connections while maintaining the efficient computation within non-overlapping windows, Swin Transformer employs a shifted window partitioning startegy which alternates between two partitioning configurations in consecutive Swin Transformer blocks (Figure 8). In particualr, the first block uses a regular window partitioning strategy which starts from the top-left pixel, and the 8×8 feature map is evenly partitioned into 2×2 windows of size 4×4. Then, the next block adopts a windowing configuration that is shifted from that of the preceding block, by displacing the windows by ($\frac{M}{2}$, $\frac{M}{2}$) pixels from the regularly partitioned windows.</p>
 
 
-
 <figure>
   <img src="blog/5-12-23/fig9.png" style="width: 70%; margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
@@ -270,7 +269,7 @@ $$\mbox{loss}(\hat{r}) = -\underset{(\sigma^1, \sigma^2, \mu) \in D}{\sum} \mu(1
 <p>However, an issue with the shifted window partitioning is that it will result in more windows, from $\frac{h}{M}$×$\frac{w}{M}$ to ($\frac{h}{M}$+1)×($\frac{w}{M}$+1), and some of the windows will be smaller than $M × M$. A masking mechanism is employed to limit self-attention computation to within each sub-window, such that the number of batched windows remains the same as that of regular window partitioning (Figure 9).</p>
 
 <br>
-<h3>Transformer in Reinforcement Learning</h3>
+<h2>Transformer in Reinforcement Learning</h2>
 
 <p>Decision Transformer  <a href="#footnote-10" style="text-decoration: none;">[10]</a> introduces a framework that abstracts Reinforcement Learning (RL) as a sequence modeling problem, by modeling the joint distribution of states, actions, and rewards sequences (Figure 10). Decision Transformer employs as the input the trajectory representation $\tau$ of the returns-to-go $\hat{R}_t=\sum_{t^\prime=t}^T r_{t^\prime}$, states $s_t$, and actions $a_t$. $\tau=(\hat{R}_1,s_1,a_1,\hat{R}_2,s_2,a_2,...,\hat{R}_T,s_T,a_T)$. To obtain token embeddings, a linear layer followed by layer normalization is employed. For environments with visual inputs, the state is fed into a convolutional encoder instead of a linear layer. Besides the states, actions, and returns, an embedding for each timestep is learned and added to each token, with one timestep $t$ corresponding to three tokens ($\hat{R}_t,s_t,a_t$). </p>
 
