@@ -150,7 +150,7 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 
 
 <figure>
-  <img src="blog/12-22/routing.png" style="width: 40%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/12-22-22/routing.png" style="width: 40%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.1 - A routing network. The router consists of a parameterized decision-maker that iteratively selects modules.</figcaption>
 </figure>
 
@@ -165,7 +165,7 @@ thousands of feed-forward sub-networks. A trainable gating network determines a 
 
 
 <figure>
-  <img src="blog/12-22/sg-moe.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/12-22-22/sg-moe.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.2 - A Mixture of Experts (MoE) layer embedded within a recurrent language model. In this
 case, the sparse gating function selects two experts to perform computations. Their outputs are
 modulated by the outputs of the gating network.</figcaption>
@@ -193,7 +193,7 @@ $$\mathcal{L}(g_{\phi}(f_r^{avg}(x_p)),y)+\lambda\sum_{K_x}\gamma(q(x),k_{s_i}),
 
 
 <figure>
-  <img src="blog/12-22/prompt.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/12-22-22/prompt.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.3 - Illustration of L2P at test time.</figcaption>
 </figure>
 
@@ -205,7 +205,7 @@ $$\mathcal{L}(g_{\phi}(f_r^{avg}(x_p)),y)+\lambda\sum_{K_x}\gamma(q(x),k_{s_i}),
 <p>Given new tasks $\{t_{k+1}, \dots, t_{k+m}\}$, where $k$ is the number of tasks previously encountered, Self-Net first trains $m$ task-networks independently to learn $\{\theta_{k+1}, \dots, \theta_{k+m}\}$ optimal parameters for these tasks. These networks are temporarily stored in the Buffer. When the Buffer fills up, Self-Net incorporates the new networks into long-term representation by retraining an autoencoder on both its approximations of previously learned networks and the new batch of networks. When an old network is needed (e.g., when a task is revisited), the weights are reconstructed and loaded onto the corresponding TN. The reconstructed network closely approximates the performance of the original.</p>
 
 <figure>
-  <img src="blog/12-22/selfnet.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/12-22-22/selfnet.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.4 - The proposed system has a set of reusable task-specific networks (TN), a Buffer for storing the latest $m$ tasks, and a lifelong, auto-encoder (AE) for long-term storage.</figcaption>
 </figure>
 
@@ -219,7 +219,7 @@ $$\mathcal{L}(g_{\phi}(f_r^{avg}(x_p)),y)+\lambda\sum_{K_x}\gamma(q(x),k_{s_i}),
 
 
 <figure>
-  <img src="blog/12-22/limo.png" style="width: 35%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/12-22-22/limo.png" style="width: 35%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.5 - LIMoE, a sparsely activated multimodal model, processes both images and texts, utilising conditional computation to allocate tokens in a modality-agnostic fashion.</figcaption>
 </figure>
 
@@ -234,7 +234,7 @@ $$\mathcal{L}(g_{\phi}(f_r^{avg}(x_p)),y)+\lambda\sum_{K_x}\gamma(q(x),k_{s_i}),
 
 
 <figure>
-  <img src="blog/12-22/token.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/12-22-22/token.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.6 - Token routing examples of how patches are routed at the MoE layer placed in the middle of the network.</figcaption>
 </figure>
 

@@ -125,7 +125,7 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 
 
 <figure>
-  <img src="blog/1-10/moe25.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/1-10-23/moe25.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <figcaption>Fig.1 - Three common classes of routing algorithms <a href="#footnote-2" style="text-decoration: none;">[2]</a>. Left: “Choose Top-k” along the Experts axis includes the standard top-k routing algorithm <a href="#footnote-3" style="text-decoration: none;">[3]</a>. Center: “Choose Top-k” along the Tokens axis includes routing algorithms such as <a href="#footnote-4" style="text-decoration: none;">[4]</a><a href="#footnote-5" style="text-decoration: none;">[5]</a>. Right: “Globally Decide Expert Assignment” includes routing algorithms such as BASE layer <a href="#footnote-6" style="text-decoration: none;">[6]</a>.</figcaption>
 </figure>
 
@@ -149,7 +149,7 @@ experts (MoEs) model is a specific instantiation</p>
 
 
 <figure>
-  <img src="blog/1-10/moe21.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/1-10-23/moe21.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
   <figcaption>Fig.2- Overview of the architecture. V-MoE is composed of $L$ ViT blocks. In some, we replace the MLP with a sparsely activated mixture of MLPs. Each MLP (the expert) is stored on a separate device, and processes a fixed number of tokens.</figcaption>
 </figure>
@@ -171,7 +171,7 @@ experts (MoEs) model is a specific instantiation</p>
 
 
 <figure>
-  <img src="blog/1-10/moe26.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/1-10-23/moe26.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
   <figcaption>Fig.3 - Four MoE layers of a V-MoE-H/14 model. The x-axis corresponds to the 32 experts in a layer. The y-axis are the 1,000 ImageNet classes. For each pair (expert $e$, class $c$), we show the average routing weight for the tokens corresponding to all images with class $c$.</figcaption>
 </figure>
@@ -183,7 +183,7 @@ experts (MoEs) model is a specific instantiation</p>
 
 
 <figure>
-  <img src="blog/1-10/moe22.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/1-10-23/moe22.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
   <figcaption>Fig.4 - White patches are discarded tokens in the first layer of experts, for different capacities, using Batch Prioritized Routing.</figcaption>
 </figure>
@@ -198,7 +198,7 @@ experts (MoEs) model is a specific instantiation</p>
 
 
 <figure>
-  <img src="blog/1-10/moe23.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/1-10-23/moe23.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
   <figcaption>Fig.4 - $E^3$ with $E = 6$ experts, partitioned into $M = 2$ groups, with sparsity of $K = 2$, and a “last-2” configuration as in V-MoE. As in ViT, images are split into patches whose embeddings are processed by each block. The classifier averages predictions from the final tiled representations.</figcaption>
 </figure>
@@ -225,7 +225,7 @@ $$\mbox{p-MoE}(h_{i,m})=\sum_{e\in\mathcal{E}_m}g_e(h_{i,m})\cdot \mbox{MLP}_e(h
 
 
 <figure>
-  <img src="blog/1-10/moe24.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <img src="blog/1-10-23/moe24.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
   <figcaption>Fig.6 - A training iteration with stochastic experts.</figcaption>
 </figure>
