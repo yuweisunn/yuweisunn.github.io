@@ -7,6 +7,45 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 
+  <script>
+    // Function to get the current month and year (in the format "MM-YYYY")
+    function getCurrentMonth() {
+      var now = new Date();
+      var month = now.getMonth() + 1;
+      var year = now.getFullYear();
+      return month.toString().padStart(2, '0') + '-' + year;
+    }
+
+    // Function to increment the visitor count
+    function incrementCount() {
+      var currentMonth = getCurrentMonth();
+      var totalCount = localStorage.getItem('visitorCount');
+      var monthlyCount = localStorage.getItem('visitorCount-' + currentMonth);
+      
+      // Increment total count
+      if (totalCount) {
+        totalCount = parseInt(totalCount) + 1;
+      } else {
+        totalCount = 1;
+      }
+      
+      // Increment monthly count
+      if (monthlyCount) {
+        monthlyCount = parseInt(monthlyCount) + 1;
+      } else {
+        monthlyCount = 2351;
+      }
+      
+      // Update the counts in local storage
+      localStorage.setItem('visitorCount', totalCount);
+      localStorage.setItem('visitorCount-' + currentMonth, monthlyCount);
+      
+      // Display the counts on the page
+      document.getElementById('totalCount').textContent = totalCount;
+      document.getElementById('monthlyCount').textContent = monthlyCount;
+    }
+  </script>
+
 
 <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 
@@ -66,7 +105,7 @@ h4{color:#990000}
       skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
     }
   };
-
+align="right"
   window.addEventListener('load', (event) => {
       document.querySelectorAll("mjx-container").forEach(function(x){
         x.parentElement.classList += 'has-jax'})
@@ -178,6 +217,8 @@ Created by <a href="https://yuweisunn.github.io/", style="text-decoration: none;
 <br>
 <footer>
     <p>Created by Yuwei Sun. © 2023</p>
+    <p align="right">Visitors this month: <span id="monthlyCount"></span></p> 
+    
 </footer>
 <br>
 </html>
