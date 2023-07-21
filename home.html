@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-
+<link href='https://unpkg.com/css.gg@2.0.0/icons/css/dark-mode.css' rel='stylesheet'>
 
 <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 
@@ -51,7 +51,12 @@ h4{color:#990000}
   background-color: #555; /* Add a dark-grey background on hover */
 }
 
+.dark-mode {
+  background-color: black;
+  color: white;
+}
 </style>
+
 
 <script>
   // Math
@@ -90,6 +95,11 @@ h4{color:#990000}
     document.documentElement.scrollTop = 0;
   }
 
+  function myFunction() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+  }
+
 </script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
@@ -99,9 +109,11 @@ h4{color:#990000}
 <body class ="content">
 <title>The Modular Mind Blog</title>
 <br>
+<button onclick="myFunction()" class="gg-dark-mode" style="float: right;"></button>
 <h1>The Modular Mind Blog</h1>
 Created by <a href="https://yuweisunn.github.io/", style="text-decoration: none;"><b>Yuwei Sun</b></a>
 <br><br>
+
 <div class="row">
   <div class="leftcolumn">
     <div class="card">
