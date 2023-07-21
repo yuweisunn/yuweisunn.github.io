@@ -1,0 +1,260 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="icon" href="css/icon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #990000; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 10px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#myBtn:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}
+
+</style>
+
+<script>
+  // Math
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+  // Get the button
+  let mybutton = document.getElementById("myBtn");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class ="content">
+<title>Global Workspace Theory and System 2 AI - Part &#8545</title>
+
+
+  
+<div id="basic">
+<br>
+<h1>Global Workspace Theory and System 2 AI - Part &#8545</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br><a href="https://yuweisunn.github.io/home.html", target="_blank", style="text-decoration: none; color: gray"><b>All posts</b></a>
+
+<br>
+<br>
+<br>
+
+
+<p>This post is about the alignment between the global workspace theory and Transformer models, with a specific focus on the attention mechanism, since my last post on “<a href="blog-9-01-22.html">Global Workspace Theory and System 2 AI - Part &#8544</a>”.</p>
+
+<br>
+<h2>Two-Tier Cognitive Systems</h2>
+<p>Global Workspace Theory (GWT) <a href="#footnote-1" style="text-decoration: none;">[1]</a> proposes that the brain operates as a network of specialized modules, with a central "global workspace" where selected information is integrated and broadcast (Figure 1). In our brain, unconscious processing is where much of our intelligence lies, such as Bayesian inference and evidence accumulation.</p>
+
+<figure>
+  <img src="blog/7-21-23/gw.png" style="width: 60%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.1 - Global workspace theory.</figcaption>
+</figure>
+
+
+<p>Consciousness involves two distinct types of information-processing computations in the brain: (C1) the selection of information for global broadcasting, making it flexibly available for computation and report, and (C2) the self-monitoring of these computations, leading to a subjective sense of certainty or error <a href="#footnote-2" style="text-decoration: none;">[2]</a>. Both of these processes rely on the prefrontal cortex. In C1, information that is conscious in this sense becomes globally available to the organism. It involves integrating all available evidence to converge toward a single decision. At the top of a deep hierarchy of specialized modules, a "global workspace" with limited capacity evolved to select a piece of information, hold it over time, and share it across modules. While language is not a prerequisite for conscious processing, the emergence of language circuits in humans may have significantly increased the speed, ease, and flexibility of C1 information sharing. </p>
+
+<p>Furthermore, C2 refers to the self-monitoring ability to conceive and make use of internal representations of one's own knowledge and abilities, the capacity to reflect on one's own mental state. For example, Hallucinations in schizophrenia have been linked to a failure to distinguish whether sensory activity is generated by oneself or by the external world. A machine endowed with C1 and C2 would behave as though it were conscious; for instance, it would know that it is seeing something, express confidence in it, report it to others, and could experience hallucinations when its monitoring mechanisms break down.</p>
+
+
+<br>
+<h2>Related Work</h2>
+
+<p>We evaluate various approaches to implement a global workspace by considering several key factors. Firstly, we examine whether the implementation involves a global workspace operation that facilitates both writing and reading of information. Secondly, we assess whether the memory or information stored within the workspace is low-dimensional compared to the input data. Thirdly, we analyze whether the retrieval of information from the memory is driven by a bottom-up or top-down signal. Lastly, we investigate whether the model incorporates a communication bottleneck to regulate the flow of information passing through the system. By carefully considering these aspects, we gain insights into the effectiveness and efficiency of different global workspace implementations. For information about Vision Transformer, Bidirectional, and Coordination methods, please refer to the previous post on "<a href="blog-9-01-22.html">Global Workspace Theory and System 2 AI - Part &#8544</a>".</p>
+
+
+<figure>
+  <img src="blog/7-21-23/compare.png" style="width: 100%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+</figure>
+
+
+<br>
+<h3>Attention Mechanism</h3>
+The self-attention in Transformer employs the multi-head attention mechanism in which each head maps a query and a set of key-values pairs to an output. The output in a single head is computed as a weighted sum of values according to the attention score computed by a function of the query with the corresponding key. These single-head outputs are then concatenated and again projected, resulting in the final values:
+
+$$\mbox{Multi-head}(Q,K,V)=\mbox{Concat}(\mbox{head}^1,\dots,\mbox{head}^H)W^O,$$
+
+$$\mbox{head}^i=\mbox{Attention}(QW^{Q_i},KW^{K_i},VW^{V_i}),$$
+
+$$\mathbf{A_S} = \mbox{Attention}(Q,K,V)=\mbox{softmax}(\frac{QK^T}{\sqrt{d}}),$$
+
+$$\mathbf{A_R}=\mathbf{A_S}\,\mathbf{V},$$
+
+where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, values and outputs. $\tilde{Q}= QW^{Q_i}$, $\tilde{K} = KW^{K_i}$, and $\tilde{V} = VW^{V_i}$. $d$ denotes the dimension of queries and keys in a single head. In self-attention, $Q = K = V$. However, this approach has a quadratic complexity $O(N^2)$ where $N$ denotes the number of tokens in an input sequence and can be computationally intensive. 
+
+
+<br><br><br>
+<h3>Perceiver <a href="#footnote-3" style="text-decoration: none;">[3]</a></h3>
+
+<figure>
+  <img src="blog/7-21-23/perceiver.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.1 - Scheme of the Perceiver.</figcaption>
+</figure>
+
+
+<p>The Perceiver model (Figure 2) builds upon Transformers, using shared attention to process and integrate information from various sources. The Perceiver includes two components: a cross-attention module that maps a byte (input) array and a latent array to a latent array, and a Transformer tower that maps a latent array to a latent array. The bulk of the computation happens in a latent space whose size $N$ is typically much smaller than the inputs and outputs $M$, which makes the process computationally tractable even for very large inputs and outputs.</p>
+
+<p>Let \(K \in \mathbb{R}^{M \times C}\) and \(V \in \mathbb{R}^{M \times C}\) (where \(C\) is channel dimension) be the key and value.
+\(Q\) is a projection of a learned latent array with index dimension \(N \times D\), where \(N\) is the size of the latent space and $D$ is the dimension of it. The resulting cross-attention operation has complexity \(O(MN)\). Moreover, a latent Transformer that resembles self-attention is employed after the cross attention.</p>
+
+<p>By using iterative attention with the cross attention and latent Transformer, the Perceiver effectively captures complex patterns and dependencies across the input and output domains. The Perceiver obtains performance comparable to ResNet-50 and Vision Transformer on ImageNet without 2D convolutions. It is also competitive in all modalities in AudioSet.</p>
+
+
+<br>
+<h3>Perceiver IO <a href="#footnote-4" style="text-decoration: none;">[4]</a></h3>
+
+<figure>
+  <img src="blog/7-21-23/perceiverio.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.2 - Scheme of the Perceiver IO.</figcaption>
+</figure>
+
+<p>Building upon the Perceiver model, the Perceiver IO (Figure 3) differs from its predecessor in the following aspects: Perceiver IO introduces an encoder and decoder architecture. In the decoder part, the query originates from the output array of the cross-attention mechanism, while the key and value components are derived from the latent array. Conversely, in the original Perceiver model, the query is sourced from the latent array, and the key and value components are extracted from the input array. This fundamental change in the attention mechanism allows for a top-down attention with more expressive and flexible information flow within the model.</p>
+
+
+<br>
+<h3>Set Transformer <a href="#footnote-5" style="text-decoration: none;">[5]</a></h3>
+
+
+<figure>
+  <img src="blog/7-21-23/settrans.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.3 - The attention-based set operations.</figcaption>
+</figure>
+
+
+<p>The Set Transformer introduces the Induced Set Attention Block (ISAB) (Figure 3) to reduce the computational time of self-attention from quadratic to linear in the number of elements in a set. This is accomplished by transforming the inducing points \(I\) through an attention mechanism that attends to the input set \(X\). The resulting transformed set is then subjected to another attention mechanism that attends to the input set \(X\) once again, ultimately producing a set.</p>
+
+<p>The ISAB is constructed using the Multihead Attention Block (MAB). Given two matrices \(X\) and \(Y\) representing two sets of \(d\)-dimensional vectors with dimensions \(\mathbb{R}^{n \times d}\), the MAB with parameters \(\Theta\) is defined as follows:
+\[\text{MAB}(X, Y) = \text{LayerNorm}(H + \text{rFF}(H)),\]
+where \(H = \text{LayerNorm}(X + \text{Multihead}(X, Y, Y, \Theta))\), \(\text{rFF}\) is a feed forward layer, and \(\text{LayerNorm}\) is layer normalization. Then, the ISAB is defined as $\text{ISAB}(X) = \text{MAB}(X, H) \in \mathbb{R}^{n \times d}$, where \(H = \text{MAB}(I, X) \in \mathbb{R}^{m \times d}\). Moreover, the self-attention is realized by a Set Attention Block (SAB): $\text{SAB}(X) = \text{MAB}(X, X)$.</p>
+
+
+<br>
+<h3>Energy Transformer with Hopfield <a href="#footnote-6" style="text-decoration: none;">[6]</a></h3>
+
+
+<figure>
+  <img src="blog/7-21-23/et.png" style="width: 40%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.4 - Scheme of the ET block.</figcaption>
+</figure>
+
+
+<p>In a Transformer block, there are four fundamental operations: attention, feed-forward multi-layer perceptron (MLP), residual connection, and layer normalization. Energy Transformer (ET) replaces the sequence of feed forward transformer blocks with a single recurrent Associative Memory model. The ET block consists of both a Multi-Head Attention module and a Hopfield Network module for attention (Figure 4).</p> 
+
+<p>In particular, the energy of the Multi-Head Attention module has shown a resemblance to Hopfield networks in recent studies  <a href="#footnote-7" style="text-decoration: none;">[7]</a>, which is defined as:
+$$E^{\text{ATT}}=-\frac{1}{\beta}\underset{h}{\sum}\underset{C}{\sum}\text{log}(\underset{B\neq C}{\sum}\text{exp}(\beta\underset{\alpha}{\sum}K_{\alpha h B}Q_{\alpha h C})),$$</p>
+
+$$K_{\alpha h B}=\underset{j}{\sum}W_{\alpha h j}^K g_{j B},$$
+
+$$Q_{\alpha h C}=\underset{j}{\sum}W_{\alpha h j}^Q g_{j C},$$
+where $\alpha$ denotes elements of the internal space, $h$ denotes different heads of this operation, $g$ denotes the output of the layer norm, $j$ denotes the token vector’s element index, and $A, B, C = 1...N$ are used to enumerate the patches and their corresponding tokens.
+
+<p>The energy of the Hopfield Network module is defined as:
+$$E^{\text{HN}}=-\frac{1}{2}\underset{B,\mu}{\sum}r(\underset{j}{\sum}\xi_{\mu j}g_{j B})^2,$$
+where $\xi_{\mu j}$ is a set of learnable weights (memories in the Hopfield Network), and $r(\cdot)$ is an activation function. It is a classical continuous Hopfield if the activation function grows slowly (e.g., ReLU), or a modern continuous Hopfield Network if the activation function is sharply peaked around the memories (e.g. power or softmax).</p>
+
+<p>ET aims to tackle image reconstruction (Figure 5) where half of these tokens were masked by replacing them with a learnable MASK token. A distinct learnable position encoding vector was added to each token. The ET block then processes all tokens recurrently for $T$ steps. The token representations after $T$ steps are passed to a linear decoder (consisting of a layer norm and an affine transformation). The loss function is the MSE loss on the occluded patches. ET operates akin to a global workspace, drawing patches towards the global minimum within the system.</p>
+
+<figure>
+  <img src="blog/7-21-23/et2.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.4 - The Attention (ATTN) block contributes general structure information to the masked patches at earlier time steps, whereas the Hopfield Network (HN) significantly sharpens the quality of the masked patches at later time steps.</figcaption>
+</figure>
+
+
+</div>
+<br><br>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2023</p>
+</footer>
+<br>
+<br>
+
+
+<p id="footnote-1">[1] Bernard J. Baars. A Cognitive Theory of Consciousness. Cambridge University Press, 1988.</p>
+<p id="footnote-2">[2] Stanislas Dehaene, Hakwan C. Lau, and Sid Kouider. What is consciousness, and could machines have it? In Robotics, AI, and Humanity,pages 43–56. Springer International Publishing, 2021.</p>
+<p id="footnote-3">[3] Andrew Jaegle, Felix Gimeno, Andy Brock, and et al. Perceiver: General perception with iterative attention. In ICML, volume 139 of Proceedings of Machine Learning Research, pages 4651–4664. PMLR, 2021.</p>
+<p id="footnote-4">[4] Andrew Jaegle, Sebastian Borgeaud, Jean-Baptiste Alayrac, and et al. Perceiver IO: A general architecture for structured inputs & outputs. In ICLR. 2022.</p>
+<p id="footnote-5">[5] Juho Lee, Yoonho Lee, Jungtaek Kim, and et al. Set transformer: A framework for attention-based permutation-invariant neural networks. In ICML, volume 97 of Proceedings of Machine Learning Research, pages 3744–3753. PMLR, 2019.</p>
+<p id="footnote-6">[6] Benjamin Hoover, Yuchen Liang, Bao Pham, et al. Energy transformer. CoRR, abs/2302.07253, 2023</p>
+<p id="footnote-6">[7] Hubert Ramsauer, Bernhard Schafl, Johannes Lehner, et al. Hopfield networks is all you need. ICLR, 2021.</p>
+<br><br>
+</html>
