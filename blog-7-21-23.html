@@ -174,7 +174,7 @@ where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, valu
 <figure>
   <img src="blog/7-21-23/perceiver.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
-  <figcaption>Fig.1 - Scheme of the Perceiver.</figcaption>
+  <figcaption>Fig.2 - Scheme of the Perceiver.</figcaption>
 </figure>
 
 
@@ -192,7 +192,7 @@ where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, valu
 <figure>
   <img src="blog/7-21-23/perceiverio.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
-  <figcaption>Fig.2 - Scheme of the Perceiver IO.</figcaption>
+  <figcaption>Fig.3 - Scheme of the Perceiver IO.</figcaption>
 </figure>
 
 <p>Building upon the Perceiver model, the Perceiver IO (Figure 3) differs from its predecessor in the following aspects: Perceiver IO introduces an encoder and decoder architecture. In the decoder part, the query originates from the output array of the cross-attention mechanism, while the key and value components are derived from the latent array. Conversely, in the original Perceiver model, the query is sourced from the latent array, and the key and value components are extracted from the input array. This fundamental change in the attention mechanism allows for a top-down attention with more expressive and flexible information flow within the model.</p>
@@ -205,11 +205,11 @@ where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, valu
 <figure>
   <img src="blog/7-21-23/settrans.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
-  <figcaption>Fig.3 - The attention-based set operations.</figcaption>
+  <figcaption>Fig.4 - The attention-based set operations.</figcaption>
 </figure>
 
 
-<p>The Set Transformer introduces the Induced Set Attention Block (ISAB) (Figure 3) to reduce the computational time of self-attention from quadratic to linear in the number of elements in a set. This is accomplished by transforming the inducing points \(I\) through an attention mechanism that attends to the input set \(X\). The resulting transformed set is then subjected to another attention mechanism that attends to the input set \(X\) once again, ultimately producing a set.</p>
+<p>The Set Transformer introduces the Induced Set Attention Block (ISAB) (Figure 4) to reduce the computational time of self-attention from quadratic to linear in the number of elements in a set. This is accomplished by transforming the inducing points \(I\) through an attention mechanism that attends to the input set \(X\). The resulting transformed set is then subjected to another attention mechanism that attends to the input set \(X\) once again, ultimately producing a set.</p>
 
 <p>The ISAB is constructed using the Multihead Attention Block (MAB). Given two matrices \(X\) and \(Y\) representing two sets of \(d\)-dimensional vectors with dimensions \(\mathbb{R}^{n \times d}\), the MAB with parameters \(\Theta\) is defined as follows:
 \[\text{MAB}(X, Y) = \text{LayerNorm}(H + \text{rFF}(H)),\]
@@ -223,11 +223,11 @@ where \(H = \text{LayerNorm}(X + \text{Multihead}(X, Y, Y, \Theta))\), \(\text{r
 <figure>
   <img src="blog/7-21-23/et.png" style="width: 40%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
-  <figcaption>Fig.4 - Scheme of the ET block.</figcaption>
+  <figcaption>Fig.5 - Scheme of the ET block.</figcaption>
 </figure>
 
 
-<p>In a Transformer block, there are four fundamental operations: attention, feed-forward multi-layer perceptron (MLP), residual connection, and layer normalization. Energy Transformer (ET) replaces the sequence of feed forward transformer blocks with a single recurrent Associative Memory model. The ET block consists of both a Multi-Head Attention module and a Hopfield Network module for attention (Figure 4).</p> 
+<p>In a Transformer block, there are four fundamental operations: attention, feed-forward multi-layer perceptron (MLP), residual connection, and layer normalization. Energy Transformer (ET) replaces the sequence of feed forward transformer blocks with a single recurrent Associative Memory model. The ET block consists of both a Multi-Head Attention module and a Hopfield Network module for attention (Figure 5).</p> 
 
 <p>In particular, the energy of the Multi-Head Attention module has shown a resemblance to Hopfield networks in recent studies  <a href="#footnote-7" style="text-decoration: none;">[7]</a>, which is defined as:
 $$E^{\text{ATT}}=-\frac{1}{\beta}\underset{h}{\sum}\underset{C}{\sum}\text{log}(\underset{B\neq C}{\sum}\text{exp}(\beta\underset{\alpha}{\sum}K_{\alpha h B}Q_{\alpha h C})),$$</p>
@@ -241,12 +241,12 @@ where $\alpha$ denotes elements of the internal space, $h$ denotes different hea
 $$E^{\text{HN}}=-\frac{1}{2}\underset{B,\mu}{\sum}r(\underset{j}{\sum}\xi_{\mu j}g_{j B})^2,$$
 where $\xi_{\mu j}$ is a set of learnable weights (memories in the Hopfield Network), and $r(\cdot)$ is an activation function. It is a classical continuous Hopfield if the activation function grows slowly (e.g., ReLU), or a modern continuous Hopfield Network if the activation function is sharply peaked around the memories (e.g. power or softmax).</p>
 
-<p>ET aims to tackle image reconstruction (Figure 5) where half of these tokens were masked by replacing them with a learnable MASK token. A distinct learnable position encoding vector was added to each token. The ET block then processes all tokens recurrently for $T$ steps. The token representations after $T$ steps are passed to a linear decoder (consisting of a layer norm and an affine transformation). The loss function is the MSE loss on the occluded patches. ET operates akin to a global workspace, drawing patches towards the global minimum within the system.</p>
+<p>ET aims to tackle image reconstruction (Figure 6) where half of these tokens were masked by replacing them with a learnable MASK token. A distinct learnable position encoding vector was added to each token. The ET block then processes all tokens recurrently for $T$ steps. The token representations after $T$ steps are passed to a linear decoder (consisting of a layer norm and an affine transformation). The loss function is the MSE loss on the occluded patches. ET operates akin to a global workspace, drawing patches towards the global minimum within the system.</p>
 
 <figure>
   <img src="blog/7-21-23/et2.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
-  <figcaption>Fig.4 - The Attention (ATTN) block contributes general structure information to the masked patches at earlier time steps, whereas the Hopfield Network (HN) significantly sharpens the quality of the masked patches at later time steps.</figcaption>
+  <figcaption>Fig.6 - The Attention (ATTN) block contributes general structure information to the masked patches at earlier time steps, whereas the Hopfield Network (HN) significantly sharpens the quality of the masked patches at later time steps.</figcaption>
 </figure>
 
 
