@@ -155,7 +155,7 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 
 <br>
 <h3>Attention Mechanism</h3>
-The self-attention in Transformer employs the multi-head attention mechanism in which each head maps a query and a set of key-values pairs to an output. The output in a single head is computed as a weighted sum of values according to the attention score computed by a function of the query with the corresponding key. These single-head outputs are then concatenated and again projected, resulting in the final values:
+<p>The self-attention in Transformer employs the multi-head attention mechanism in which each head maps a query and a set of key-values pairs to an output. The output in a single head is computed as a weighted sum of values according to the attention score computed by a function of the query with the corresponding key. These single-head outputs are then concatenated and again projected, resulting in the final values:</p>
 
 $$\mbox{Multi-head}(Q,K,V)=\mbox{Concat}(\mbox{head}^1,\dots,\mbox{head}^H)W^O,$$
 
@@ -165,10 +165,10 @@ $$\mathbf{A_S} = \mbox{Attention}(Q,K,V)=\mbox{softmax}(\frac{QK^T}{\sqrt{d}}),$
 
 $$\mathbf{A_R}=\mathbf{A_S}\,\mathbf{V},$$
 
-where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, values and outputs. $\tilde{Q}= QW^{Q_i}$, $\tilde{K} = KW^{K_i}$, and $\tilde{V} = VW^{V_i}$. $d$ denotes the dimension of queries and keys in a single head. In self-attention, $Q = K = V$. However, this approach has a quadratic complexity $O(N^2)$ where $N$ denotes the number of tokens in an input sequence and can be computationally intensive. 
+<p>where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, values and outputs. $\tilde{Q}= QW^{Q_i}$, $\tilde{K} = KW^{K_i}$, and $\tilde{V} = VW^{V_i}$. $d$ denotes the dimension of queries and keys in a single head. In self-attention, $Q = K = V$. However, this approach has a quadratic complexity $O(N^2)$ where $N$ denotes the number of tokens in an input sequence and can be computationally intensive. </p>
 
 
-<br><br><br>
+<br>
 <h3>Perceiver <a href="#footnote-3" style="text-decoration: none;">[3]</a></h3>
 
 <figure>
@@ -216,20 +216,71 @@ where $W^Q,W^K,W^V$ and $W^O$ are linear transformations for queries, keys, valu
 where \(H = \text{LayerNorm}(X + \text{Multihead}(X, Y, Y, \Theta))\), \(\text{rFF}\) is a feed forward layer, and \(\text{LayerNorm}\) is layer normalization. Then, the ISAB is defined as $\text{ISAB}(X) = \text{MAB}(X, H) \in \mathbb{R}^{n \times d}$, where \(H = \text{MAB}(I, X) \in \mathbb{R}^{m \times d}\). Moreover, the self-attention is realized by a Set Attention Block (SAB): $\text{SAB}(X) = \text{MAB}(X, X)$.</p>
 
 
+
 <br>
-<h3>Energy Transformer with Hopfield <a href="#footnote-6" style="text-decoration: none;">[6]</a></h3>
+<h3>Linear Unified Nested Attention <a href="#footnote-6" style="text-decoration: none;">[6]</a></h3>
+
+<figure>
+  <img src="blog/7-21-23/luna.png" style="width: 50%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.5 - Architecture of the Linear Unified Nested Attention.</figcaption>
+</figure>
+
+
+<p>Linear Unified Nested Attention (Luna) aims to solve the quadratic complexity problem of full attention. Luna decouples the regular attention function into two nested attention operations, both of which have linear efficiency, with an extra input that is similar to the inducing points in the Set Transformer (Figure 5). Different from the Set Transformer, Luna is used as a drop-in-replacement for the regular attention in Transformer blocks. </p>
+
+<p>Let $P\in \mathbb{R}^{l\times d}$ be the extra input sequence and $X\in \mathbb{R}^{m\times d}$ be the context sequence. Then, we can obtain the output of the pack attention $Y_P\in \mathbb{R}^{l\times d} = \text{Attn}(P,X)$. The complexity of pack attention is $O(lm)$, which is linear with respect to $m$. Moreover, to unpack the sequence back to the length of the original query sequence $X$, Luna leverages its second attention $Y_X = \text{Attn}(X, Y_P)$, where the complexity is $O(ln)$. Additionally, the $P$ is initialized as learnable positional embeddings.</p>
+
+
+<br>
+<h3>Global Memory Augmentation for Transformers <a href="#footnote-7" style="text-decoration: none;">[7]</a></h3>
+
+<figure>
+  <img src="blog/7-21-23/gmat.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.6 - Architecture of the Global Memory Augmentation for Transformers (GMAT). (a) GMAT: For each attention head, tokens of the main sequence $X$ use sparse attention for attending to $X$, and dense attention for attending to the global memory. The memory attends to all tokens using dense attention. (b) chunked self-attention: tokens of the main sequence use dense attention for attending to their respective chunk and global memory, but do not attend to other chunks. (c) GMAT for sequence compression.</figcaption>
+</figure>
+
+<p>Global Memory Augmentation for Transformers (GMAT) (Figure 6) employ a small global memory which is read and updated by all the positions using vanilla attention. A list of $M$ memory tokens is prefixed to every input sequence (of length $L$) ($M \ll L$). At each multi-head attention layer, for each head, the $L$ tokens attend to other tokens of the main sequence using any sparse variant of attention, whereas they attend to the $M$ memory tokens using dense attention. A sparse attention variant computes a few entries of $QK^T$, masking out the rest. For a binary mask $B \in \{0, -\infty\}^{L_Q\times L_K}$, $\text{SparseAttention}(Q,K,V,B)=\text{softmax}(\frac{QK^T}{\sqrt{d}}+B)V$, where $L_Q$ and $L_K$ are the number of entries for Q and K. Moreover, the $M$ memory tokens attend to all $M+L$ tokens using dense attention. </p>
+
+<p>Consider a $N$-layer GMAT with a memory of size $M$. Given a length $L$ input sequence, let $W$ and $P$ denote its word and positional embeddings. First, the bottom $N_c$ layers are applied for compressing the entire information of the input sequence into just $M$ memory vectors. The next $N_m$ layers are then applied only on the $M$ memory vectors resulting in richer representations. This length $M$ sequence is restored to the original length $M+L$ by concatenating the positional embeddings $P$ and, finally, the remaining $N_d$ layers are applied for decompressing the information packed into the final representations, where the positional embeddings $P$ act as queries for restoring the original input information. </p>
+
+
+<br>
+<h3>Blockwise Multi-head Attention <a href="#footnote-8" style="text-decoration: none;">[8]</a></h3>
+
+<figure>
+  <img src="blog/7-21-23/block.png" style="width:60%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.7 - Architecture of Blockwise Multi-head Attention, which acts as building blocks of BlockBERT.</figcaption>
+</figure>
+
+
+<p>Blockwise Multi-head Attention (Figure 7) introduces a sparse block masking matrix $M$ to the $N\times N$ attention matrix. Each masking matrix is determined by a permutation $\pi = \{1,2,...,n\}$. Blockwise sparsity captures both local and long-distance dependencies in a memory efficiency way, which is crucial for long-document understanding tasks. The sparse block matrix $M$ is defined by</p>
+
+$$ M_{ij} =
+\begin{cases}
+    1 & \text{if } \pi(\lfloor\frac{(i-1)n}{N} + 1\rfloor) = \lfloor\frac{(j-1)n}{N} + 1\rfloor, \\
+    0 & \text{otherwise}.
+\end{cases}
+$$
+
+
+
+<br>
+<h3>Energy Transformer with Hopfield <a href="#footnote-9" style="text-decoration: none;">[9]</a></h3>
 
 
 <figure>
   <img src="blog/7-21-23/et.png" style="width: 40%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
-  <figcaption>Fig.5 - Scheme of the ET block.</figcaption>
+  <figcaption>Fig.8 - Scheme of the ET block.</figcaption>
 </figure>
 
 
-<p>In a Transformer block, there are four fundamental operations: attention, feed-forward multi-layer perceptron (MLP), residual connection, and layer normalization. Energy Transformer (ET) replaces the sequence of feed forward transformer blocks with a single recurrent Associative Memory model. The ET block consists of both a Multi-Head Attention module and a Hopfield Network module for attention (Figure 5).</p> 
+<p>In a Transformer block, there are four fundamental operations: attention, feed-forward multi-layer perceptron (MLP), residual connection, and layer normalization. Energy Transformer (ET) replaces the sequence of feed forward transformer blocks with a single recurrent Associative Memory model. The ET block consists of both a Multi-Head Attention module and a Hopfield Network module for attention (Figure 8).</p> 
 
-<p>In particular, the energy of the Multi-Head Attention module has shown a resemblance to Hopfield networks in recent studies  <a href="#footnote-7" style="text-decoration: none;">[7]</a>, which is defined as:
+<p>In particular, the energy of the Multi-Head Attention module has shown a resemblance to Hopfield networks in recent studies  <a href="#footnote-10" style="text-decoration: none;">[10]</a>, which is defined as:
 $$E^{\text{ATT}}=-\frac{1}{\beta}\underset{h}{\sum}\underset{C}{\sum}\text{log}(\underset{B\neq C}{\sum}\text{exp}(\beta\underset{\alpha}{\sum}K_{\alpha h B}Q_{\alpha h C})),$$</p>
 
 $$K_{\alpha h B}=\underset{j}{\sum}W_{\alpha h j}^K g_{j B},$$
@@ -241,12 +292,12 @@ where $\alpha$ denotes elements of the internal space, $h$ denotes different hea
 $$E^{\text{HN}}=-\frac{1}{2}\underset{B,\mu}{\sum}r(\underset{j}{\sum}\xi_{\mu j}g_{j B})^2,$$
 where $\xi_{\mu j}$ is a set of learnable weights (memories in the Hopfield Network), and $r(\cdot)$ is an activation function. It is a classical continuous Hopfield if the activation function grows slowly (e.g., ReLU), or a modern continuous Hopfield Network if the activation function is sharply peaked around the memories (e.g. power or softmax).</p>
 
-<p>ET aims to tackle image reconstruction (Figure 6) where half of these tokens were masked by replacing them with a learnable MASK token. A distinct learnable position encoding vector was added to each token. The ET block then processes all tokens recurrently for $T$ steps. The token representations after $T$ steps are passed to a linear decoder (consisting of a layer norm and an affine transformation). The loss function is the MSE loss on the occluded patches. ET operates akin to a global workspace, drawing patches towards the global minimum within the system.</p>
+<p>ET aims to tackle image reconstruction (Figure 9) where half of these tokens were masked by replacing them with a learnable MASK token. A distinct learnable position encoding vector was added to each token. The ET block then processes all tokens recurrently for $T$ steps. The token representations after $T$ steps are passed to a linear decoder (consisting of a layer norm and an affine transformation). The loss function is the MSE loss on the occluded patches. ET operates akin to a global workspace, drawing patches towards the global minimum within the system.</p>
 
 <figure>
   <img src="blog/7-21-23/et2.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
   <br>
-  <figcaption>Fig.6 - The Attention (ATTN) block contributes general structure information to the masked patches at earlier time steps, whereas the Hopfield Network (HN) significantly sharpens the quality of the masked patches at later time steps.</figcaption>
+  <figcaption>Fig.9 - The Attention (ATTN) block contributes general structure information to the masked patches at earlier time steps, whereas the Hopfield Network (HN) significantly sharpens the quality of the masked patches at later time steps.</figcaption>
 </figure>
 
 
@@ -265,7 +316,10 @@ where $\xi_{\mu j}$ is a set of learnable weights (memories in the Hopfield Netw
 <p id="footnote-3">[3] Andrew Jaegle, Felix Gimeno, Andy Brock, and et al. Perceiver: General perception with iterative attention. In ICML, volume 139 of Proceedings of Machine Learning Research, pages 4651–4664. PMLR, 2021.</p>
 <p id="footnote-4">[4] Andrew Jaegle, Sebastian Borgeaud, Jean-Baptiste Alayrac, and et al. Perceiver IO: A general architecture for structured inputs & outputs. In ICLR. 2022.</p>
 <p id="footnote-5">[5] Juho Lee, Yoonho Lee, Jungtaek Kim, and et al. Set transformer: A framework for attention-based permutation-invariant neural networks. In ICML, volume 97 of Proceedings of Machine Learning Research, pages 3744–3753. PMLR, 2019.</p>
-<p id="footnote-6">[6] Benjamin Hoover, Yuchen Liang, Bao Pham, et al. Energy transformer. CoRR, abs/2302.07253, 2023</p>
-<p id="footnote-7">[7] Hubert Ramsauer, Bernhard Schafl, Johannes Lehner, et al. Hopfield networks is all you need. ICLR, 2021.</p>
+<p id="footnote-6">[6] Xuezhe Ma, Xiang Kong, Sinong Wang, et al. Luna: Linear unified nested attention. NeurIPS, 2441–2453, 2021.</p>
+<p id="footnote-7">[7] Ankit Gupta and Jonathan Berant. GMAT: global memory augmentation for transformers. arXiv:2006.03274, 2020.</p>
+<p id="footnote-8">[8] Jiezhong Qiu, Hao Ma, Omer Levy, and et al. Blockwise self-attention for long document understanding. EMNLP, 2020.</p>
+<p id="footnote-9">[9] Benjamin Hoover, Yuchen Liang, Bao Pham, et al. Energy transformer. arXiv:2302.07253, 2023.</p>
+<p id="footnote-10">[10] Hubert Ramsauer, Bernhard Schafl, Johannes Lehner, et al. Hopfield networks is all you need. ICLR, 2021.</p>
 <br><br>
 </html>
