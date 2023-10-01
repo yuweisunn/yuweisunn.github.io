@@ -1,0 +1,211 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="icon" href="css/icon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+<link href='https://unpkg.com/css.gg@2.0.0/icons/css/dark-mode.css' rel='stylesheet'>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #990000; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 10px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#myBtn:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}
+
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+</style>
+
+<script>
+  // Math
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+  // Get the button
+  let mybutton = document.getElementById("myBtn");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  function myFunction() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+  }
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class ="content">
+<title>Memory: Natural and Artificial</title>
+
+
+  
+<div id="basic">
+<br>
+<button onclick="myFunction()" class="gg-dark-mode" style="float: right;"></button>
+<h1>Memory: Natural and Artificial</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br><a href="https://yuweisunn.github.io/home.html", target="_blank", style="text-decoration: none; color: gray"><b>All posts</b></a>
+
+<br>
+<br>
+<br>
+
+<p><b>This post provides a literature review on natural memory to bolster our recent study on the <a href="https://arxiv.org/abs/2309.12862", target="_blank", style="text-decoration: none; color: #990000">Associative Transformer</a>. This architecture features two complementary memory systems: one built on attention-based explicit memory and the other on Hopfield memory.</b></p>
+<br>
+
+<h2>Complementary Learning Systems Theory <a href="#footnote-1" style="text-decoration: none;">[1]</a> <a href="#footnote-2" style="text-decoration: none;">[2]</a></h2>
+
+<p>Complementary Learning Systems (CLS) theory postulates that intelligent agents require two learning systems, which are instantiated in mammals through the neocortex and the hippocampus. The neocortex gradually acquires structured knowledge representations, while the hippocampus quickly learns the specifics of individual experiences (Figure 1). One might wonder why a hippocampal system is necessary when memory task performance ultimately relies on changes in neocortical connections. The answer lies in the hippocampus serving as an intermediary for the initial storage of memories in a format that does not disrupt existing neocortical knowledge. This concept draws parallels between working memory (which deals with recent, relevant information) and reference memory (concerned with invariant aspects of task situations) and the CLS theory.</p>
+
+<figure>
+  <img src="blog/10-01-23/memory.png" style="width: 35%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.1 - Complementary Learning Systems (CLS) theory involves the neocortex and the hippocampus <a href="#footnote-1" style="text-decoration: none;">[1]</a>.</figcaption>
+</figure>
+
+<br>
+<h3>Hippocampal storage</h3>
+
+<p>Within-system consolidation refers to the stabilization of recently formed memories within the hippocampus, possibly involving the strengthening of synapses among hippocampal neurons. The neocortical representation is thought to be condensed into a smaller set of neurons within the hippocampal system. The entorhinal cortex serves as the final convergence point for neocortical inputs to the hippocampus. Central to the hippocampus's role in storing specific experiences are two complementary computations: pattern separation and pattern completion. The Dentate Gyrus (DG) subregion of the hippocampus accomplishes pattern separation by orthogonalizing incoming inputs before their auto-associative storage in the CA3 region. Additionally, the CA3 subregion plays a crucial role in pattern completion, allowing for the retrieval of an entire stored pattern, equivalent to an entire episodic memory, from partial input, consistent with its function as an attractor network. Prediction is suggested as a role for the hippocampus in foreseeing the future based on the present and recent past. This can result from associative storage and retrieval through pattern completion. Processing of both spatial (e.g., place) and non-spatial (e.g., what happened) aspects of an event is believed to occur primarily in parallel streams before converging in the hippocampus at the DG/CA3 subregions.</p>
+
+<figure>
+  <img src="blog/10-01-23/memory2.png" style="width: 70%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.2 - Within-system consolidation and systems-level consolidation <a href="#footnote-2" style="text-decoration: none;">[2]</a>.</figcaption>
+</figure>
+
+
+<br>
+<h3>Hippocampal replay</h3>
+
+<p>Systems-level consolidation pertains to the gradual integration of knowledge into neocortical circuits (Figure 2). Replay of recent experiences occurs during periods of rest or offline states, such as during sleep. During replay, the hippocampus and neocortex collaborate to facilitate interleaved learning (Figure 3). The DG plays a critical role in this process by selecting distinct neural activity patterns in CA3 for each individual experience. This mechanism provides an opportunity for gradual adjustments in neocortical connections, allowing memories initially reliant on the hippocampal system to gradually become independent. In this sense, the hippocampal memory system acts as a teacher for the neocortical processing system. The knowledge that underlies neocortical processing capabilities is believed to be encoded within these connections. Concepts like semantic memory and category learning can emerge through the gradual accumulation of small changes stemming from individual events and experiences. Infantile amnesia, the absence of explicit memories from early life, may be attributed to immature hippocampal traces that are challenging to access and interpret as the neocortical representation evolves over time.</p>
+
+<figure>
+  <img src="blog/10-01-23/memory3.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.3 - Hippocampal encoding and retrieval <a href="#footnote-4" style="text-decoration: none;">[4].</a></figcaption>
+</figure>
+
+<br>
+<h3>Preferential replay</h3>
+
+<p>The hippocampus may allow the general statistics of the environment to be circumvented by reweighting experiences such that statistically unusual but significant events may be afforded privileged status. This not only leads to preferential storage and/or stabilization but also results in preferential replay, subsequently shaping neocortical learning.</p>
+
+
+<br>
+<br>
+<h2>Consciousness as a Memory System <a href="#footnote-3" style="text-decoration: none;">[3]</a></h2>
+
+<h3>Consciousness</h3>
+
+<p>Phenomenal consciousness is the subjective experience we undergo during an event, while access consciousness refers to when representations become available for cognitive processing. There seems to be a close connection between a mental state being conscious and its contents being available for reporting to others or for use in making rational choices. For instance, we were phenomenally conscious of the sounds of the clock and the earlier part of this sentence, but our access to consciousness occurred only later. The 'hard problem' of consciousness addresses how a collection of biological material can give rise to the subjective experience we call consciousness.</p>
+
+<br>
+<h3>In relation to memory</h3>
+
+<p>In reality, we do not directly perceive anything consciously; instead, we experience a memory of a perception. Our conscious decisions and actions are, in fact, recollections of unconscious decisions and actions. We only become aware of the conscious decision or action after the fact. Consciousness may be a component of the episodic memory system, allowing us to mentally time-travel and re-experience past moments, often associated with emotional value (although some argue that conscious memory can be categorized into semantic and episodic memory). In contrast, the ability to derive general facts from specific events is attributed to semantic memory.</p>
+
+
+<br>
+<br>
+<h2>Associative Transformer <a href="#footnote-5" style="text-decoration: none;">[5]</h2>
+
+<p>There is no completely general-purpose learning algorithm, and any learning algorithm will generalize better on some distributions and worse on others <a href="#footnote-6" style="text-decoration: none;">[6]</a>. Although transformers proposed a general-purpose architecture in which inductive biases shaping the flow of information are learned from the data itself, there is still the possibility of adding third-order control of the information flow.</p> 
+
+<p>Associative Transformer (AiT) induces low-rank explicit memory that serves as both priors to guide bottleneck attention in the shared workspace and attractors within associative memory of a Hopfield network (Figure 4). Through joint end-to-end training, these priors naturally develop module specialization, each contributing a distinct inductive bias to form attention bottlenecks. A bottleneck can foster competition among inputs for writing information into the memory. We show that AiT is a sparse representation learner, learning distinct priors through the bottlenecks that are complexity-invariant to input quantities and dimensions. AiT has demonstrated its superiority over a wide range of methods such as the Set Transformer and the Coordination method.</p>
+<br>
+
+<figure>
+  <img src="blog/10-01-23/memory4.png" style="width: 100%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <br>
+  <figcaption>Fig.4 - The scheme of the Associative Transformer. (a) In a global workspace layer, the input $\mathbb{R}^{B\times N\times E}$ is squashed into vectors $\mathbb{R}^{(B\times N)\times E}$. The squashed representations are projected to a low-rank latent space of dimension and then are sparsely selected and stored in the explicit memory via a fixed bottleneck. The Hopfield network utilizes the memory to reconstruct the input, where a learnable linear transformation (LT) scales the memory contents to match the input dimension. (b) The Associative Transformer block consists of sequentially connected multi-head attention, feed-forward layers, and the global workspace layer.</a></figcaption>
+</figure>
+
+
+</div>
+<br><br>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2023</p>
+</footer>
+<br>
+<br>
+
+
+<p id="footnote-1">[1] McClelland L., McNaughton L., O'Reilly C.. Why there are complementary learning systems in the hippocampus and neocortex: insights from the successes and failures of connectionist models of learning and memory. Psychological review, 102(3), 419–457. 1995.</p> 
+<p id="footnote-2">[2] Kumaran D., Hassabis D., McClelland L.. What Learning Systems do Intelligent Agents Need? Complementary Learning Systems Theory Updated. Trends in cognitive sciences, 20(7), 512–534. 2016.</p>
+<p id="footnote-3">[3] Budson E., Richman A., and Kensinger A.. Consciousness as a Memory System. Cognitive and behavioral neurology. 2022.</p>
+<p id="footnote-4">[4] Hasselmo E. and Chantal Stern. Theta rhythm and the encoding and retrieval of space and time. NeuroImage 85. 2014.</p>
+<p id="footnote-5">[5] Yuwei Sun, Hideya Ochiai, Zhirong Wu, Stephen Lin, Ryota Kanai. Associative Transformer is a Sparse Representation Learner. arXiv. 2023.</p>
+<p id="footnote-6">[6] Goyal, Anirudh and Yoshua Bengio. Inductive biases for deep learning of higher-level cognition. Proceedings of the Royal Society A 478. 2020.</p>
+<br><br>
+</html>
