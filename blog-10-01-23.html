@@ -189,6 +189,7 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
   <figcaption>Fig.4 - The scheme of the Associative Transformer. (a) In a global workspace layer, the input $\mathbb{R}^{B\times N\times E}$ is squashed into vectors $\mathbb{R}^{(B\times N)\times E}$. The squashed representations are projected to a low-rank latent space of dimension and then are sparsely selected and stored in the explicit memory via a fixed bottleneck. The Hopfield network utilizes the memory to reconstruct the input, where a learnable linear transformation (LT) scales the memory contents to match the input dimension. (b) The Associative Transformer block consists of sequentially connected multi-head attention, feed-forward layers, and the global workspace layer.</a></figcaption>
 </figure>
 
+<br>
 <h4>Squash layer</h4>
 <p>In pairwise self-attention, patches from the same sample are attended to. We improve the diversity in patch-wise correlation learning beyond one sample using a squash layer. The squash layer concatenates $N$ patches $V\in\mathbb{R}^{B\times N\times E}$ within one batch $B$ into vectors $V\in\mathbb{R}^{(B\times N)\times E}$, which forms a list of patches regardless of the samples they are from. Since the bottleneck with a fixed capacity $k$ decreases the complexity from $O((B\times N)^2)$ to $O((B\times N)\times k)$, using the squash layer will not add up to the complexity, but increase the diversity of input patches.</p>
 
