@@ -182,7 +182,6 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
 <p>There is no completely general-purpose learning algorithm, and any learning algorithm will generalize better on some distributions and worse on others <a href="#footnote-6" style="text-decoration: none;">[6]</a>. Although transformers proposed a general-purpose architecture in which inductive biases shaping the flow of information are learned from the data itself, there is still the possibility of adding third-order control of the information flow.</p> 
 
 <p>Associative Transformer (AiT) induces low-rank explicit memory that serves as both priors to guide bottleneck attention in the shared workspace and attractors within associative memory of a Hopfield network (Figure 4). Through joint end-to-end training, these priors naturally develop module specialization, each contributing a distinct inductive bias to form attention bottlenecks. A bottleneck can foster competition among inputs for writing information into the memory. We show that AiT is a sparse representation learner, learning distinct priors through the bottlenecks that are complexity-invariant to input quantities and dimensions. AiT has demonstrated its superiority over a wide range of methods such as the Set Transformer and the Coordination method.</p>
-<br>
 
 <figure>
   <img src="blog/10-01-23/memory4.png" style="width: 100%;margin-left: auto; margin-right: auto;display: block;" class="center">
@@ -190,6 +189,65 @@ Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-
   <figcaption>Fig.4 - The scheme of the Associative Transformer. (a) In a global workspace layer, the input $\mathbb{R}^{B\times N\times E}$ is squashed into vectors $\mathbb{R}^{(B\times N)\times E}$. The squashed representations are projected to a low-rank latent space of dimension and then are sparsely selected and stored in the explicit memory via a fixed bottleneck. The Hopfield network utilizes the memory to reconstruct the input, where a learnable linear transformation (LT) scales the memory contents to match the input dimension. (b) The Associative Transformer block consists of sequentially connected multi-head attention, feed-forward layers, and the global workspace layer.</a></figcaption>
 </figure>
 
+<h4>Squash layer</h4>
+<p>In pairwise self-attention, patches from the same sample are attended to. We improve the diversity in patch-wise correlation learning beyond one sample using a squash layer. The squash layer concatenates $N$ patches $V\in\mathbb{R}^{B\times N\times E}$ within one batch $B$ into vectors $V\in\mathbb{R}^{(B\times N)\times E}$, which forms a list of patches regardless of the samples they are from. Since the bottleneck with a fixed capacity $k$ decreases the complexity from $O((B\times N)^2)$ to $O((B\times N)\times k)$, using the squash layer will not add up to the complexity, but increase the diversity of input patches.</p>
+
+<h4>Low-rank explicit memory</h4>
+<p>An explicit memory bank with limited slots aims to learn $M$ priors $\gamma = \mathbb{R}^{M\times D}$ where $D$ is the dimension of the prior. The priors in the memory bank are used as various keys to compute the bottleneck attentions that extract different sets of patches from the squashed input. Further using low-rank priors can reduce memory consumption, whose lower dimension $D << E$ is obtained by applying a down-scale linear transformation on the input patch dimension $E$.</p>
+
+<br>
+<h3>Bottleneck attention with a limited capacity</h3>
+<p>The objective of the bottleneck attention is to learn a set of priors that guide attention to various sets of input patches. This is enabled by a cross-attention mechanism constrained by hard attention. We first consider a tailored cross-attention mechanism to update the memory bank based on the squashed input $\Xi^t = V^t\in\mathbb{R}^{(B\times N)\times E}$, then we discuss the case of limiting the capacity via a top-$k$ hard attention. Notably, in the cross-attention, the query is a function $W^Q$ of the current memory content $\gamma^t = \{\gamma^t_i\}_{i=1}^M$. The key and value are functions $W^K$ and $W^V$ of the squashed input $\Xi^t$. The attention scores for head $i$ can be computed by $\text{A}^t_i(\gamma^t, \Xi^t)=\text{softmax}(\frac{\gamma^tW^Q_{i,t}(\Xi^tW^K_{i,t})^T}{\sqrt{D}})$. 
+</p>
+
+<p>The hard attention allows patches to compete to enter the workspace through a $k$-size bottleneck, fostering essential patches to be selected. In particular, we select the top-$k$ patches with the highest attention scores from $A^t_i$. The priors in the memory are then updated based on the top-$k$ patches. </p>
+
+<p>Moreover, to ensure a stable update of these priors across different time steps, we employ the layer normalization and the exponentially weighted moving average as follows</p>
+$$
+\text{head}^t_i = \text{top-}k(\text{A}^t_i)\Xi^tW^V_t,\,\,
+$$
+
+$$
+\hat{\gamma}^{t}=\text{LN}(\text{Concat}(\text{head}^t_1,\dots,\text{head}^t_A)W^O),
+$$
+
+$$\gamma^{t+1} = (1 - \alpha) \cdot \gamma^{t} + \alpha \cdot \hat{\gamma}^{t},\,\,$$
+
+$$\gamma^{t+1} = \frac{{\gamma^{t+1}}}{{\sqrt{\sum_{{j=1}}^{M} (\gamma^{t+1}_j)^2}}},
+$$
+<p>where top-$k$ is a function to select the $k$ highest attention scores and set the other scores to zero, LN is the layer normalization function, and $\alpha$ is a smoothing factor.</p>
+
+<h4>Bottleneck attention balance loss</h4>
+
+<p>Employing multiple global workspace layers cascaded in depth leads to the difficulty in the emergence of specialized priors in the explicit memory. To overcome this challenge, we propose the bottleneck attention balance loss to encourage the selection of diverse patches from different input positions in the shared workspace. $\ell_{\text{bottleneck}}$ comprises two components, i.e., the accumulative attention scores and the chosen instances for each input position. Then, we derive the normalized variances of the two metrics across different input positions as follows</p>
+$$\ell_{\text{loads}_{i,l}}  = \sum_{j=1}^M (\text{A}^t_{i,j,l} > 0),\,\,$$
+
+$$\ell_{\text{importance}_{i,l}}  = \sum_{j=1}^M \text{A}^t_{i,j,l},$$
+$$\ell_{\text{bottleneck}_{i}}  = \frac{{\text{Var}(\{\ell_{\text{importance}_{i,l}}}\}_{l=1}^{B \times N})}{{(\frac{1}{B \times N}\sum_{l=1}^{B \times N}\ell_{\text{importance}_{i,l}}})^2 + \epsilon} + \frac{{\text{Var}(\{\ell_{\text{loads}_{i,l}}}\}_{l=1}^{B \times N})}{{(\frac{1}{B \times N}\sum_{l=1}^{B \times N}\ell_{\text{loads}_{i,l}}})^2 + \epsilon},
+$$
+<p>where $\text{A}^t_{i,j,l}$ denotes the attention score of the input position $l$ for the $j$th memory slot of head $i$, $\ell_{\text{importance}}$ represents the accumulative attention scores in all $M$ memory slots for each input position, $\ell_{\text{loads}}$ represents the accumulative chosen instances for each input position, Var($\cdot$) denotes the variance function, and $\epsilon$ is a small value. The losses for all the heads are summed up as follows $\ell_{\text{bottleneck}} = \sigma\cdot \sum_{i=1}^A\ell_{\text{bottleneck}_i}$ where $\sigma$ is a coefficient. </p>
+
+<br>
+<h3>Information retrieval within associative memory</h3>
+<h4>Attractors</h4>
+
+<p>Priors learned in the memory bank act as attractors in associative memory. Attractors have basins of attraction defined by an energy function. Any input state that enters an attractor’s basin of attraction will converge to that attractor. The attractors in associative memory usually have the same dimension as input states, however, the priors $\gamma^{t+1}$ in the memory bank have a lower rank compared to the input. Therefore, we employ a learnable linear transformation $f_{\text{LT}}(\cdot)$ to project the priors into the same dimensional space $E$ of the input before using them as attractors.</p>
+
+<h4>Retrieval using an energy function in Hopfield networks</h4>
+
+<p>Hopfield networks have demonstrated their potential as a promising approach to constructing associative memory. In particular, we use a continuous Hopfield network operating with continuous input and output values. The upscaled priors $f_{\text{LT}}(\gamma^{t+1})$ are stored within the continuous Hopfield network and subsequently retrieved to reconstruct the input state $\Xi^t\rightarrow \hat{\Xi}^{t}$. Then, we update each patch representation $\xi^t \in \Xi^t$ by decreasing its energy $E(\xi^t)$ within the associative memory as follows</p>
+$$
+    E(\xi^t) = -\text{lse}(\beta,f_{\text{LT}}(\gamma^{t+1}) \xi^t)+\frac{1}{2}\xi^t{\xi^t}^T+\beta^{-1}\text{log}M+\frac{1}{2}\zeta^2, 
+$$
+
+$$
+    \zeta = \max_{i} |f_{\text{LT}}(\gamma^{t+1}_i)|,
+$$
+
+$$
+\hat{\xi}^t = \arg\min_{\xi^t} E(\xi^t),
+$$
+<p>where lse is the log-sum-exp function, $\beta$ is an inverse temperature variable, and $\zeta$ denotes the largest norm of attractors. A skip connection functioning as the information broadcast is employed to obtain the final output $\Xi^{t+1} = \hat{\Xi}^{t} + \Xi^{t}$.</p>
 
 </div>
 <br><br>
