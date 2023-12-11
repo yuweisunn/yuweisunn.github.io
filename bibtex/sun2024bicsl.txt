@@ -1,0 +1,7 @@
+@article{sun2024bicsl,
+  author    = {Yuwei Sun and
+               Hideya Ochiai},
+  title     = {Bidirectional Contrastive Split Learning for Visual Question Answering},
+  journal   = {AAAI},
+  year      = {2024}
+}
