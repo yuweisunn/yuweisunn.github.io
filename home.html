@@ -57,14 +57,6 @@ h4{color:#990000}
   color: white;
 }
 
-#likeButton {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-        }
-
 </style>
 
 
@@ -109,24 +101,6 @@ h4{color:#990000}
    var element = document.body;
    element.classList.toggle("dark-mode");
   }
-
-
-  let likeCount = parseInt(localStorage.getItem('likeCount')) || 0;
-
-  function updateLikeCount() {
-      document.getElementById("likeCount").innerText = likeCount;
-  }
-
-  function like() {
-      likeCount++;
-      // Update the like count in localStorage
-      localStorage.setItem('likeCount', likeCount);
-      updateLikeCount();
-  }
-
-  window.onload = function () {
-      updateLikeCount();
-  };
 </script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
@@ -140,12 +114,6 @@ h4{color:#990000}
 <h1>The Modular Mind Blog</h1>
 Created by <a href="https://yuweisunn.github.io/", style="text-decoration: none;"><b>Yuwei Sun</b></a>
 <br><br>
-
-
-<i class="fa fa-thumbs-up" onclick="like()" style='font-size:24px'></i> 
-<span id="likeCount" style="font-size: 20px;">0</span>
-
-
 
 <div class="row">
   <div class="leftcolumn">
