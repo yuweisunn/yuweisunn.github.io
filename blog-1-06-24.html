@@ -1,0 +1,256 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+
+<link rel="icon" href="css/icon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+<link href='https://unpkg.com/css.gg@2.0.0/icons/css/dark-mode.css' rel='stylesheet'>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<style>
+.content {
+  max-width: 60%;
+  margin: auto;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+h1{color:#990000}
+
+h2{color:#990000}
+
+h3{color:#990000}
+
+h4{color:#990000}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #990000; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 10px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#myBtn:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}
+
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+</style>
+
+<script>
+  // Math
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+  // Get the button
+  let mybutton = document.getElementById("myBtn");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  function myFunction() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+  }
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class ="content">
+<title>Memory in Language Model-Enabled Agents</title>
+
+  
+<div id="basic">
+<br>
+<button onclick="myFunction()" class="gg-dark-mode" style="float: right;"></button>
+<h1>Memory in Language Model-Enabled Agents</h1>
+Created by <a href="https://yuweisunn.github.io/", target="_blank", style="text-decoration: none;"><b>Yuwei Sun</b></a>
+<br><a href="https://yuweisunn.github.io/home.html", target="_blank", style="text-decoration: none; color: gray"><b>All posts</b></a>
+
+<br>
+<br>
+<br>
+
+
+
+<b>Language models emerge as potential planners and world models for agents in virtual environments. This post delves into the unique capabilities of LLMs for decision-making and environmental understanding within simulated worlds.</b>
+
+
+<br>
+<br>
+<h2>Memory of Language Models</h2>
+
+<p>The simplest form of memory for language models involves limiting the number of tokens it can store. If the conversation history becomes excessively long and exceeds the model's token limit, earlier messages may be truncated, potentially leading to a loss of context. Scaling up the input context length has been explored in LLM studies; for example, GPT-3 increases the input length from 1k in GPT-2 to 2k tokens. However, this approach typically results in computation-intensive training, constrained by the quadratic computation complexity of self-attention.</p>
+
+
+<br>
+<h2>Language Model-Enabled Agents</h2>
+
+<h3>MemoryBank: Enhancing Large Language Models with Long-Term Memory <a href="#footnote-1" style="text-decoration: none;">[1]</a></h3>
+
+<p>MemoryBank enables the models to recall relevant memories, continually evolve through continuous memory updates, and adapt to a user’s personality over time by summarizing information from previous interactions.</p>
+
+
+<figure>
+  <img src="blog/1-06-24/memorybank.png" style="width: 100%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.1 - Overview of the MemoryBank <a href="#footnote-1" style="text-decoration: none;">[1]</a>.</figcaption>
+</figure>
+
+
+<ul>
+<li>Every turn of <b>conversations and event summaries</b> is considered as a memory piece $m$, which is pre-encoded into a contextual representation $h_m$ using the encoder model $E(\cdot)$. 
+<li>The current context of conversation $c$ is encoded by $E(\cdot)$ into $h_c$, which serves as the query to search $M$ for the most relevant memory.
+<li><b>Ebbinghaus forgetting curve</b> uses an exponential decay model: $R=e^{-\frac{t}{S}}$. $R$ is the memory retention. $t$ is the time elapsed since learning the information. $e$ is approximately equal to 2.71828. $S$ is the memory strength, which changes based on factors such as the depth of learning and the amount of repetition.
+<li>$S$ is modeled as a discrete value and initialized with 1 upon its first mention in a conversation. When recalled during conversations, it will persist longer in memory by increasing $S$ by 1 and reseting $t$ to 0, hence forget it with a lower probability.
+</ul>
+
+<br>
+<h3>Augmenting Language Models with Long-Term Memory <a href="#footnote-2" style="text-decoration: none;">[2]</a></h3>
+
+<p>Language Models Augmented with Long-Term Memory (LONGMEM) enables LLMs to memorize long history. A decoupled network architecture with the original backbone LLM frozen as a memory encoder and an adaptive residual side-network as a memory retriever.</p>
+
+<figure>
+  <img src="blog/1-06-24/longmem.png" style="width: 80%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.2 - Overview of the memory caching and retrieval flow of LONGMEM. The long text sequence
+is split into fix-length segments, then each segment is forwarded through large language models and
+the attention key and value vectors of $m$-th layer are cached into the long-term memory bank. For
+future inputs, via attention <b>query-key based retrieval</b>, the top-$k$ attention key-value pairs of long-term memory are retrieved and fused into language modeling <a href="#footnote-2" style="text-decoration: none;">[2]</a>.</figcaption>
+</figure>
+
+
+<p>There are three key components: the frozen backbone LLM, SideNet, and Cache Memory Bank:</p>
+
+<ul> 
+  <li>The embedding layer of the backbone LLM first encodes the input ${x_i}_{i=1}^{|x|}$ into embedding space and outputs the initial hidden states, $H_{\text{LLM}}^0\in \mathbb{R}^{|x|\times E}$, where $E$ is the hidden dimension.
+  <li>Each successive Transformer decoder layer of the frozen backbone LLM computes the new hidden states using the hidden states from the previous layer, $H_{\text{LLM}}^{l'}=f_{\theta_{\text{LLM}}^{l'}}(H_{\text{LLM}}^{l'-1}), \forall l'\in [1,L']$ and $L'$ is the total # layers for the backbone LLM.
+  <li>The key-value pairs used for self-attention at the $m$-th Transformer decoder layer are stored in Cached Memory Bank, which is a cached head-wise vector queue $Z_k \in \mathbb{R}^{H\times M \times d}$, $M$ is the memory bank size and $H$ is the number of attention heads. 
+  <li>The SideNet module takes all current input hidden states from the backbone LLM and the past key-value pairs in Cached Memory Bank for computing memory-augmented representations. 
+  <li>SideNet consists of $(L-1)$ normal Transformer decoder layers for the hidden states from the current input, and one special memory-augmented decoder layer for the top relevant key-value pairs in memory.
+  <li>The memory bank stores cached key-value pairs at the level of token chunks and divides tokens into $M/csz$ chunks. A chunk refers to an $n$-gram structure of chunk-size $csz$ number of tokens. The mean-pooled vector is used on the chunk-size dimension to get the key vector for retrieval. 
+</ul>
+
+
+<br>
+<h3>Reflexion: Language Agents with Verbal Reinforcement Learning <a href="#footnote-3" style="text-decoration: none;">[3]</a></h3>
+
+<p>Reflexion uses verbal reinforcement to help agents learn from prior failings. Reflexion converts binary or scalar feedback from the environment into verbal feedback in the form of a textual summary, which is then added as additional context for the LLM agent in the next episode.</p>
+
+
+<figure>
+  <img src="blog/1-06-24/reflect.png" style="width: 60%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.3 - Diagram of Reflexion <a href="#footnote-3" style="text-decoration: none;">[3]</a>.</figcaption>
+</figure>
+
+<ul>
+    <li>Three distinct models: an Actor $M_a$ generates text and actions; an Evaluator model $M_e$ scores the outputs produced by $M_a$; and a Self-Reflection model $M_sr$ generates verbal reinforcement cues to assist the Actor in self-improvement. 
+    <li>The trajectory history serves as the short-term memory, while outputs from the Self-Reflection model are stored in long-term memory.
+    <li>The process: Actor produces a trajectory $\tau_0$ by interacting with the environment. The Evaluator then produces a score $r_0$. The Self-Reflection model analyzes the set of $\{\tau_0, r_0\}$ to produce a verbal experience feedback $sr_0$ which is stored in the memory (with an upper bound of the total experience number). The Actor, Evaluator, and Self-Reflection models work together through trials until the Evaluator deems $\tau_t$ to be correct.
+    <li>Self-reflection timings: the agent executes the same action and receives the same response for more than 3 cycles; the number of actions taken in the current environment exceeds 30 (inefficient planning).
+</ul>
+
+
+
+<br>
+<h3>Generative agents: Interactive simulacra of human behavior <a href="#footnote-4" style="text-decoration: none;">[4]</a></h3>
+
+<p>This work simulates 25 agents for 2 days in a simulated sandbox environment. The agents interact with the world through their actions and engage in natural language communication with each other. Social dynamics unfold among multiple agents.</p>
+
+<figure>
+  <img src="blog/1-06-24/agent1.png" style="width: 100%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.4 - The simulated sandbox environment <a href="#footnote-4" style="text-decoration: none;">[4]</a>.</figcaption>
+</figure>
+
+<p>Success in this simulation necessitates an approach that can retrieve relevant events and interactions over an extended period, reflect on those memories to generalize and draw higher-level inferences, and apply that reasoning to formulate plans and reactions that make sense both in the current moment and in the longer-term trajectory of the agent's behavior.</p>
+
+<p>To construct an agent, a memory stream is employed to record, in natural language, a comprehensive list of the agent's experiences. Based on their perceptions, the architecture retrieves relevant memories and utilizes those retrieved actions to determine subsequent actions. These retrieved memories also contribute to the formation of longer-term plans and the generation of higher-level reflections, both of which are incorporated into the memory stream for future reference.</p>
+
+<figure>
+  <img src="blog/1-06-24/agent2.png" style="width: 90%;margin-left: auto; margin-right: auto;display: block;" class="center">
+  <figcaption>Fig.5 - The long-term memory system of the agent <a href="#footnote-4" style="text-decoration: none;">[4]</a>.</figcaption>
+</figure>
+
+<br>
+<h4>Memory retrieval</h4>
+
+<p>There are many possible implementations of a retrieval function, depending on what is important for the agent to consider when deciding how to act. One effective approach is to directly ask the language model to output an integer score.</p>
+
+<i><p>On the scale of 1 to 10, where 1 is purely mundane (e.g., brushing teeth, making bed) and 10 is extremely poignant (e.g., a break up, college acceptance), rate the likely poignancy of the following piece of memory.</p>
+<p>Memory: buying groceries at The Willows Market and Pharmacy</p>
+<p>Rating:  &lt;fill in></p></i>
+
+<br>
+<h4>Reflection</h4>
+<p>Reflections are higher-level, more abstract thoughts generated by the agent. They are included alongside other observations during retrieval. Reflections are generated periodically, roughly two or three times a day. Then, we prompt the language model to extract insights and cite the particular records that served as evidence for the insight.</p>
+
+<h4>Findings</h4>
+<p>First, synthesizing an increasingly larger set of memory not only posed a challenge in retrieving the most relevant pieces of information but also in determining the appropriate space to execute an action, given the increasing number of locations that the agent learned about. As a result, some agents chose less typical locations for their actions, potentially making their behavior less believable over time.</p>
+
+<p>Second, erratic behaviors caused by misclassification of what is considered proper behavior, especially when the physical norms of certain locations that are hard to convey in natural language did not percolate to the agents. The instruction tuning also seemed to make the agents overly cooperative with one another.</p>
+
+
+</div>
+<br><br>
+</body>
+<footer>
+    <p>Created by Yuwei Sun. © 2024</p>
+</footer>
+<br>
+<br>
+
+
+<p id="footnote-1">[1] Wanjun Zhong, Lianghong Guo, Qiqi Gao, and et al. Memorybank: Enhancing large language models with long-term memory. arXiv:2305.10250, 2023.</p>
+<p id="footnote-2">[2] Weizhi Wang, Li Dong, Hao Cheng, and et al. Augmenting language models with long-term memory. arXiv:2306.07174, 2023.</p>
+<p id="footnote-3">[3] Noah Shinn, Beck Labash, and Ashwin Gopinath. Reflexion: an autonomous agent with dynamic memory and self-reflection. arXiv:2303.11366, 2023.</p>
+<p id="footnote-4">[4] Joon Sung Park, Joseph C. O’Brien, Carrie Jun Cai, and et al. Generative agents: Interactive simulacra of human behavior. In UIST, pages 2:1–2:22. ACM, 2023.</p>
+<br><br>
+</html>

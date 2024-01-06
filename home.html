@@ -10,6 +10,7 @@
 
 <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 
+
 <style>
 .content {
   max-width: 50%;
@@ -55,6 +56,15 @@ h4{color:#990000}
   background-color: black;
   color: white;
 }
+
+#likeButton {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
 </style>
 
 
@@ -100,6 +110,23 @@ h4{color:#990000}
    element.classList.toggle("dark-mode");
   }
 
+
+  let likeCount = parseInt(localStorage.getItem('likeCount')) || 0;
+
+  function updateLikeCount() {
+      document.getElementById("likeCount").innerText = likeCount;
+  }
+
+  function like() {
+      likeCount++;
+      // Update the like count in localStorage
+      localStorage.setItem('likeCount', likeCount);
+      updateLikeCount();
+  }
+
+  window.onload = function () {
+      updateLikeCount();
+  };
 </script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
@@ -114,8 +141,23 @@ h4{color:#990000}
 Created by <a href="https://yuweisunn.github.io/", style="text-decoration: none;"><b>Yuwei Sun</b></a>
 <br><br>
 
+
+<i class="fa fa-thumbs-up" onclick="like()" style='font-size:24px'></i> 
+<span id="likeCount" style="font-size: 20px;">0</span>
+
+
+
 <div class="row">
   <div class="leftcolumn">
+
+    <div class="card">
+      <a href="blog-1-06-24.html" style="text-decoration: none;">
+      <hr attribute="value"> 
+      <h2 style="font-size:24px;"><b>Memory in Language Model-Enabled Agents</b></h2></a>
+      <i>January 06, 2024</i>
+      <p>Language models emerge as potential planners and world models for agents in virtual environments. This post delves into the unique capabilities of LLMs for decision-making and environmental understanding within simulated worlds.</p>
+    </div>
+
     <div class="card">
       <a href="blog-10-01-23.html" style="text-decoration: none;">
       <hr attribute="value"> 
