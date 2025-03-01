@@ -1,6 +1,0 @@
-@article{sun2023associative,
-  author = {Yuwei Sun, Hideya Ochiai, Zhirong Wu, Stephen Lin, Ryota Kanai},
-  title = {Associative Transformer is a Sparse Representation Learner},
-  journal = {arXiv preprint:2309.12862},
-  year = {2023}
-}

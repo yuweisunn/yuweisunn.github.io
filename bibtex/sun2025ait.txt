@@ -1,0 +1,6 @@
+@article{sun2025associative,
+  author = {Yuwei Sun, Hideya Ochiai, Zhirong Wu, Stephen Lin, Ryota Kanai},
+  title = {Associative Transformer},
+  journal = {CVPR},
+  year = {2025}
+}
