@@ -1,6 +1,6 @@
-@article{sun2024rt,
+@article{sun2025rt,
   author    = {Yuwei Sun and Ippei Fujisawa and Arthur Juliani and Jun Sakuma and Ryota Kanai},
   title     = {Remembering Transformer for Continual Learning},
-  journal   = {arXiv: 2404.07518},
-  year      = {2024}
+  journal   = {IJCNN},
+  year      = {2025}
 }
