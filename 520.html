@@ -96,7 +96,7 @@
           x,
           y: -30,
           size: 40,
-          speed: 5 + Math.random() * 2, // fast
+          speed: 3 + Math.random() * 2, // fast
           type: 'cat'
         });
       } else {
@@ -139,7 +139,7 @@
 
       for (let i = 0; i < hearts.length; i++) {
         const h = hearts[i];
-        if (Math.abs(clickX - h.x) < 45 && Math.abs(clickY - h.y) < 45) {
+        if (Math.abs(clickX - h.x) < 40 && Math.abs(clickY - h.y) < 40) {
           if (h.type === 'cat') {
             score += 5;
           } else {
