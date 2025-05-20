@@ -70,6 +70,7 @@
 
   <div class="message" id="finalMessage" style="font-size: 1.1em;">
     🎉 你收集了 52 颗爱心！<br><br>
+    🇯🇵 愛してる<br>   
     🇫🇷 Je t’aime<br>
     🇮🇹 Ti amo<br><br>
     感谢有你陪伴的日子，希望以后也能开开心心，生活越来越好，永远爱你 ❤️
@@ -95,7 +96,7 @@
           x,
           y: -30,
           size: 40,
-          speed: 3 + Math.random() * 2, // fast
+          speed: 5 + Math.random() * 2, // fast
           type: 'cat'
         });
       } else {
@@ -138,7 +139,7 @@
 
       for (let i = 0; i < hearts.length; i++) {
         const h = hearts[i];
-        if (Math.abs(clickX - h.x) < 40 && Math.abs(clickY - h.y) < 40) {
+        if (Math.abs(clickX - h.x) < 45 && Math.abs(clickY - h.y) < 45) {
           if (h.type === 'cat') {
             score += 5;
           } else {
