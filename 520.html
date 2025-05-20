@@ -21,7 +21,7 @@
     }
 
     p {
-      font-size: 1.2em;
+      font-size: 1.3em;
       margin: 0.5em 1em;
     }
 
@@ -33,7 +33,7 @@
     }
 
     .score {
-      font-size: 1.2em;
+      font-size: 1.3em;
       margin: 0.5em;
     }
 
@@ -63,7 +63,7 @@
 </head>
 <body>
   <h1>520 我爱你</h1>
-  <p>点击飘落的❤️，收集爱意分数！</p>
+  <p>点击飘落的 ❤️，收集爱意分数！目标是收集 52 颗爱心！</p>
   <div class="score">得分: <span id="score">0</span></div>
   <canvas id="gameCanvas" width="300" height="400"></canvas>
   <div class="footer">献给我最爱的人 ❤️</div>
@@ -88,12 +88,12 @@
 
     function createHeart() {
       if (!gameActive) return;
-      const x = Math.random() * (canvas.width - 30);
+      const x = Math.random() * (canvas.width - 40);
       hearts.push({
         x,
-        y: -20,
-        size: 30,
-        speed: 2 + Math.random() * 2
+        y: -30,
+        size: 40, // Larger size
+        speed: 1 + Math.random() * 1.5 // Slower speed
       });
     }
 
@@ -110,7 +110,7 @@
         drawHeart(h);
       });
 
-      hearts = hearts.filter(h => h.y < canvas.height + 30);
+      hearts = hearts.filter(h => h.y < canvas.height + 40);
 
       if (gameActive) {
         requestAnimationFrame(updateGame);
@@ -126,7 +126,7 @@
 
       for (let i = 0; i < hearts.length; i++) {
         const h = hearts[i];
-        if (Math.abs(clickX - h.x) < 20 && Math.abs(clickY - h.y) < 20) {
+        if (Math.abs(clickX - h.x) < 40 && Math.abs(clickY - h.y) < 40) {
           hearts.splice(i, 1);
           score++;
           scoreEl.textContent = score;
@@ -141,7 +141,7 @@
       }
     });
 
-    setInterval(createHeart, 800);
+    setInterval(createHeart, 500); // More frequent
     updateGame();
   </script>
 </body>
