@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>520 我爱你</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #ffd6e0, #ffe9ec);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      text-align: center;
+      color: #d6336c;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin: 1em 0 0.3em;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin: 0.5em 1em;
+    }
+
+    canvas {
+      display: block;
+      margin: 1em auto;
+      background-color: #fff0f5;
+      border-radius: 20px;
+    }
+
+    .score {
+      font-size: 1.2em;
+      margin: 0.5em;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      font-size: 1em;
+      color: #a94455;
+    }
+
+    .message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2em;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      font-size: 1.5em;
+      display: none;
+      z-index: 10;
+      color: #d6336c;
+    }
+  </style>
+</head>
+<body>
+  <h1>520 我爱你</h1>
+  <p>点击飘落的❤️，收集爱意分数！</p>
+  <div class="score">得分: <span id="score">0</span></div>
+  <canvas id="gameCanvas" width="300" height="400"></canvas>
+  <div class="footer">献给我最爱的人 ❤️</div>
+
+  <div class="message" id="finalMessage">
+    🎉 你收集了 52 颗爱心！<br><br>
+    🇯🇵 愛してる<br>
+    🇫🇷 Je t’aime<br>
+    🇮🇹 Ti amo<br><br>
+    永远爱你 ❤️
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const finalMessage = document.getElementById('finalMessage');
+
+    let score = 0;
+    let hearts = [];
+    let gameActive = true;
+
+    function createHeart() {
+      if (!gameActive) return;
+      const x = Math.random() * (canvas.width - 30);
+      hearts.push({
+        x,
+        y: -20,
+        size: 30,
+        speed: 2 + Math.random() * 2
+      });
+    }
+
+    function drawHeart(h) {
+      ctx.font = `${h.size}px serif`;
+      ctx.fillText('❤️', h.x, h.y);
+    }
+
+    function updateGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      hearts.forEach(h => {
+        h.y += h.speed;
+        drawHeart(h);
+      });
+
+      hearts = hearts.filter(h => h.y < canvas.height + 30);
+
+      if (gameActive) {
+        requestAnimationFrame(updateGame);
+      }
+    }
+
+    canvas.addEventListener('click', function (e) {
+      if (!gameActive) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      for (let i = 0; i < hearts.length; i++) {
+        const h = hearts[i];
+        if (Math.abs(clickX - h.x) < 20 && Math.abs(clickY - h.y) < 20) {
+          hearts.splice(i, 1);
+          score++;
+          scoreEl.textContent = score;
+
+          if (score === 52) {
+            gameActive = false;
+            finalMessage.style.display = 'block';
+          }
+
+          break;
+        }
+      }
+    });
+
+    setInterval(createHeart, 800);
+    updateGame();
+  </script>
+</body>
+</html>
